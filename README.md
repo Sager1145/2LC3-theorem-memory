@@ -4,6 +4,10 @@
 
 > **功能已实现；资料覆盖不宣称完整。** 当前发布 360 张来源可追踪的定理、公理、引理及推理规则卡，其中 282 张出现在已读取的近期笔记/提供材料，78 张来自额外核对的 2025 课件。仍有 128 条提取候选只列在资料审计中、不参加答题；部分 Project ZIP 和修订文件无法取得完整内容。“当前笔记”不表示全都属于 2026 课堂已讲范围。详见 `docs/SOURCE_AUDIT.md`。
 
+**在线练习：** https://sager1145.github.io/2LC3-theorem-memory/
+
+**下载单文件版：** https://sager1145.github.io/2LC3-theorem-memory/Theorem-Quest-Standalone.html
+
 ## 直接使用
 
 构建后的 `_site/Theorem-Quest-Standalone.html` 可用浏览器直接打开，不依赖外部资源。部分浏览器不允许本地文件使用持久存储；网页会显示警告，仍可练习和导出备份。正式使用建议通过 GitHub Pages 固定在同一地址使用。
