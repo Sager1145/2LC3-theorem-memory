@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+.venv/
+node_modules/
+_site/
+.build/
+private-sources/
+source-library/
+test-results/
+playwright-report/
+*-progress-*.json

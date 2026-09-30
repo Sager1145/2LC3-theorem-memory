@@ -1,0 +1,1624 @@
+[
+  {
+    "numbers": [
+      "15.30"
+    ],
+    "name": "Addition in pos",
+    "aliases": [],
+    "formula": "pos a ∧ pos b ⇒ pos (a + b)",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.31"
+    ],
+    "name": "Multiplication in pos",
+    "aliases": [],
+    "formula": "pos a ∧ pos b ⇒ pos (a · b)",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.32"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "¬ pos 0",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.33"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "b ≠ 0 ⇒ (pos b ≡ ¬ pos (- b))",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.34"
+    ],
+    "name": "Positivity of Squares",
+    "aliases": [],
+    "formula": "b ≠ 0 ⇒ pos (b · b)",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.35"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "pos a ⇒ (pos b ≡ pos (a · b))",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.36"
+    ],
+    "name": "Less",
+    "aliases": [],
+    "formula": "a < b ≡ pos (b - a)",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.37"
+    ],
+    "name": "Greater",
+    "aliases": [],
+    "formula": "a > b ≡ pos (a - b)",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.38"
+    ],
+    "name": "At most",
+    "aliases": [],
+    "formula": "a ≤ b ≡ a < b ∨ a = b",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.39"
+    ],
+    "name": "At least",
+    "aliases": [],
+    "formula": "a ≥ b ≡ a > b ∨ a = b",
+    "kind": "Axiom",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.40"
+    ],
+    "name": "Positive elements",
+    "aliases": [],
+    "formula": "pos b ≡ 0 < b",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.41a"
+    ],
+    "name": "Transitivity",
+    "aliases": [],
+    "formula": "a < b ∧ b < c ⇒ a < c",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.41b"
+    ],
+    "name": "Transitivity",
+    "aliases": [],
+    "formula": "a ≤ b ∧ b < c ⇒ a < c",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.41c"
+    ],
+    "name": "Transitivity",
+    "aliases": [],
+    "formula": "a < b ∧ b ≤ c ⇒ a < c",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.41d"
+    ],
+    "name": "Transitivity",
+    "aliases": [],
+    "formula": "a ≤ b ∧ b ≤ c ⇒ a ≤ c",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.42"
+    ],
+    "name": "Monotonicity of +",
+    "aliases": [],
+    "formula": "a < b ≡ a + d < b + d",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.43"
+    ],
+    "name": "Monotonicity of ·",
+    "aliases": [],
+    "formula": "0 < d ⇒ (a < b ≡ a · d < b · d)",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.44"
+    ],
+    "name": "Trichotomy",
+    "aliases": [],
+    "formula": "(a < b ≡ a = b ≡ a > b) ∧ ¬ (a < b ∧ a = b ∧ a > b)",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.45"
+    ],
+    "name": "Antisymmetry of ≤",
+    "aliases": [],
+    "formula": "a ≤ b ∧ a ≥ b ≡ a = b",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "15.46"
+    ],
+    "name": "Reflexivity of ≤",
+    "aliases": [],
+    "formula": "a ≤ a",
+    "kind": "Theorem",
+    "topic": "序与单调性",
+    "current": false,
+    "domain": "ℤ",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-0e1057181e8b",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.17"
+    ],
+    "name": "Generalised De Morgan",
+    "aliases": [],
+    "formula": "(∃ x ❙ R • P) ≡ ¬ (∀ x ❙ R • ¬ P)",
+    "kind": "Axiom",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.18a"
+    ],
+    "name": "Generalised De Morgan",
+    "aliases": [],
+    "formula": "¬ (∃ x ❙ R • ¬ P) ≡ (∀ x ❙ R • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.18b"
+    ],
+    "name": "Generalised De Morgan",
+    "aliases": [],
+    "formula": "¬ (∃ x ❙ R • P) ≡ (∀ x ❙ R • ¬ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.18c"
+    ],
+    "name": "Generalised De Morgan",
+    "aliases": [],
+    "formula": "(∃ x ❙ R • ¬ P) ≡ ¬ (∀ x ❙ R • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.2"
+    ],
+    "name": "Trading for ∀",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P) ≡ (∀ x • R ⇒ P)",
+    "kind": "Axiom",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.3a"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P) ≡ (∀ x • ¬ R ∨ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.3b"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P) ≡ (∀ x • R ∧ P ≡ R)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.3c"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P) ≡ (∀ x • R ∨ P ≡ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.4a"
+    ],
+    "name": "Trading for ∀",
+    "aliases": [],
+    "formula": "(∀ x ❙ Q ∧ R • P) ≡ (∀ x ❙ Q • R ⇒ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.4b"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ Q ∧ R • P) ≡ (∀ x ❙ Q • ¬ R ∨ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.4c"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ Q ∧ R • P) ≡ (∀ x ❙ Q • R ∧ P ≡ R)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.4d"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "(∀ x ❙ Q ∧ R • P) ≡ (∀ x ❙ Q • R ∨ P ≡ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.19"
+    ],
+    "name": "Trading for ∃",
+    "aliases": [],
+    "formula": "(∃ x ❙ R • P) ≡ (∃ x • R ∧ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.20"
+    ],
+    "name": "Trading for ∃",
+    "aliases": [],
+    "formula": "(∃ x ❙ Q ∧ R • P) ≡ (∃ x ❙ Q • R ∧ P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.10"
+    ],
+    "name": "Range weakening/strengthening for ∀",
+    "aliases": [],
+    "formula": "(∀ x ❙ Q ∨ R • P) ⇒ (∀ x ❙ Q • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.11"
+    ],
+    "name": "Body weakening/strengthening for ∀",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P ∧ Q) ⇒ (∀ x ❙ R • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.25"
+    ],
+    "name": "Range weakening/strengthening for ∃",
+    "aliases": [],
+    "formula": "(∃ x ❙ R • P) ⇒ (∃ x ❙ Q ∨ R • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.26"
+    ],
+    "name": "Body weakening/strengthening for ∃",
+    "aliases": [],
+    "formula": "(∃ x ❙ R • P) ⇒ (∃ x ❙ R • P ∨ Q)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-1f2697e2a685",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.12"
+    ],
+    "name": "Monotonicity of ∀",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P₁ ⇒ P₂) ⇒ ((∀ x ❙ R • P₁) ⇒ (∀ x ❙ R • P₂))",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.27"
+    ],
+    "name": "(Body) Monotonicity of ∃",
+    "aliases": [],
+    "formula": "(∀ x ❙ R • P₁ ⇒ P₂) ⇒ ((∃ x ❙ R • P₁) ⇒ (∃ x ❙ R • P₂))",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Range-Antitonicity of ∀",
+    "aliases": [],
+    "formula": "(∀ x • R₂ ⇒ R₁) ⇒ ((∀ x ❙ R₁ • P) ⇒ (∀ x ❙ R₂ • P))",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Range-Monotonicity of ∃",
+    "aliases": [],
+    "formula": "(∀ x • R₁ ⇒ R₂) ⇒ ((∃ x ❙ R₁ • P) ⇒ (∃ x ❙ R₂ • P))",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "8.13"
+    ],
+    "name": "Empty Range",
+    "aliases": [],
+    "formula": "(∀ x ❙ false • P) = true",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "∀ 版本",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "8.13"
+    ],
+    "name": "Empty Range",
+    "aliases": [],
+    "formula": "(∃ x ❙ false • P) = false",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "",
+    "variantLabel": "∃ 版本",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "8.14"
+    ],
+    "name": "One-point Rule",
+    "aliases": [],
+    "formula": "(∀ x ❙ x = E • P) ≡ P[x ≔ E]",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "x 不在 E 中自由出现；替换必须避免变量捕获。",
+    "variantLabel": "∀ 版本",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "8.14"
+    ],
+    "name": "One-point Rule",
+    "aliases": [],
+    "formula": "(∃ x ❙ x = E • P) ≡ P[x ≔ E]",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "x 不在 E 中自由出现；替换必须避免变量捕获。",
+    "variantLabel": "∃ 版本",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.13"
+    ],
+    "name": "Instantiation",
+    "aliases": [],
+    "formula": "(∀ x • P) ⇒ P[x ≔ E]",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "E 的类型须与 x 相容；替换避免变量捕获。",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "9.28"
+    ],
+    "name": "∃-Introduction",
+    "aliases": [],
+    "formula": "P[x ≔ E] ⇒ (∃ x • P)",
+    "kind": "Theorem",
+    "topic": "量词与谓词逻辑",
+    "current": false,
+    "domain": "谓词逻辑",
+    "sideCondition": "E 的类型须与 x 相容；替换避免变量捕获。",
+    "variantLabel": "",
+    "sourceId": "s-3eecb914d15e",
+    "locator": {
+      "page": 6
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Empty set",
+    "aliases": [],
+    "formula": "v ∈ {} ≡ false",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Universal set",
+    "aliases": [],
+    "formula": "v ∈ 𝐔 ≡ true",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.20"
+    ],
+    "name": "Set union",
+    "aliases": [],
+    "formula": "v ∈ S ∪ T ≡ v ∈ S ∨ v ∈ T",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.21"
+    ],
+    "name": "Set intersection",
+    "aliases": [],
+    "formula": "v ∈ S ∩ T ≡ v ∈ S ∧ v ∈ T",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.22"
+    ],
+    "name": "Set difference",
+    "aliases": [],
+    "formula": "v ∈ S - T ≡ v ∈ S ∧ ¬ (v ∈ T)",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.17"
+    ],
+    "name": "Set complement",
+    "aliases": [],
+    "formula": "v ∈ ∼ S ≡ ¬ (v ∈ S)",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.23"
+    ],
+    "name": "Power set",
+    "aliases": [],
+    "formula": "v ∈ ℙ S ≡ v ⊆ S",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.4"
+    ],
+    "name": "Set extensionality",
+    "aliases": [],
+    "formula": "S = T ≡ (∀ x • x ∈ S ≡ x ∈ T)",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 S、T 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 1
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.13"
+    ],
+    "name": "Set inclusion",
+    "aliases": [
+      "Subset"
+    ],
+    "formula": "S ⊆ T ≡ (∀ x ❙ x ∈ S • x ∈ T)",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 S、T 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 2
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Set inclusion",
+    "aliases": [
+      "Subset"
+    ],
+    "formula": "S ⊆ T ≡ (∀ x • x ∈ S ⇒ x ∈ T)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 S、T 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 2
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.14"
+    ],
+    "name": "Proper subset",
+    "aliases": [
+      "Definition of ⊂"
+    ],
+    "formula": "S ⊂ T ≡ S ⊆ T ∧ S ≠ T",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 2
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.26"
+    ],
+    "name": "Symmetry of ∪",
+    "aliases": [],
+    "formula": "S ∪ T = T ∪ S",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 2
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.55.1"
+    ],
+    "name": "Set complement via difference",
+    "aliases": [],
+    "formula": "∼ S = 𝐔 - S",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 2
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.3"
+    ],
+    "name": "Set membership",
+    "aliases": [],
+    "formula": "F ∈ { x ❙ R • E } ≡ (∃ x ❙ R • E = F)",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 F 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "11.7b"
+    ],
+    "name": "Simple membership",
+    "aliases": [],
+    "formula": "F ∈ { x ❙ R } ≡ R[x ≔ F]",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 F 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "The empty set",
+    "aliases": [],
+    "formula": "{ x ❙ false • x } = {}",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Singleton sets",
+    "aliases": [],
+    "formula": "{ x ❙ x = E • x } = { E }",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 E 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "One-point set comprehension",
+    "aliases": [],
+    "formula": "{ x ❙ x = E • F } = { F[x ≔ E] }",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合",
+    "sideCondition": "固定的元素类型及其全集；集合运算的类型须相容。 x 不在 E 中自由出现。",
+    "variantLabel": "",
+    "sourceId": "s-921b5f1ff50e",
+    "locator": {
+      "page": 4
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.2"
+    ],
+    "name": "Pair equality",
+    "aliases": [],
+    "formula": "⟨ b, c ⟩ = ⟨ b', c' ⟩ ≡ b = b' ∧ c = c'",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.3"
+    ],
+    "name": "Cross product",
+    "aliases": [],
+    "formula": "S × T = { b, c ❙ b ∈ S ∧ c ∈ T • ⟨ b, c ⟩ }",
+    "kind": "Axiom",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.4"
+    ],
+    "name": "Membership",
+    "aliases": [],
+    "formula": "⟨ b, c ⟩ ∈ S × T ≡ b ∈ S ∧ c ∈ T",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.5"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "⟨ x, y ⟩ ∈ S × T ≡ ⟨ y, x ⟩ ∈ T × S",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.6"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "S = {} ⇒ S × T = T × S = {}",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.7"
+    ],
+    "name": "原文未命名",
+    "aliases": [],
+    "formula": "S × T = T × S ≡ S = {} ∨ T = {} ∨ S = T",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.8"
+    ],
+    "name": "Distributivity of × over ∪",
+    "aliases": [],
+    "formula": "S × (T ∪ U) = (S × T) ∪ (S × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "右侧含 ∪",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.8"
+    ],
+    "name": "Distributivity of × over ∪",
+    "aliases": [],
+    "formula": "(S ∪ T) × U = (S × U) ∪ (T × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "左侧含 ∪",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.9"
+    ],
+    "name": "Distributivity of × over ∩",
+    "aliases": [],
+    "formula": "S × (T ∩ U) = (S × T) ∩ (S × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "右侧含 ∩",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.9"
+    ],
+    "name": "Distributivity of × over ∩",
+    "aliases": [],
+    "formula": "(S ∩ T) × U = (S × U) ∩ (T × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "左侧含 ∩",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.10"
+    ],
+    "name": "Distributivity of × over -",
+    "aliases": [],
+    "formula": "S × (T - U) = (S × T) - (S × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "右侧含 -",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.10"
+    ],
+    "name": "Distributivity of × over -",
+    "aliases": [],
+    "formula": "(S - T) × U = (S × U) - (T × U)",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "左侧含 -",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [
+      "14.12"
+    ],
+    "name": "Monotonicity",
+    "aliases": [],
+    "formula": "S ⊆ S' ∧ T ⊆ T' ⇒ S × T ⊆ S' × T'",
+    "kind": "Theorem",
+    "topic": "集合与关系",
+    "current": false,
+    "domain": "集合 / 有序对",
+    "sideCondition": "相应集合、元组分量和相等式均须满足原文的类型要求。",
+    "variantLabel": "",
+    "sourceId": "s-594897ce3081",
+    "locator": {
+      "page": 3
+    },
+    "curation": "visual-page-check",
+    "normalization": "PDF 图形竖线恢复为 ❙，圆点统一为 •，数学排版替换记号统一为 ≔。未改变定理含义。"
+  },
+  {
+    "numbers": [],
+    "name": "Knighthood",
+    "aliases": [],
+    "formula": "X says⟪ p ⟫ ≡ X is-knight ≡ p",
+    "kind": "Source-listed law",
+    "topic": "Knights & Knaves",
+    "current": true,
+    "domain": "Inhabitant / 𝔹",
+    "sideCondition": "采用 Ex2.5 中 says⟪ ⟫、is-knight、is-knave 的定义和后缀语法。",
+    "sourceId": "indexed-week2-speech",
+    "locator": {
+      "line": 534
+    },
+    "curation": "indexed-source-check",
+    "normalization": "保留已读取索引中的公式。"
+  },
+  {
+    "numbers": [],
+    "name": "Knavehood",
+    "aliases": [],
+    "formula": "X says⟪ p ⟫ ≡ X is-knave ≡ ¬ p",
+    "kind": "Source-listed law",
+    "topic": "Knights & Knaves",
+    "current": true,
+    "domain": "Inhabitant / 𝔹",
+    "sideCondition": "采用 Ex2.5 中 says⟪ ⟫、is-knight、is-knave 的定义和后缀语法。",
+    "sourceId": "indexed-week2-speech",
+    "locator": {
+      "line": 537
+    },
+    "curation": "indexed-source-check",
+    "normalization": "保留已读取索引中的公式。"
+  },
+  {
+    "numbers": [],
+    "name": "Disjoint case analysis",
+    "aliases": [],
+    "formula": "(p ≢ q) ∧ ((p ⇒ s) ∧ (q ⇒ s)) ⇒ s",
+    "kind": "Theorem",
+    "topic": "蕴含 ⇒",
+    "current": true,
+    "domain": "𝔹",
+    "sideCondition": "",
+    "variantLabel": "",
+    "sourceId": "conversation-20260929-disjoint",
+    "locator": {
+      "line": 1
+    },
+    "curation": "provided-conversation-declaration",
+    "normalization": "保留对话中用户提供的完整定理声明，未添加教材编号。"
+  }
+]

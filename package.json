@@ -1,0 +1,12 @@
+{
+  "name": "theorem-quest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static, provenance-tracked COMPSCI 2LC3 theorem practice game",
+  "scripts": {
+    "test": "node --test tests/engine.test.js",
+    "build": "python3 tools/build_site.py --out _site --portable _site/Theorem-Quest-Standalone.html",
+    "preview": "python3 -m http.server 8000 --directory _site"
+  },
+  "engines": {"node": ">=20"}
+}

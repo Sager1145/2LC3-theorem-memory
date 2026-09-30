@@ -1,0 +1,4 @@
+# Only required to re-extract PRIVATE course sources; NOT needed by the website,
+# GitHub Pages build, or portable HTML. Installed versions are recorded in docs.
+PyMuPDF>=1.24,<2
+beautifulsoup4>=4.12,<5
