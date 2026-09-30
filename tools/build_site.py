@@ -10,9 +10,9 @@ def portable_html():
     html=(ROOT/'index.html').read_text(encoding='utf-8')
     html=re.sub(r'<link rel="(?:icon|manifest)"[^>]*>', '', html)
     css=(ROOT/'assets/style.css').read_text(encoding='utf-8')
-    html=html.replace('<link rel="stylesheet" href="./assets/style.css">', '<style>'+css+'</style>')
+    html=re.sub(r'<link rel="stylesheet" href="\./assets/style\.css(?:\?[^"]*)?">', lambda _: '<style>'+css+'</style>', html)
     for name in ['engine','data','app']:
-        html=html.replace(f'<script defer src="./assets/{name}.js"></script>','')
+        html=re.sub(rf'<script defer src="\./assets/{name}\.js(?:\?[^"]*)?"></script>','',html)
     # Inline scripts execute AFTER the app/modal/toast nodes exist.
     scripts='<script>window.TQ_PORTABLE=true;</script>\n'
     for name in ['engine','data','app']:
