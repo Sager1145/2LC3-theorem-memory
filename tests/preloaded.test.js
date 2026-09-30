@@ -1,0 +1,30 @@
+'use strict';
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const bank=require('../data/theorems.json');
+const sources=require('../data/sources.json');
+const coverage=require('../data/coverage.json');
+
+test('all published cards come from one of the 26 copied preloaded popups',()=>{
+  assert.equal(sources.length,26);
+  assert.equal(coverage.preloadedNotebookCount,26);
+  assert.equal(coverage.preloadedUniqueCount,bank.length);
+  assert.equal(coverage.preloadedDeclarationCount,sources.reduce((n,s)=>n+s.declarations,0));
+  const lines=new Map(sources.map(s=>[
+    s.id,fs.readFileSync(path.join(root,s.localCapture),'utf8').split(/\r?\n/)
+  ]));
+  for(const card of bank){
+    assert(card.sources.length>0,card.id);
+    for(const origin of card.sources){
+      const list=lines.get(origin.sourceId);
+      assert(list,origin.sourceId);
+      const line=list[origin.locator.line-1];
+      assert(line?.startsWith(origin.excerpt),`${card.id} ${origin.sourceId}:${origin.locator.line}`);
+    }
+  }
+  assert.equal(sources.find(s=>s.id==='calc-preloaded-hw07').declarations,4);
+  assert.deepEqual(require('../data/review-candidates.json'),[]);
+});

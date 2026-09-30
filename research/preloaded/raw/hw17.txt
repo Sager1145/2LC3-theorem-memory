@@ -1,0 +1,590 @@
+H17 Theorem List
+❌
+Symbol Entry Codes
+Operator Precedences
+Equality
+Axiom (1.2) “Reflexivity of =”:   x = x
+Axiom (1.3) “Symmetry of =”:   (x = y) = (y = x)
+Derived inference rule “Transitivity of =” (1.4):
+                `X = Y`
+                , `Y = Z`
+                ⊦ `X = Z`
+Derived inference rule “Leibniz” (1.5):
+                `X = Y`
+                ⊦ `E[z ≔ X] = E[z ≔ Y]`
+Inequality
+Axiom “Definition of ≠”:   x ≠ y ≡ ¬ (x = y)
+Theorem “Definition of ≠”:   x ≠ y ≡ (x = y ≡ false)
+Theorem “Negation of ≠”:   ¬ (x ≠ y) ≡ x = y
+Theorem “Irreflexivity of ≠”:   ¬ (x ≠ x)
+Theorem “Irreflexivity of ≠”:   x ≠ x ≡ false
+Theorem “Symmetry of ≠”:   x ≠ y ≡ y ≠ x
+PropLogic.All
+Axiom “Definition of ≡”:   (p ≡ q) = (p = q)
+Axiom (3.1) “Associativity of ≡”:   ((p ≡ q) ≡ r) ≡ (p ≡ (q ≡ r))
+Axiom (3.2) “Symmetry of ≡”:   (p ≡ q) ≡ (q ≡ p)
+Axiom (3.3) “Identity of ≡”:   true ≡ (q ≡ q)
+Theorem (3.4):   true
+Theorem (3.5) “Reflexivity of ≡”:   p ≡ p
+Axiom (3.8) “Definition of `false`”:   false ≡ ¬ true
+Axiom (3.9) “Commutativity of ¬ with ≡”:   ¬ (p ≡ q) ≡ (¬ p ≡ q)
+Axiom (3.10) “Definition of ≢”:   (p ≢ q) ≡ ¬ (p ≡ q)
+Theorem (3.11) “¬ connection”:   ¬ p ≡ (q ≡ (p ≡ ¬ q))
+Theorem “Cancellation of ¬”:   (¬ p ≡ ¬ q) = (p ≡ q)
+Theorem (3.12) “Double negation”:   ¬ (¬ p) ≡ p
+Theorem (3.13) “Negation of `false`”:   ¬ false ≡ true
+Theorem (3.14):   (p ≢ q) ≡ (¬ p ≡ q)
+Theorem (3.15) “Definition of ¬ from ≡”:   ¬ p ≡ (p ≡ false)
+Theorem “Identity of ≢”:   (p ≢ false) ≡ p
+Theorem (3.16) “Symmetry of ≢”:   (p ≢ q) ≡ (q ≢ p)
+Theorem (3.17) “Associativity of ≢”:   ((p ≢ q) ≢ r) ≡ (p ≢ (q ≢ r))
+Theorem (3.18) “Mutual associativity of ≡ with ≢”:   ((p ≢ q) ≡ r) ≡ (p ≢ (q ≡ r))
+Theorem (3.19) “Mutual interchangeability of ≡ with ≢”:   (p ≢ (q ≡ r)) ≡ (p ≡ (q ≢ r))
+Axiom (3.24) “Symmetry of ∨”:   p ∨ q ≡ q ∨ p
+Axiom (3.25) “Associativity of ∨”:   (p ∨ q) ∨ r ≡ p ∨ (q ∨ r)
+Axiom (3.26) “Idempotency of ∨”:   p ∨ p ≡ p
+Axiom (3.27) “Distributivity of ∨ over ≡”:   p ∨ (q ≡ r) ≡ (p ∨ q ≡ p ∨ r)
+Axiom (3.28) “Excluded middle” “LEM”:   p ∨ ¬ p
+Theorem (3.29) “Zero of ∨”:   p ∨ true ≡ true
+Theorem (3.30) “Identity of ∨”:   p ∨ false ≡ p
+Theorem (3.31) “Distributivity of ∨ over ∨”:   p ∨ (q ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)
+Theorem (3.32):   p ∨ q ≡ (p ∨ ¬ q ≡ p)
+Axiom (3.35) “Golden rule”:   p ∧ q ≡ (p ≡ (q ≡ p ∨ q))
+Lemma “Definition of ∧”:   (p ∧ q) = (p ≡ (q ≡ p ∨ q))
+Theorem (3.36) “Symmetry of ∧”:   p ∧ q ≡ q ∧ p
+Theorem (3.37) “Associativity of ∧”:   (p ∧ q) ∧ r ≡ p ∧ (q ∧ r)
+Theorem (3.38) “Idempotency of ∧”:   p ∧ p ≡ p
+Theorem (3.39) “Identity of ∧”:   p ∧ true ≡ p
+Theorem (3.40) “Zero of ∧”:   p ∧ false ≡ false
+Theorem (3.41) “Distributivity of ∧ over ∧”:   p ∧ (q ∧ r) ≡ (p ∧ q) ∧ (p ∧ r)
+Theorem (3.42) “Contradiction”:   p ∧ ¬ p ≡ false
+Theorem (3.43) (3.43a) “Absorption”:   p ∧ (p ∨ q) ≡ p
+Theorem (3.43) (3.43b) “Absorption”:   p ∨ (p ∧ q) ≡ p
+Theorem (3.44) (3.44a) “Absorption”:   p ∧ (¬ p ∨ q) ≡ p ∧ q
+Theorem (3.44) (3.44b) “Absorption”:   p ∨ (¬ p ∧ q) ≡ p ∨ q
+Theorem (3.44) (3.44c) “Absorption”:   ¬ p ∧ (p ∨ q) ≡ ¬ p ∧ q
+Theorem (3.44) (3.44d) “Absorption”:   ¬ p ∨ (p ∧ q) ≡ ¬ p ∨ q
+Theorem (3.45) “Distributivity of ∨ over ∧”:   p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)
+Theorem (3.46) “Distributivity of ∧ over ∨”:   p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)
+Theorem (3.47) (3.47a) “De Morgan”:   ¬ (p ∧ q) ≡ ¬ p ∨ ¬ q
+Theorem (3.47) (3.47b) “De Morgan”:   ¬ (p ∨ q) ≡ ¬ p ∧ ¬ q
+Theorem (3.47) (3.47c) “De Morgan”:   ¬ (¬ p ∧ q) ≡ p ∨ ¬ q
+Theorem (3.47) (3.47d) “De Morgan”:   ¬ (¬ p ∨ q) ≡ p ∧ ¬ q
+Theorem (3.47) (3.47e) “De Morgan dual of ∧”:   ¬ (¬ p ∧ ¬ q) ≡ p ∨ q
+Theorem (3.47) (3.47f) “De Morgan dual of ∨”:   ¬ (¬ p ∨ ¬ q) ≡ p ∧ q
+Theorem (3.48):   p ∧ q ≡ (p ∧ ¬ q ≡ ¬ p)
+Theorem (3.49) “Semi-distributivity of ∧ over ≡”:   p ∧ (q ≡ r) ≡ (p ∧ q ≡ (p ∧ r ≡ p))
+Theorem (3.50) “Strong modus ponens for ≡”:   p ∧ (q ≡ p) ≡ p ∧ q
+Theorem (3.51) “Replacement”:   (p ≡ q) ∧ (r ≡ p) ≡ (p ≡ q) ∧ (r ≡ q)
+Theorem (3.52) “Alternative definition of ≡”:   p ≡ (q ≡ (p ∧ q) ∨ (¬ p ∧ ¬ q))
+Theorem (3.53) “Exclusive or” “Alternative definition of ≢”:   (p ≢ q) ≡ (¬ p ∧ q) ∨ (p ∧ ¬ q)
+Theorem (3.55):   (p ∧ q) ∧ r ≡ (p ≡ (q ≡ (r ≡ (p ∨ q ≡ (q ∨ r ≡ (r ∨ p ≡ p ∨ (q ∨ r)))))))
+Axiom (3.57) “Definition of ⇒ via ∨” “Definition of ⇒ from ∨” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ (p ∨ q ≡ q)
+Axiom (3.58) “Definition of ⇐” “Consequence”:   p ⇐ q ≡ q ⇒ p
+Theorem (3.59) “Material implication” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ ¬ p ∨ q
+Theorem (3.60) “Definition of ⇒ via ∧” “Definition of ⇒ from ∧” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ (p ∧ q ≡ p)
+Lemma (3.57=) “Implication via ∨”:   (p ⇒ q) = (p ∨ q ≡ q)
+Lemma (3.60=) “Implication via ∧”:   (p ⇒ q) = (p ∧ q ≡ p)
+Theorem (3.61) “Contrapositive”:   p ⇒ q ≡ ¬ q ⇒ ¬ p
+Theorem (3.61.1) “¬-connection for ⇒”:   p ⇒ ¬ q ≡ q ⇒ ¬ p
+Theorem (3.61.2) “¬-connection for ⇒”:   ¬ p ⇒ q ≡ ¬ q ⇒ p
+Theorem (3.62):   p ⇒ (q ≡ r) ≡ (p ∧ q ≡ p ∧ r)
+Theorem (3.63) “Distributivity of ⇒ over ≡”:   p ⇒ (q ≡ r) ≡ (p ⇒ q ≡ p ⇒ r)
+Theorem (3.64) “Self-distributivity of ⇒”:   p ⇒ (q ⇒ r) ≡ (p ⇒ q) ⇒ (p ⇒ r)
+Theorem (3.65) “Shunting”:   p ∧ q ⇒ r ≡ p ⇒ (q ⇒ r)
+Theorem (3.66) “Strong modus ponens”:   p ∧ (p ⇒ q) ≡ p ∧ q
+Theorem (3.67):   p ∧ (q ⇒ p) ≡ p
+Theorem (3.68):   p ∨ (p ⇒ q) ≡ true
+Theorem (3.69):   p ∨ (q ⇒ p) ≡ q ⇒ p
+Theorem (3.70):   p ∨ q ⇒ p ∧ q ≡ (p ≡ q)
+Theorem (3.71) “Reflexivity of ⇒”:   p ⇒ p
+Theorem (3.72) “Right-zero of ⇒”:   p ⇒ true
+Theorem (3.73) “Left-identity of ⇒”:   true ⇒ p ≡ p
+Theorem “Definition of ¬ from ⇒” (3.74):   p ⇒ false ≡ ¬ p
+Theorem (3.75) “ex falso quodlibet”:   false ⇒ p
+Theorem (3.76) (3.76a) “Weakening” “Strengthening”:   p ⇒ p ∨ q
+Theorem (3.76) (3.76b) “Weakening” “Strengthening”:   p ∧ q ⇒ p
+Theorem (3.76) (3.76c) “Weakening” “Strengthening”:   p ∧ q ⇒ p ∨ q
+Theorem (3.76) (3.76d) “Weakening” “Strengthening”:   p ∨ (q ∧ r) ⇒ p ∨ q
+Theorem (3.76) (3.76e) “Weakening” “Strengthening”:   p ∧ q ⇒ p ∧ (q ∨ r)
+Theorem (3.77) “Modus ponens”:   p ∧ (p ⇒ q) ⇒ q
+Theorem (3.78) “Case analysis”:   (p ⇒ r) ∧ (q ⇒ r) ≡ p ∨ q ⇒ r
+Theorem (3.79) “Case analysis”:   (p ⇒ r) ∧ (¬ p ⇒ r) ≡ r
+Theorem (3.80) “Mutual implication”:   (p ⇒ q) ∧ (q ⇒ p) ≡ (p ≡ q)
+Theorem (3.80.1) “Reflexivity of ⇒ wrt. ≡” “Reflexivity of ⇒”:   (p ≡ q) ⇒ (p ⇒ q)
+Theorem (3.81) “Antisymmetry of ⇒”:   (p ⇒ q) ∧ (q ⇒ p) ⇒ (p ≡ q)
+Theorem (3.82) (3.82a) “Transitivity of ⇒”:   (p ⇒ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)
+Theorem (3.82) (3.82b) “Transitivity of ⇒”:   (p ≡ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)
+Theorem (3.82) (3.82c) “Transitivity of ⇒”:   (p ⇒ q) ∧ (q ≡ r) ⇒ (p ⇒ r)
+Theorem (3.82.4) “Implication strengthening”:   p ⇒ q ≡ p ⇒ p ∧ q
+Theorem (3.82.5) “Right-distributivity of ⇒ over ∧”:   p ⇒ q ∧ r ≡ (p ⇒ q) ∧ (p ⇒ r)
+Axiom (3.83) “Leibniz”:   e = f ⇒ E[z ≔ e] = E[z ≔ f]
+Corollary “Leibniz” (3.83.1):   d = e ⇒ f d = f e
+Corollary “Leibniz” (3.83.2):   d = e ⇒ (p d ≡ p e)
+Corollary “Leibniz” (3.83.3):   (d ≡ e) ⇒ (p d ≡ p e)
+Corollary “Leibniz” (3.83.4):   (d ≡ e) ⇒ f d = f e
+Theorem (3.84) (3.84a) “Replacement”:   e = f ∧ E[z ≔ e] ≡ e = f ∧ E[z ≔ f]
+Theorem (3.84a≡) “Replacement”:   (e ≡ f) ∧ E[z ≔ e] ≡ (e ≡ f) ∧ E[z ≔ f]
+Theorem (3.84) (3.84b) “Replacement”:   e = f ⇒ E[z ≔ e] ≡ e = f ⇒ E[z ≔ f]
+Theorem (3.84b≡) “Replacement”:   (e ≡ f) ⇒ E[z ≔ e] ≡ (e ≡ f) ⇒ E[z ≔ f]
+Theorem (3.84) (3.84c) “Replacement”:   q ∧ e = f ⇒ E[z ≔ e] ≡ q ∧ e = f ⇒ E[z ≔ f]
+Theorem (3.84) (3.84c) “Replacement”:   q ∧ (e ≡ f) ⇒ E[z ≔ e] ≡ q ∧ (e ≡ f) ⇒ E[z ≔ f]
+Theorem “Abbreviated replacement in ∧” “Abbreviated replacement”:   P ∧ x = E ≡ P[x ≔ E] ∧ x = E
+Theorem “Abbreviated replacement in ⇒” “Abbreviated replacement”:   x = E ⇒ P ≡ x = E ⇒ P[x ≔ E]
+Theorem “Transitivity of =”:   e = f ∧ f = g ⇒ e = g
+Theorem (3.85) (3.85a) “Replace by `true`”:   p ⇒ E[z ≔ p] ≡ p ⇒ E[z ≔ true]
+Theorem (3.85) (3.85b) “Replace by `true`”:   q ∧ p ⇒ E[z ≔ p] ≡ q ∧ p ⇒ E[z ≔ true]
+Theorem (3.85c) “Replace by `false`”:   ¬ p ⇒ E[z ≔ p] ≡ ¬ p ⇒ E[z ≔ false]
+Theorem (3.85) (3.85d) “Replace by `false`”:   q ∧ ¬ p ⇒ E[z ≔ p] ≡ q ∧ ¬ p ⇒ E[z ≔ false]
+Theorem (3.85e) “Replace by `true`”:   p ⇒ E[z ≔ p] = E[z ≔ true]
+Theorem (3.86) (3.86a) “Replace by `false`”:   E[z ≔ p] ⇒ p ≡ E[z ≔ false] ⇒ p
+Theorem (3.86) (3.86b) “Replace by `false`”:   E[z ≔ p] ⇒ p ∨ q ≡ E[z ≔ false] ⇒ p ∨ q
+Theorem (3.87) “Replace by `true`”:   p ∧ E[z ≔ p] ≡ p ∧ E[z ≔ true]
+Theorem (3.87.1) “Abbreviated replace by `true`”:   p ∧ E ≡ p ∧ E[p ≔ true]
+Theorem (3.87.1) “Abbreviated replace by `false`”:   ¬ p ∧ E ≡ ¬ p ∧ E[p ≔ false]
+Theorem (3.88) “Replace by `false`”:   p ∨ E[z ≔ p] ≡ p ∨ E[z ≔ false]
+Theorem (3.89) “Shannon”:   E[z ≔ p] ≡ (p ∧ E[z ≔ true]) ∨ (¬ p ∧ E[z ≔ false])
+Primitive inference rule “⇒-Introduction”:
+                ( `p`
+                    ⊦ `q` )
+                ⊦ `p ⇒ q`
+Theorem “Left-monotonicity of ∨” “Monotonicity of ∨”:   (p ⇒ q) ⇒ (p ∨ r ⇒ q ∨ r)
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ ((r ⇒ s) ⇒ (p ∨ r ⇒ q ∨ s))
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ ((r ⇒ s) ⇒ (p ∨ r ⇒ q ∨ s))
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ (p ∨ r ⇒ q ∨ r)
+Theorem (4.3) “Left-monotonicity of ∧” “Monotonicity of ∧”:   (p ⇒ q) ⇒ (p ∧ r ⇒ q ∧ r)
+Theorem “Monotonicity of ∧”:   (p ⇒ p') ⇒ ((q ⇒ q') ⇒ (p ∧ q ⇒ p' ∧ q'))
+Theorem “Antitonicity of ¬”:   (p ⇒ q) ⇒ (¬ q ⇒ ¬ p)
+Theorem “Monotonicity of ⇒” “Right-monotonicity of ⇒”:   (p ⇒ q) ⇒ ((r ⇒ p) ⇒ (r ⇒ q))
+Theorem “Antitonicity of ⇒” “Left-antitonicity of ⇒”:   (p ⇒ q) ⇒ ((q ⇒ r) ⇒ (p ⇒ r))
+Theorem “Proof by contradiction”:   ¬ p ⇒ false ≡ p
+Lemma “Disjunction as implication”:   p ∨ q ≡ ¬ p ⇒ q
+Theorem “Case shuffling”:   (p ∨ q) ∧ (¬ p ∨ r) ≡ (p ∧ r) ∨ (¬ p ∧ q)
+Theorem “Case shuffling”:   (p ⇒ q) ∧ (¬ p ⇒ r) ≡ (p ∧ q) ∨ (¬ p ∧ r)
+Theorem “Right-distributivity of ⇒ over ∧”:   p ⇒ q ∧ r ≡ (p ⇒ q) ∧ (p ⇒ r)
+Theorem “Right-distributivity of ⇒ over ∧₃”:   p ⇒ q ∧ (r ∧ s) ≡ (p ⇒ q) ∧ ((p ⇒ r) ∧ (p ⇒ s))
+Theorem “Right-distributivity of ⇒ over ∧₄”:   p ⇒ q ∧ (r ∧ (s ∧ t)) ≡ (p ⇒ q) ∧ ((p ⇒ r) ∧ ((p ⇒ s) ∧ (p ⇒ t)))
+Theorem “Equivalence enrichment”:   (p ≡ q) ⇒ ((p ⇒ r) ⇒ (p ⇒ q ∧ r))
+Theorem “Contributing conjunct to ≡”:   (p ∧ q ≡ r) ∧ p ⇒ (q ≡ r)
+Theorem “Preserving conjunct after ⇒”:   p ∧ q ⇒ r ≡ p ∧ q ⇒ p ∧ r
+Theorem “Adding consequent to ∧”:   (p ⇒ q) ⇒ (p ∧ r ⇒ p ∧ (q ∧ r))
+Theorem “Exclusive or implies inclusive”:   (p ≢ q) ⇒ p ∨ q
+Theorem “Weakening” “Strengthening”:   (p ∨ q) ∧ r ⇒ p ∨ (q ∧ r)
+Theorem “∧-Introduction”:   p ⇒ (q ⇒ p ∧ q)
+Theorem “∧₃-Introduction”:   p ⇒ (q ⇒ (r ⇒ p ∧ (q ∧ r)))
+Theorem “∧₄-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ p ∧ (q ∧ (r ∧ s)))))
+Theorem “∧₅-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ p ∧ (q ∧ (r ∧ (s ∧ t)))))))
+Theorem “∧₅-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ p ∧ (q ∧ (r ∧ (s ∧ t)))))))
+Theorem “∧₆-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ (u ⇒ p ∧ (q ∧ (r ∧ (s ∧ (t ∧ u)))))))))
+Theorem “∧₇-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ (u ⇒ (v ⇒ p ∧ (q ∧ (r ∧ (s ∧ (t ∧ (u ∧ v)))))))))))
+Theorem “Residual of ∧”:   x ∧ p ⇒ q ≡ x ⇒ (p ⇒ q)
+Theorem “Co-residual of ∨”:   q ⇒ x ∨ p ≡ ¬ p ∧ q ⇒ x
+Quantification.Existential
+Axiom (8.11) “Substitution into ∃”:   (∃ y ❙ R • P )[x ≔ F] ≡ (∃ y ❙ R[x ≔ F] • P[x ≔ F] )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `F`)
+Axiom (8.12.1) “Leibniz for ∃ range”:   (∀ x • R₁ ≡ R₂ ) ⇒ ((∃ x ❙ R₁ • P ) ≡ (∃ x ❙ R₂ • P ))
+Axiom (8.12.1₂) “Leibniz for ∃₂ range”:   (∀ x, y • R₁ ≡ R₂ ) ⇒ ((∃ x, y ❙ R₁ • P ) ≡ (∃ x, y ❙ R₂ • P ))
+Axiom (8.12.1₃) “Leibniz for ∃₃ range”:   (∀ x, y, z • R₁ ≡ R₂ ) ⇒ ((∃ x, y, z ❙ R₁ • P ) ≡ (∃ x, y, z ❙ R₂ • P ))
+Axiom (8.12.2) “Leibniz for ∃ body”:   (∀ x • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∃ x ❙ R • P₁ ) ≡ (∃ x ❙ R • P₂ ))
+Corollary (8.12.2) “Leibniz for ∃ body”:   (∀ x ❙ R • P₁ ≡ P₂ ) ⇒ ((∃ x ❙ R • P₁ ) ≡ (∃ x ❙ R • P₂ ))
+Axiom (8.12.2₂) “Leibniz for ∃₂ body”:   (∀ x, y • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∃ x, y ❙ R • P₁ ) ≡ (∃ x, y ❙ R • P₂ ))
+Axiom (8.12.2₃) “Leibniz for ∃₃ body”:   (∀ x, y, z • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∃ x, y, z ❙ R • P₁ ) ≡ (∃ x, y, z ❙ R • P₂ ))
+Axiom (8.13) “Empty range for ∃”:   (∃ x ❙ false • P ) ≡ false
+Axiom (8.14) “One-point rule for ∃”:   (∃ x ❙ x = E • P ) ≡ P[x ≔ E]   
+    — CalcCheck: Proviso: ¬occurs(`x`, `E`)
+Theorem “Generalised one-point rule for ∃”:   R[x ≔ e] ⇒ (∃ x ❙ R ∧ x = e • E ) = E[x ≔ e]
+Axiom (8.15) “Distributivity of ∃ over ∨”:   (∃ x ❙ R • P ) ∨ (∃ x ❙ R • Q ) ≡ (∃ x ❙ R • P ∨ Q )
+Axiom (8.17) “General range split for ∃”:   (∃ x ❙ R ∨ S • P ) ∨ (∃ x ❙ R ∧ S • P ) ≡ (∃ x ❙ R • P ) ∨ (∃ x ❙ S • P )
+Theorem (8.16) “Disjoint range split for ∃”:   (∀ x • R ∧ S ≡ false ) ⇒ ((∃ x ❙ R ∨ S • P ) ≡ (∃ x ❙ R • P ) ∨ (∃ x ❙ S • P ))
+Theorem “Boring disjoint range split for ∃”:   (R ∧ S ≡ false) ⇒ ((∃ x ❙ R ∨ S • P ) ≡ (∃ x ❙ R • P ) ∨ (∃ x ❙ S • P ))   
+    — CalcCheck: Proviso: ¬occurs(`x`, `R, S`)
+Theorem (8.16.1) “Alternative range split for ∃”:   (∃ x ❙ R • P ) ≡ (∃ x ❙ R ∧ S • P ) ∨ (∃ x ❙ R ∧ ¬ S • P )
+Theorem (8.18) “Range split for ∃”:   (∃ x ❙ R ∨ S • P ) ≡ (∃ x ❙ R • P ) ∨ (∃ x ❙ S • P )
+Axiom (8.20) “Nesting for ∃”:   (∃ x, y ❙ R ∧ S • P ) ≡ (∃ x ❙ R • (∃ y ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `R`)
+Axiom (8.20) “Nesting₂+₁ for ∃”:   (∃ x, y, z ❙ R ∧ S • P ) ≡ (∃ x, y ❙ R • (∃ z ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`z`, `R`)
+Axiom (8.20) “Nesting₁+₂ for ∃”:   (∃ x, y, z ❙ R ∧ S • P ) ≡ (∃ x ❙ R • (∃ y, z ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y, z`, `R`)
+Theorem (8.20.1) “Nesting for ∃”:   (∃ x, y ❙ S • P ) ≡ (∃ x • (∃ y ❙ S • P ) )
+Theorem (8.20.1) “Nesting₂+₁ for ∃”:   (∃ x, y, z ❙ S • P ) ≡ (∃ x, y • (∃ z ❙ S • P ) )
+Theorem (8.20.1) “Nesting₁+₂ for ∃”:   (∃ x, y, z ❙ S • P ) ≡ (∃ x • (∃ y, z ❙ S • P ) )
+Theorem (8.20.2) “Nesting for ∃”:   (∃ x, y ❙ R • P ) ≡ (∃ x ❙ R • (∃ y • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `R`)
+Theorem (8.20.2) “Nesting₂+₁ for ∃”:   (∃ x, y, z ❙ R • P ) ≡ (∃ x, y ❙ R • (∃ z • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`z`, `R`)
+Theorem (8.20.2) “Nesting₁+₂ for ∃”:   (∃ x, y, z ❙ R • P ) ≡ (∃ x ❙ R • (∃ y, z • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y, z`, `R`)
+Theorem (8.20.3) “Replacement in ∃”:   (∃ y ❙ R ∧ e = f • P[x ≔ e] ) ≡ (∃ y ❙ R ∧ e = f • P[x ≔ f] )
+Axiom (8.19.1) “Dummy list permutation for ∃”:   (∃ x, y ❙ R • P ) ≡ (∃ y, x ❙ R • P )
+Axiom (8.19.1) “Dummy list permutation₁+₂ for ∃”:   (∃ x, y, z ❙ R • P ) ≡ (∃ y, z, x ❙ R • P )
+Theorem (8.19) “Interchange of dummies for ∃”:   (∃ x ❙ R • (∃ y ❙ S • P ) ) ≡ (∃ y ❙ S • (∃ x ❙ R • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S`), ¬occurs(`y`, `R`)
+Theorem (8.21) “Dummy renaming for ∃” “α-conversion”:   (∃ x ❙ R • P ) ≡ (∃ y ❙ R[x ≔ y] • P[x ≔ y] )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem (8.22) “Change of dummy in ∃”:   (∀ f • (∀ g • (∀ x • (∀ y • x = f y ≡ y = g x ) ) ⇒ ((∃ x ❙ R • P ) ≡ (∃ y ❙ R[x ≔ f y] • P[x ≔ f y] )) ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem (8.22.1) “Change of dummy in ∃ — variant”:   (∀ x • (∀ y • x = f y ⇒ y = g x ) ) ⇒ ((∃ x ❙ R ∧ x = f (g x) • P ) ≡ (∃ y ❙ R[x ≔ f y] • P[x ≔ f y] ))   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Lemma (8.22.2) “Range replacement in nested ∃”:   (∀ x ❙ R • (∀ y • Q₁ ≡ Q₂ ) ) ⇒ ((∃ x ❙ R • (∃ y ❙ Q₁ • P ) ) ≡ (∃ x ❙ R • (∃ y ❙ Q₂ • P ) ))
+Theorem (8.22.3) “Change of restricted dummy in ∃”:   (∀ f • (∀ g • (∀ x ❙ R • (∀ y • x = f y ≡ y = g x ) ) ⇒ ((∃ x ❙ R • P ) ≡ (∃ y ❙ R[x ≔ f y] • P[x ≔ f y] )) ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem “Pair dummy splitting for ∃”:   (∃ p : ❰ t₁, t₂ ❱ ❙ R • E ) = (∃ a : t₁ • (∃ b : t₂ ❙ R[p ≔ ⟨a, b⟩] • E[p ≔ ⟨a, b⟩] ) )   
+    — CalcCheck: Proviso: ¬occurs(`a, b`, `E, R`)
+Theorem “Pair dummy splitting for ∃”:   (∃ p : ❰ t₁, t₂ ❱ ❙ R • E ) = (∃ x : t₁; y : t₂ ❙ R[p ≔ ⟨x, y⟩] • E[p ≔ ⟨x, y⟩] )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `E, R`)
+Theorem “Pair dummy joining for ∃”:   (∃ x : t₁ • (∃ y : t₂ ❙ R • E ) ) = (∃ p : ❰ t₁, t₂ ❱ ❙ R[x, y ≔ fst p, snd p] • E[x, y ≔ fst p, snd p] )   
+    — CalcCheck: Proviso: ¬occurs(`p`, `E, R`)
+Theorem “Pair dummy joining for ∃”:   (∃ x : t₁; y : t₂ ❙ R • E ) = (∃ p : ❰ t₁, t₂ ❱ ❙ R[x, y ≔ fst p, snd p] • E[x, y ≔ fst p, snd p] )   
+    — CalcCheck: Proviso: ¬occurs(`p`, `E, R`)
+Axiom (9.17) “Generalised De Morgan” “Definition of ∃”:   (∃ x ❙ R • P ) ≡ ¬ (∀ x ❙ R • ¬ P )
+Theorem (9.18) (9.18a) “Generalised De Morgan”:   ¬ (∃ x ❙ R • ¬ P ) ≡ (∀ x ❙ R • P )
+Theorem (9.18) (9.18b) “Generalised De Morgan”:   ¬ (∃ x ❙ R • P ) ≡ (∀ x ❙ R • ¬ P )
+Theorem (9.18) (9.18c) “Generalised De Morgan”:   (∃ x ❙ R • ¬ P ) ≡ ¬ (∀ x ❙ R • P )
+Theorem (9.19) “Trading for ∃”:   (∃ x ❙ R • P ) ≡ (∃ x • R ∧ P )
+Theorem (9.20) “Trading for ∃”:   (∃ x ❙ Q ∧ R • P ) ≡ (∃ x ❙ Q • R ∧ P )
+Theorem (9.21) “Distributivity of ∧ over ∃”:   P ∧ (∃ x ❙ R • Q ) ≡ (∃ x ❙ R • P ∧ Q )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.22):   P ∧ (∃ x • R ) ≡ (∃ x ❙ R • P )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.22.1) “Distributivity of ∧ over ∀”:   (∃ x • R ) ⇒ (P ∧ (∀ x ❙ R • Q ) ≡ (∀ x ❙ R • P ∧ Q ))   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.23) “Distributivity of ∨ over ∃”:   (∃ x • R ) ⇒ (P ∨ (∃ x ❙ R • Q ) ≡ (∃ x ❙ R • P ∨ Q ))   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.24) “False ∃ body”:   (∃ x ❙ R • false ) ≡ false
+Theorem (9.25) “Range weakening for ∃” “Range strengthening for ∃”:   (∃ x ❙ R • P ) ⇒ (∃ x ❙ Q ∨ R • P )
+Theorem (9.25.1) “Range weakening for ∃” “Range strengthening for ∃”:   (∃ x ❙ Q ∧ R • P ) ⇒ (∃ x ❙ R • P )
+Theorem (9.26) “Body weakening for ∃” “Body strengthening for ∃”:   (∃ x ❙ R • P ) ⇒ (∃ x ❙ R • P ∨ Q )
+Theorem (9.26.1) “Body weakening for ∃” “Body strengthening for ∃”:   (∃ x ❙ R • P ∧ Q ) ⇒ (∃ x ❙ R • P )
+Theorem (9.27) “Monotonicity of ∃” “Body monotonicity of ∃”:   (∀ x ❙ R • Q ⇒ P ) ⇒ ((∃ x ❙ R • Q ) ⇒ (∃ x ❙ R • P ))
+Theorem (9.27.1) “Simple body-monotonicity of ∃”:   (∀ x • P ⇒ Q ) ⇒ ((∃ x ❙ R • P ) ⇒ (∃ x ❙ R • Q ))
+Theorem (9.27.2) “Range monotonicity of ∃”:   (∀ x • Q ⇒ R ) ⇒ ((∃ x ❙ Q • P ) ⇒ (∃ x ❙ R • P ))
+Theorem (9.27.3) “Range monotonicity of ∃”:   (∀ x ❙ P • Q ⇒ R ) ⇒ ((∃ x ❙ Q • P ) ⇒ (∃ x ❙ R • P ))
+Theorem (9.28) “∃-Introduction”:   P[x ≔ E] ⇒ (∃ x • P )
+Theorem (9.28.1) “∃-Introduction”:   (R ∧ P)[x ≔ E] ⇒ (∃ x ❙ R • P )
+Theorem (9.29.1) “Interchange of quantifications”:   (∃ x • (∀ y • P ) ) ⇒ (∀ y • (∃ x • P ) )
+Theorem (9.29) “Interchange of quantifications”:   (∃ x ❙ R • (∀ y ❙ Q • P ) ) ⇒ (∀ y ❙ Q • (∃ x ❙ R • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `Q`), ¬occurs(`y`, `R`)
+Theorem (9.30.1) “Witness”:   (∃ x ❙ R • P ) ⇒ Q ≡ (∀ x • R ∧ P ⇒ Q )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `Q`)
+Theorem (9.30.2) “Witness”:   (∃ x • P ) ⇒ Q ≡ (∀ x • P ⇒ Q )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `Q`)
+Quantification.Universal
+Axiom (8.11) “Substitution into ∀”:   (∀ y ❙ R • P )[x ≔ F] ≡ (∀ y ❙ R[x ≔ F] • P[x ≔ F] )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `F`)
+Axiom (8.12.1) “Leibniz for ∀ range”:   (∀ x • R₁ ≡ R₂ ) ⇒ ((∀ x ❙ R₁ • P ) ≡ (∀ x ❙ R₂ • P ))
+Axiom (8.12.1₂) “Leibniz for ∀₂ range”:   (∀ x, y • R₁ ≡ R₂ ) ⇒ ((∀ x, y ❙ R₁ • P ) ≡ (∀ x, y ❙ R₂ • P ))
+Axiom (8.12.1₃) “Leibniz for ∀₃ range”:   (∀ x, y, z • R₁ ≡ R₂ ) ⇒ ((∀ x, y, z ❙ R₁ • P ) ≡ (∀ x, y, z ❙ R₂ • P ))
+Axiom (8.12.2) “Leibniz for ∀ body”:   (∀ x • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∀ x ❙ R • P₁ ) ≡ (∀ x ❙ R • P₂ ))
+Axiom (8.12.2₂) “Leibniz for ∀₂ body”:   (∀ x, y • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∀ x, y ❙ R • P₁ ) ≡ (∀ x, y ❙ R • P₂ ))
+Axiom (8.12.2₃) “Leibniz for ∀₃ body”:   (∀ x, y, z • R ⇒ (P₁ ≡ P₂) ) ⇒ ((∀ x, y, z ❙ R • P₁ ) ≡ (∀ x, y, z ❙ R • P₂ ))
+Axiom (8.13) “Empty range for ∀”:   (∀ x ❙ false • P ) ≡ true
+Axiom (8.14) “One-point rule for ∀”:   (∀ x ❙ x = E • P ) ≡ P[x ≔ E]   
+    — CalcCheck: Proviso: ¬occurs(`x`, `E`)
+Theorem “Generalised one-point rule for ∀”:   R[x ≔ e] ⇒ (∀ x ❙ R ∧ x = e • E ) = E[x ≔ e]
+Axiom (8.15) “Distributivity of ∀ over ∧”:   (∀ x ❙ R • P ) ∧ (∀ x ❙ R • Q ) ≡ (∀ x ❙ R • P ∧ Q )
+Axiom (8.17) “General range split for ∀”:   (∀ x ❙ R ∨ S • P ) ∧ (∀ x ❙ R ∧ S • P ) ≡ (∀ x ❙ R • P ) ∧ (∀ x ❙ S • P )
+Theorem (8.16) “Disjoint range split for ∀”:   (∀ x • R ∧ S ≡ false ) ⇒ ((∀ x ❙ R ∨ S • P ) ≡ (∀ x ❙ R • P ) ∧ (∀ x ❙ S • P ))
+Theorem “Boring disjoint range split for ∀”:   (R ∧ S ≡ false) ⇒ ((∀ x ❙ R ∨ S • P ) ≡ (∀ x ❙ R • P ) ∧ (∀ x ❙ S • P ))   
+    — CalcCheck: Proviso: ¬occurs(`x`, `R, S`)
+Theorem (8.16.1) “Alternative range split for ∀”:   (∀ x ❙ R • P ) ≡ (∀ x ❙ R ∧ S • P ) ∧ (∀ x ❙ R ∧ ¬ S • P )
+Theorem (8.18) “Range split for ∀”:   (∀ x ❙ R ∨ S • P ) ≡ (∀ x ❙ R • P ) ∧ (∀ x ❙ S • P )
+Axiom (8.20) “Nesting for ∀”:   (∀ x, y ❙ R ∧ S • P ) ≡ (∀ x ❙ R • (∀ y ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `R`)
+Axiom (8.20) “Nesting₂+₁ for ∀”:   (∀ x, y, z ❙ R ∧ S • P ) ≡ (∀ x, y ❙ R • (∀ z ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`z`, `R`)
+Axiom (8.20) “Nesting₁+₂ for ∀”:   (∀ x, y, z ❙ R ∧ S • P ) ≡ (∀ x ❙ R • (∀ y, z ❙ S • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y, z`, `R`)
+Theorem (8.20.1) “Nesting for ∀”:   (∀ x, y ❙ S • P ) ≡ (∀ x • (∀ y ❙ S • P ) )
+Theorem (8.20.1) “Nesting₂+₁ for ∀”:   (∀ x, y, z ❙ S • P ) ≡ (∀ x, y • (∀ z ❙ S • P ) )
+Theorem (8.20.1) “Nesting₁+₂ for ∀”:   (∀ x, y, z ❙ S • P ) ≡ (∀ x • (∀ y, z ❙ S • P ) )
+Theorem (8.20.2) “Nesting for ∀”:   (∀ x, y ❙ R • P ) ≡ (∀ x ❙ R • (∀ y • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `R`)
+Theorem (8.20.2) “Nesting₂+₁ for ∀”:   (∀ x, y, z ❙ R • P ) ≡ (∀ x, y ❙ R • (∀ z • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`z`, `R`)
+Theorem (8.20.2) “Nesting₁+₂ for ∀”:   (∀ x, y, z ❙ R • P ) ≡ (∀ x ❙ R • (∀ y, z • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`y, z`, `R`)
+Theorem (8.20.3) “Replacement in ∀”:   (∀ y ❙ R ∧ e = f • P[x ≔ e] ) ≡ (∀ y ❙ R ∧ e = f • P[x ≔ f] )
+Axiom (8.19.1) “Dummy list permutation for ∀”:   (∀ x, y ❙ R • P ) ≡ (∀ y, x ❙ R • P )
+Axiom (8.19.1) “Dummy list permutation₁+₂ for ∀”:   (∀ x, y, z ❙ R • P ) ≡ (∀ y, z, x ❙ R • P )
+Theorem (8.19) “Interchange of dummies for ∀”:   (∀ x ❙ R • (∀ y ❙ S • P ) ) ≡ (∀ y ❙ S • (∀ x ❙ R • P ) )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S`), ¬occurs(`y`, `R`)
+Theorem (8.21) “Dummy renaming for ∀” “α-conversion”:   (∀ x ❙ R • P ) ≡ (∀ y ❙ R[x ≔ y] • P[x ≔ y] )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem (8.22) “Change of dummy in ∀”:   (∀ f • (∀ g • (∀ x • (∀ y • x = f y ≡ y = g x ) ) ⇒ ((∀ x ❙ R • P ) ≡ (∀ y ❙ R[x ≔ f y] • P[x ≔ f y] )) ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem (8.22.1) “Change of dummy in ∀ — variant”:   (∀ x • (∀ y • x = f y ⇒ y = g x ) ) ⇒ ((∀ x ❙ R ∧ x = f (g x) • P ) ≡ (∀ y ❙ R[x ≔ f y] • P[x ≔ f y] ))   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Theorem “Pair dummy splitting for ∀”:   (∀ p : ❰ t₁, t₂ ❱ ❙ R • E ) = (∀ a : t₁ • (∀ b : t₂ ❙ R[p ≔ ⟨a, b⟩] • E[p ≔ ⟨a, b⟩] ) )   
+    — CalcCheck: Proviso: ¬occurs(`a, b`, `E, R`)
+Theorem “Pair dummy splitting for ∀”:   (∀ p : ❰ t₁, t₂ ❱ ❙ R • E ) = (∀ x : t₁; y : t₂ ❙ R[p ≔ ⟨x, y⟩] • E[p ≔ ⟨x, y⟩] )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `E, R`)
+Theorem “Pair dummy joining for ∀”:   (∀ x : t₁ • (∀ y : t₂ ❙ R • E ) ) = (∀ p : ❰ t₁, t₂ ❱ ❙ R[x, y ≔ fst p, snd p] • E[x, y ≔ fst p, snd p] )   
+    — CalcCheck: Proviso: ¬occurs(`p`, `E, R`)
+Theorem “Pair dummy joining for ∀”:   (∀ x : t₁; y : t₂ ❙ R • E ) = (∀ p : ❰ t₁, t₂ ❱ ❙ R[x, y ≔ fst p, snd p] • E[x, y ≔ fst p, snd p] )   
+    — CalcCheck: Proviso: ¬occurs(`p`, `E, R`)
+Theorem “One-point rule for ∀₂” “Two-point rule for ∀”:   (∀ x, y ❙ x = A ∧ y = B • P ) ≡ P[x, y ≔ A, B]   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `A, B`)
+Axiom (9.2) “Trading for ∀”:   (∀ x ❙ R • P ) ≡ (∀ x • R ⇒ P )
+Theorem (9.3) (9.3a) “Trading for ∀”:   (∀ x ❙ R • P ) ≡ (∀ x • ¬ R ∨ P )
+Theorem (9.3) (9.3b) “Trading for ∀”:   (∀ x ❙ R • P ) ≡ (∀ x • R ∧ P ≡ R )
+Theorem (9.3) (9.3c) “Trading for ∀”:   (∀ x ❙ R • P ) ≡ (∀ x • R ∨ P ≡ P )
+Theorem (9.4) (9.4a) “Trading for ∀”:   (∀ x ❙ Q ∧ R • P ) ≡ (∀ x ❙ Q • R ⇒ P )
+Theorem (9.4) (9.4b) “Trading for ∀”:   (∀ x ❙ Q ∧ R • P ) ≡ (∀ x ❙ Q • ¬ R ∨ P )
+Theorem (9.4) (9.4c) “Trading for ∀”:   (∀ x ❙ Q ∧ R • P ) ≡ (∀ x ❙ Q • R ∧ P ≡ R )
+Theorem (9.4) (9.4d) “Trading for ∀”:   (∀ x ❙ Q ∧ R • P ) ≡ (∀ x ❙ Q • R ∨ P ≡ P )
+Theorem “Leibniz for ∀ body”:   (∀ x ❙ R • P₁ ≡ P₂ ) ⇒ ((∀ x ❙ R • P₁ ) ≡ (∀ x ❙ R • P₂ ))
+Theorem “One-point rule for ∀₂¹”:   (∀ x, y ❙ x = A ∧ R • P ) ≡ (∀ y ❙ R • P )[x ≔ A]   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `A`)
+Theorem “One-point rule for ∀₂²”:   (∀ x, y ❙ y = B ∧ R • P ) ≡ (∀ x ❙ R[y ≔ B] • P[y ≔ B] )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `B`)
+Theorem (8.18) “Range split for ∀”:   (∀ x ❙ R ∨ S • P ) ≡ (∀ x ❙ R • P ) ∧ (∀ x ❙ S • P )
+Theorem (8.18) “Range split for ∀₂”:   (∀ x, y ❙ R ∨ S • P ) ≡ (∀ x, y ❙ R • P ) ∧ (∀ x, y ❙ S • P )
+Axiom (9.5) “Distributivity of ∨ over ∀”:   P ∨ (∀ x ❙ R • Q ) ≡ (∀ x ❙ R • P ∨ Q )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.6):   P ∨ (∀ x • ¬ R ) ≡ (∀ x ❙ R • P )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem “Distributivity of ⇒ over ∀”:   P ⇒ (∀ x ❙ R • Q ) ≡ (∀ x ❙ R • P ⇒ Q )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.7) “Distributivity of ∧ over ∀”:   ¬ (∀ x • ¬ R ) ⇒ (P ∧ (∀ x ❙ R • Q ) ≡ (∀ x ❙ R • P ∧ Q ))   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.8) “True ∀ body”:   (∀ x ❙ R • true )
+Theorem “Introducing fresh ∀”:   P ⇒ (∀ x ❙ R • P )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Theorem (9.9) “Sub-distributivity of ∀ over ≡”:   (∀ x ❙ R • P ≡ Q ) ⇒ ((∀ x ❙ R • P ) ≡ (∀ x ❙ R • Q ))
+Theorem (9.10) “Range weakening for ∀” “Range strengthening for ∀”:   (∀ x ❙ Q ∨ R • P ) ⇒ (∀ x ❙ Q • P )
+Theorem “Range weakening for ∀” “Range strengthening for ∀”:   (∀ x ❙ Q • P ) ⇒ (∀ x ❙ Q ∧ R • P )
+Theorem (9.11) “Body weakening for ∀” “Body strengthening for ∀”:   (∀ x ❙ R • P ∧ Q ) ⇒ (∀ x ❙ R • P )
+Theorem “Body weakening for ∀” “Body strengthening for ∀”:   (∀ x ❙ R • P ) ⇒ (∀ x ❙ R • P ∨ Q )
+Theorem “Body weakening for ∀” “Body strengthening for ∀”:   (∀ x ❙ R • P ) ⇒ (∀ x ❙ R • Q ⇒ P )
+Theorem (9.12) “Monotonicity of ∀” “Body monotonicity of ∀”:   (∀ x ❙ R • Q ⇒ P ) ⇒ ((∀ x ❙ R • Q ) ⇒ (∀ x ❙ R • P ))
+Theorem “Simple body-monotonicity of ∀”:   (∀ x • P ⇒ Q ) ⇒ ((∀ x ❙ R • P ) ⇒ (∀ x ❙ R • Q ))
+Theorem (9.12a) “Range antitonicity of ∀”:   (∀ x • Q ⇒ R ) ⇒ ((∀ x ❙ R • P ) ⇒ (∀ x ❙ Q • P ))
+Theorem (9.12a) “Range antitonicity of ∀”:   (∀ x ❙ ¬ P • Q ⇒ R ) ⇒ ((∀ x ❙ R • P ) ⇒ (∀ x ❙ Q • P ))
+Theorem “Leibniz for ∀ body”:   (∀ x • P₁ ≡ P₂ ) ⇒ ((∀ x ❙ R • P₁ ) ≡ (∀ x ❙ R • P₂ ))
+Theorem (9.13) “Instantiation”:   (∀ x • P ) ⇒ P[x ≔ E]
+Theorem (9.13.1) “Instantiation”:   (∀ x • P ) ⇒ P[x ≔ x]
+Theorem (9.13.2) “Instantiation”:   (∀ x ❙ R • P ) ⇒ (R ⇒ P)[x ≔ E]
+Theorem “Fresh ∀”:   P ≡ (∀ x • P )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `P`)
+Lemma (8.22.2) “Range replacement in nested ∀”:   (∀ x ❙ R • (∀ y • Q₁ ≡ Q₂ ) ) ⇒ ((∀ x ❙ R • (∀ y ❙ Q₁ • P ) ) ≡ (∀ x ❙ R • (∀ y ❙ Q₂ • P ) ))
+Theorem (8.22.3) “Change of restricted dummy in ∀”:   (∀ f • (∀ g • (∀ x ❙ R • (∀ y • x = f y ≡ y = g x ) ) ⇒ ((∀ x ❙ R • P ) ≡ (∀ y ❙ R[x ≔ f y] • P[x ≔ f y] )) ) )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `P, R`)
+Reference.ReferenceNotebook_SetTheory_SOL_activatedACTrans
+Axiom (11.3) “Set membership”:   F ∈ { x ❙ R • E } ≡ (∃ x ❙ R • F = E )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `F`)
+Theorem “Set abbreviation”:   { x ❙ P } = { x ❙ P • x }
+Axiom (11.4) “Set extensionality”:   S = T ≡ (∀ e • e ∈ S ≡ e ∈ T )   
+    — CalcCheck: Proviso: ¬occurs(`e`, `S, T`)
+Theorem (11.5) “Set comprehension expansion”:   S = { x ❙ x ∈ S • x }   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S`)
+Theorem (11.6) “Mathematical formulation of set comprehension”:   { x ❙ P • E } = { y ❙ (∃ x ❙ P • y = E ) }   
+    — CalcCheck: Proviso: ¬occurs(`y`, `E, P`)
+Theorem (11.7) (11.7b) “Simple membership”:   e ∈ { x ❙ P } ≡ P[x ≔ e]
+Theorem (11.7x):   x ∈ { x ❙ P } ≡ P
+Theorem (11.7) (11.7∀) “Simple membership”:   (∀ x • x ∈ { x ❙ P } ≡ P )
+Lemma “Membership in two-element set enumeration”:   x ∈ { x, y }
+Lemma “Membership in set enumeration”:   x ∈ { u ❙ u = x ∨ R }
+Theorem (11.9) “Simple set comprehension equality”:   { x ❙ Q } = { x ❙ R } ≡ (∀ x • Q ≡ R )
+Axiom (11.13) “Set inclusion” “Subset” “Definition of ⊆”:   S ⊆ T ≡ (∀ e ❙ e ∈ S • e ∈ T )   
+    — CalcCheck: Proviso: ¬occurs(`e`, `S, T`)
+Theorem (11.13b) “Set inclusion” “Subset” “Definition of ⊆”:   S ⊆ T ≡ (∀ e • e ∈ S ⇒ e ∈ T )   
+    — CalcCheck: Proviso: ¬occurs(`e`, `S, T`)
+Theorem (11.13c) “Subset membership” “Casting”:   X ⊆ Y ⇒ (x ∈ X ⇒ x ∈ Y)
+Theorem (11.13d) “Superset membership”:   x ∈ X ⇒ (X ⊆ Y ⇒ x ∈ Y)
+Axiom (11.14) “Proper subset” “Definition of ⊂”:   S ⊂ T ≡ S ⊆ T ∧ S ≠ T
+Axiom (11.15) “Superset” “Definition of ⊇”:   T ⊇ S ≡ S ⊆ T
+Axiom (11.16) “Proper superset” “Definition of ⊃”:   T ⊃ S ≡ S ⊂ T
+Theorem “Empty set”:   {} = { x ❙ false }
+Theorem “Empty set”:   x ∈ {} ≡ false
+Theorem “Inclusion in {}”:   S ⊆ {} ≡ S = {}
+Axiom “Universal set”:   𝐔 = { x ❙ true }
+Theorem “Universal set”:   x ∈ 𝐔
+Theorem “Universal set is greatest” “Top set”:   X ⊆ 𝐔
+Axiom “Definition of ⌞_⌟”:   ⌞ t ⌟ = { x : t • x }
+Theorem “Membership in ⌞_⌟”:   (∀ x : t • x ∈ ⌞ t ⌟ )
+Theorem “Subset of ⌞_⌟”:   (∀ S : set t • S ⊆ ⌞ t ⌟ )
+Axiom (11.18) “Set complement” “Complement”:   v ∈ ~ S ≡ ¬ (v ∈ S)
+Theorem (11.19) “Self-inverse of ~”:   ~ (~ S) = S
+Axiom (11.20) “Set union” “Union”:   v ∈ S ∪ T ≡ v ∈ S ∨ v ∈ T
+Axiom (11.21) “Set intersection” “Intersection”:   v ∈ S ∩ T ≡ v ∈ S ∧ v ∈ T
+Axiom (11.22) “Set difference”:   v ∈ S - T ≡ v ∈ S ∧ ¬ (v ∈ T)
+Axiom (11.23) “Membership in ℙ” “Power set”:   v ∈ ℙ S ≡ v ⊆ S
+Theorem (11.26) “Symmetry of ∪”:   S ∪ T = T ∪ S
+Theorem (11.27) “Associativity of ∪”:   S ∪ (T ∪ W) = (S ∪ T) ∪ W
+Theorem (11.28) “Idempotency of ∪”:   S ∪ S = S
+Theorem (11.29) “Zero of ∪”:   S ∪ 𝐔 = 𝐔
+Theorem (11.30) “Identity of ∪”:   S ∪ {} = S
+Theorem (11.31) “Weakening of ∪”:   S ⊆ S ∪ T
+Theorem (11.32) “Excluded middle for ∪” “Union with complement”:   S ∪ ~ S = 𝐔
+Theorem (11.33) “Symmetry of ∩”:   S ∩ T = T ∩ S
+Theorem (11.34) “Associativity of ∩”:   S ∩ (T ∩ W) = (S ∩ T) ∩ W
+Theorem (11.35) “Idempotency of ∩”:   S ∩ S = S
+Theorem (11.36) “Zero of ∩”:   S ∩ {} = {}
+Theorem (11.37) “Identity of ∩”:   S ∩ 𝐔 = S
+Theorem (11.38) “Weakening of ∩”:   S ∩ T ⊆ S
+Theorem (11.39) “Contradiction for ∩” “Intersection with complement”:   S ∩ ~ S = {}
+Theorem (11.40) “Distributivity of ∪ over ∩”:   S ∪ (T ∩ W) = (S ∪ T) ∩ (S ∪ W)
+Theorem (11.41) “Distributivity of ∩ over ∪”:   S ∩ (T ∪ W) = (S ∩ T) ∪ (S ∩ W)
+Theorem (11.42) (11.42a) “De Morgan for ∪” “Complement of ∪”:   ~ (S ∪ T) = ~ S ∩ ~ T
+Theorem (11.42) (11.42b) “De Morgan for ∩” “Complement of ∩”:   ~ (S ∩ T) = ~ S ∪ ~ T
+Theorem (11.43) “Monotonicity of ∪”:   S ⊆ T ∧ V ⊆ W ⇒ S ∪ V ⊆ T ∪ W
+Theorem (11.43) (11.43b) “Monotonicity of ∪”:   S ⊆ T ⇒ S ∪ W ⊆ T ∪ W
+Theorem (11.44) “Monotonicity of ∩”:   S ⊆ T ∧ V ⊆ W ⇒ S ∩ V ⊆ T ∩ W
+Theorem (11.44) (11.44b) “Monotonicity of ∩”:   S ⊆ T ⇒ S ∩ W ⊆ T ∩ W
+Theorem (11.45) “Set inclusion via ∪”:   S ⊆ T ≡ S ∪ T = T
+Theorem (11.46) “Set inclusion via ∩”:   S ⊆ T ≡ S ∩ T = S
+Theorem (11.47):   S ∪ T = 𝐔 ≡ (∀ x • ¬ (x ∈ S) ⇒ x ∈ T )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S, T`)
+Theorem (11.48):   S ∩ T = {} ≡ (∀ x • x ∈ S ⇒ ¬ (x ∈ T) )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S, T`)
+Theorem (11.49) “Set difference via ∩”:   S - T = S ∩ ~ T
+Theorem (11.50) “Weakening for set difference”:   S - T ⊆ S
+Theorem (11.51) “Right-identity of set difference”:   S - {} = S
+Theorem (11.52):   S ∩ (T - S) = {}
+Theorem (11.53) “Union cancels difference”:   S ∪ (T - S) = S ∪ T
+Theorem (11.54) “Subtracting union”:   S - (T ∪ W) = (S - T) ∩ (S - W)
+Theorem (11.55) “Subtracting intersection”:   S - (T ∩ W) = (S - T) ∪ (S - W)
+Theorem (11.55.1) “Set complement via difference”:   ~ S = 𝐔 - S
+Theorem (11.56) “Simple set comprehension inclusion”:   { x ❙ P } ⊆ { x ❙ Q } ≡ (∀ x • P ⇒ Q )
+Theorem (11.56.99) “Antisymmetry of ⊆”:   X ⊆ Y ∧ Y ⊆ X ⇒ X = Y
+Theorem (11.57) “Mutual inclusion”:   X ⊆ Y ∧ Y ⊆ X ≡ X = Y
+Theorem (11.58) “Reflexivity of ⊆”:   X ⊆ X
+Theorem (11.58b) “Reflexivity of ⊆”:   S = T ⇒ S ⊆ T
+Theorem (11.59) “Transitivity of ⊆”:   X ⊆ Y ∧ Y ⊆ Z ⇒ X ⊆ Z
+Theorem (11.59b) “Transitivity of ⊆” “Antitonicity of ⊆”:   X ⊆ Y ⇒ (Y ⊆ Z ⇒ X ⊆ Z)
+Theorem (11.59c) “Flipped transitivity of ⊆” “Monotonicity of ⊆”:   Y ⊆ Z ⇒ (X ⊆ Y ⇒ X ⊆ Z)
+Theorem (11.60) “Empty set is least” “Bottom set”:   {} ⊆ X
+Theorem (11.61):   S ⊂ T ≡ S ⊆ T ∧ ¬ (T ⊆ S)
+Theorem (11.62):   S ⊂ T ≡ S ⊆ T ∧ (∃ x ❙ x ∈ T • ¬ (x ∈ S) )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S, T`)
+Theorem (11.63) “Inclusion in terms of ⊂”:   S ⊆ T ≡ S ⊂ T ∨ S = T
+Theorem (11.64) “Irreflexivity of ⊂”:   ¬ (S ⊂ S)
+Theorem (11.65) “Inclusion of ⊂ in ⊆”:   S ⊂ T ⇒ S ⊆ T
+Theorem (11.66):   S ⊂ T ⇒ ¬ (T ⊆ S)
+Theorem (11.67):   S ⊆ T ⇒ ¬ (T ⊂ S)
+Theorem (11.68):   S ⊆ T ∧ ¬ (W ⊆ T) ⇒ ¬ (W ⊆ S)
+Theorem (11.69):   (∃ x ❙ x ∈ S • ¬ (x ∈ T) ) ⇒ S ≠ T   
+    — CalcCheck: Proviso: ¬occurs(`x`, `S, T`)
+Theorem (11.70) (11.70a) “Transitivity of ⊆ with ⊂”:   X ⊆ Y ∧ Y ⊂ Z ⇒ X ⊂ Z
+Theorem (11.70) (11.70b) “Transitivity of ⊂ with ⊆”:   X ⊂ Y ∧ Y ⊆ Z ⇒ X ⊂ Z
+Theorem (11.70) (11.70c) “Transitivity of ⊂ with ⊂”:   X ⊂ Y ∧ Y ⊂ Z ⇒ X ⊂ Z
+Theorem (11.71) “Power set of {}”:   ℙ {} = { {} }
+Theorem (11.72):   S ∈ ℙ S
+Theorem (11.72.1) “Definition of ℙ”:   ℙ S = { s ❙ s ⊆ S }   
+    — CalcCheck: Proviso: ¬occurs(`s`, `S`)
+Lemma (11.101) “Singleton set membership”:   x ∈ { y } ≡ x = y
+Lemma (11.102) “Singleton set inclusion”:   { x } ⊆ S ≡ x ∈ S
+Theorem (11.103) “Lower ~ connection for ⊆”:   ~ X ⊆ Y ≡ ~ Y ⊆ X
+Theorem (11.104) “Upper ~ connection for ⊆”:   X ⊆ ~ Y ≡ Y ⊆ ~ X
+Theorem (11.105) “Golden rule for ∩ and ∪”:   S ∩ T = S ≡ T = S ∪ T
+Theorem (11.106) “Anti-isotonicity of ~”:   R ⊆ S ≡ ~ S ⊆ ~ R
+Theorem (11.107) “Antitonicity of ~”:   R ⊆ S ⇒ ~ S ⊆ ~ R
+Theorem (11.108) “Monotonicity of set difference”:   R ⊆ S ⇒ R - T ⊆ S - T
+Theorem (11.109) “Antitonicity of set difference”:   S ⊆ T ⇒ R - T ⊆ R - S
+Axiom (11.111) “Characterisation of ➩”:   S ⊆ A ➩ B ≡ S ∩ A ⊆ B
+Theorem (11.112) “Membership in ➩”:   x ∈ A ➩ B ≡ x ∈ A ⇒ x ∈ B
+Theorem (11.113) “Definition of ➩”:   A ➩ B = ~ A ∪ B
+Theorem (11.114) “Pseudocomplement of union”:   (A ∪ B) ➩ C = (A ➩ C) ∩ (B ➩ C)
+Theorem (11.115) “Monotonicity of ➩”:   B ⊆ C ⇒ A ➩ B ⊆ A ➩ C
+Reference/ReferenceNotebook_BasicRelProps_SOL
+Lemma “Monotonicity of relationship”:   R ⊆ S ⇒ (x ⦗ R ⦘ y ⇒ x ⦗ S ⦘ y)
+Theorem “Associativity of ⨾”:   (Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)
+Theorem “Distributivity of ⨾ over ∪”:   Q ⨾ (R ∪ S) = Q ⨾ R ∪ Q ⨾ S
+Theorem “Distributivity of ⨾ over ∪”:   (Q ∪ R) ⨾ S = Q ⨾ S ∪ R ⨾ S
+Theorem “Sub-distributivity of ⨾ over ∩”:   Q ⨾ (R ∩ S) ⊆ Q ⨾ R ∩ Q ⨾ S
+Theorem “Sub-distributivity of ⨾ over ∩”:   (Q ∩ R) ⨾ S ⊆ Q ⨾ S ∩ R ⨾ S
+Theorem “Monotonicity of ⨾”:   Q ⊆ R ⇒ Q ⨾ S ⊆ R ⨾ S
+Theorem “Monotonicity of ⨾”:   R ⊆ S ⇒ Q ⨾ R ⊆ Q ⨾ S
+Theorem “Monotonicity of ⨾”:   P ⊆ Q ⇒ (R ⊆ S ⇒ P ⨾ R ⊆ Q ⨾ S)
+Theorem “Identity of ⨾”:   𝕀 ⨾ R = R
+Theorem “Identity of ⨾”:   R ⨾ 𝕀 = R
+Theorem “Self-inverse of ˘”:   (R ˘) ˘ = R
+Theorem “Monotonicity of ˘”:   R ⊆ S ⇒ R ˘ ⊆ S ˘
+Theorem “Isotonicity of ˘”:   R ⊆ S ≡ R ˘ ⊆ S ˘
+Theorem “Converse of ∩”:   (R ∩ S) ˘ = R ˘ ∩ S ˘
+Theorem “Converse of ∪”:   (R ∪ S) ˘ = R ˘ ∪ S ˘
+Theorem “Converse of 𝕀”:   𝕀 ˘ = 𝕀
+Theorem “Converse of ⨾”:   (R ⨾ S) ˘ = S ˘ ⨾ R ˘
+Theorem “Converse of ~” “Complement of ˘”:   (~ R) ˘ = ~ R ˘
+Theorem “Converse of {}”:   {} ˘ = {}
+Theorem “Zero of ⨾”:   {} ⨾ R = {}
+Theorem “Zero of ⨾”:   R ⨾ {} = {}
+Theorem “Converse of ×”:   (A × B) ˘ = B × A
+Theorem (14.8) “Distributivity of × over ∪”:   S × (T ∪ U) = (S × T) ∪ (S × U)
+Theorem (14.8) “Distributivity of × over ∪”:   (S ∪ T) × U = (S × U) ∪ (T × U)
+Theorem (14.9) “Distributivity of × over ∩”:   S × (T ∩ U) = (S × T) ∩ (S × U)
+Theorem (14.9) “Distributivity of × over ∩”:   (S ∩ T) × U = (S × U) ∩ (T × U)
+Theorem “Monotonicity of ×”:   A ⊆ B ⇒ A × C ⊆ B × C
+Theorem “Monotonicity of ×”:   B ⊆ C ⇒ A × B ⊆ A × C
+Theorem “Monotonicity of ×”:   A ⊆ B ∧ C ⊆ D ⇒ A × C ⊆ B × D
+Theorem “Relationship chaining”:   a ⦗ R ⦘ b ⦗ S ⦘ c ⇒ a ⦗ R ⨾ S ⦘ c
+Theorem “Co-difunctionality” “Hesitation”:   R ⊆ R ⨾ (R ˘ ⨾ R)
+Theorem “Dedekind rule”:   Q ⨾ R ∩ S ⊆ (Q ∩ S ⨾ R ˘) ⨾ (R ∩ Q ˘ ⨾ S)
+Theorem “Modal rule”:   Q ⨾ R ∩ S ⊆ (Q ∩ S ⨾ R ˘) ⨾ R
+Theorem “Modal rule”:   Q ⨾ R ∩ S ⊆ Q ⨾ (R ∩ Q ˘ ⨾ S)
+Theorem “Schröder”:   Q ⨾ R ⊆ S ≡ Q ˘ ⨾ ~ S ⊆ ~ R
+Theorem “Schröder”:   Q ⨾ R ⊆ S ≡ ~ S ⨾ R ˘ ⊆ ~ Q
+Axiom “Characterisation of right residual” “Characterisation of ＼”:   X ⊆ R ＼ S ≡ R ⨾ X ⊆ S
+Theorem “Cancellation of ＼”:   R ⨾ (R ＼ S) ⊆ S
+Theorem “𝕀 ＼”:   𝕀 ＼ R = R
+Theorem “Relationship via ＼” “Relationship via right residual”:   b ⦗ R ＼ S ⦘ c ≡ (∀ a • a ⦗ R ⦘ b ⇒ a ⦗ S ⦘ c )   
+    — CalcCheck: Proviso: ¬occurs(`a`, `R, S`)
+Axiom “Characterisation of left residual” “Characterisation of ／”:   X ⊆ S ／ R ≡ X ⨾ R ⊆ S
+Theorem “Cancellation of ／”:   (S ／ R) ⨾ R ⊆ S
+Theorem “／ 𝕀”:   R ／ 𝕀 = R
+Theorem “Relationship via ／” “Relationship via left residual”:   a ⦗ S ／ R ⦘ b ≡ (∀ c • b ⦗ R ⦘ c ⇒ a ⦗ S ⦘ c )   
+    — CalcCheck: Proviso: ¬occurs(`c`, `R, S`)
+Week7.Exercise-7-2_CartesianProducts_SOL
+Axiom (14.2) “Pair equality”:   ⟨b, c⟩ = ⟨b', c'⟩ ≡ b = b' ∧ c = c'
+Axiom “Definition of `fst`”:   fst ⟨x, y⟩ = x
+Axiom “Definition of `snd`”:   snd ⟨x, y⟩ = y
+Axiom “Pair equality”:   p = q ≡ fst p = fst q ∧ snd p = snd q
+Axiom “Membership in ×”:   p ∈ S × T ≡ fst p ∈ S ∧ snd p ∈ T
+Theorem (14.4) “Membership in ×”:   ⟨x, y⟩ ∈ S × T ≡ x ∈ S ∧ y ∈ T
+Theorem “Pair extensionality”:   p = ⟨fst p, snd p⟩
+Theorem (14.5) “Membership in swapped ×”:   ⟨x, y⟩ ∈ S × T ≡ ⟨y, x⟩ ∈ T × S
+Theorem (14.6) “Empty factor in ×”:   S = {} ⇒ S × T = {}
+Axiom “Definition of `swap-×`”:   swap-× ⟨x, y⟩ = ⟨y, x⟩
+Theorem “fst after swap-×”:   fst (swap-× p) = snd p
+Theorem “snd after swap-×”:   snd (swap-× p) = fst p
+Week7.Homework-15-2_Relations_SOL
+Axiom “Definition of ↔”:   t₁ ↔ t₂ = set ❰ t₁, t₂ ❱
+Axiom “Infix relationship” “Definition of `_⦗_⦘_`”:   a ⦗ R ⦘ b ≡ ⟨a, b⟩ ∈ R
+Theorem “Relation inclusion”:   R ⊆ S ≡ (∀ x • (∀ y • x ⦗ R ⦘ y ⇒ x ⦗ S ⦘ y ) )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Theorem “Relation extensionality”:   R = S ≡ (∀ x • (∀ y • x ⦗ R ⦘ y ≡ x ⦗ S ⦘ y ) )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Corollary “Relation extensionality”:   R = S ≡ (∀ x, y • x ⦗ R ⦘ y ≡ x ⦗ S ⦘ y )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Corollary “Relation inclusion”:   R ⊆ S ≡ (∀ x • (∀ y ❙ x ⦗ R ⦘ y • x ⦗ S ⦘ y ) )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Corollary “Relation inclusion”:   R ⊆ S ≡ (∀ x, y • x ⦗ R ⦘ y ⇒ x ⦗ S ⦘ y )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Corollary “Relation inclusion”:   R ⊆ S ≡ (∀ x, y ❙ x ⦗ R ⦘ y • x ⦗ S ⦘ y )   
+    — CalcCheck: Proviso: ¬occurs(`x, y`, `R, S`)
+Axiom “Relationship via ⌜_⌝”:   a ⦗ ⌜ f ⌝ ⦘ b ≡ (f a) b
+Theorem “Relation union”:   a ⦗ R ∪ S ⦘ b ≡ a ⦗ R ⦘ b ∨ a ⦗ S ⦘ b
+Theorem “Relation intersection”:   a ⦗ R ∩ S ⦘ b ≡ a ⦗ R ⦘ b ∧ a ⦗ S ⦘ b
+Theorem “Relation difference”:   a ⦗ R - S ⦘ b ≡ a ⦗ R ⦘ b ∧ ¬ (a ⦗ S ⦘ b)
+Theorem “Relation pseudocomplement”:   a ⦗ R ➩ S ⦘ b ≡ a ⦗ R ⦘ b ⇒ a ⦗ S ⦘ b
+Theorem “Relation complement”:   a ⦗ ~ R ⦘ b ≡ ¬ (a ⦗ R ⦘ b)
+Theorem “Empty relation”:   a ⦗ {} ⦘ b ≡ false
+Theorem “Universal relation” “Relationship via `𝐔`”:   a ⦗ 𝐔 ⦘ b
+Theorem “Relationship via ×”:   a ⦗ Y × Z ⦘ b ≡ a ∈ Y ∧ b ∈ Z
+Theorem “Relationship via `𝐔 × 𝐔`”:   a ⦗ 𝐔 × 𝐔 ⦘ b
+Theorem “Cartesian product of universal sets”:   𝐔 × 𝐔 = 𝐔
+Lemma “Singleton relation”:   a₁ ⦗ { ⟨a₂, b₂⟩ } ⦘ b₁ ≡ a₁ = a₂ ∧ b₁ = b₂
+Lemma “Singleton relation inclusion”:   { ⟨a, b⟩ } ⊆ R ≡ a ⦗ R ⦘ b
+Axiom “Relation converse” “Relationship via ˘”:   y ⦗ R ˘ ⦘ x ≡ x ⦗ R ⦘ y
+Axiom “Relation composition”:   a ⦗ R ⨾ S ⦘ c ≡ (∃ b • a ⦗ R ⦘ b ∧ b ⦗ S ⦘ c )   
+    — CalcCheck: Proviso: ¬occurs(`b`, `R, S`)
+Axiom “Relationship via `id`”:   x ⦗ id S ⦘ y ≡ x = y ∈ S
+Corollary “Relationship via `id`”:   x ⦗ id S ⦘ y ≡ y = x ∈ S
+Axiom “Definition of 𝕀 via `id`”:   𝕀 = id 𝐔
+Theorem “Relationship via 𝕀” “Identity relation”:   x ⦗ 𝕀 ⦘ y ≡ x = y
+Axiom “Membership in `Dom`”:   x ∈ Dom R ≡ (∃ y • x ⦗ R ⦘ y )   
+    — CalcCheck: Proviso: ¬occurs(`y`, `R`)
+Axiom “Membership in `Ran`”:   y ∈ Ran R ≡ (∃ x • x ⦗ R ⦘ y )   
+    — CalcCheck: Proviso: ¬occurs(`x`, `R`)
+OK

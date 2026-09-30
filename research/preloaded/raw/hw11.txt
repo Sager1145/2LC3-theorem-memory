@@ -1,0 +1,46 @@
+H11 Theorem List
+❌
+Symbol Entry Codes
+Operator Precedences
+Equality
+Axiom (1.2) “Reflexivity of =”:   x = x
+Axiom (1.3) “Symmetry of =”:   (x = y) = (y = x)
+Derived inference rule “Transitivity of =” (1.4):
+                `X = Y`
+                , `Y = Z`
+                ⊦ `X = Z`
+Derived inference rule “Leibniz” (1.5):
+                `X = Y`
+                ⊦ `E[z ≔ X] = E[z ≔ Y]`
+Week3.Exercise-3-2_NatInd_SOL
+Theorem “Successor”:   suc n = n + 1
+Theorem “Associativity of +”:   (a + b) + c = a + (b + c)
+Axiom “Definition of · for 0”:   0 · n = 0
+Axiom “Definition of · for `suc`”:   suc m · n = n + m · n
+Theorem “Left-identity of ·”:   1 · n = n
+Theorem “Right-zero of ·”:   m · 0 = 0
+Theorem “Multiplying the successor”:   m · suc n = m + m · n
+Theorem “Symmetry of ·”:   m · n = n · m
+Theorem “Distributivity of · over +”:   (k + m) · n = k · n + m · n
+Theorem “Associativity of ·”:   (k · m) · n = k · (m · n)
+Week3.Exercise-3-3_MonusSubtraction_SOL
+Axiom “Subtraction from zero”:   0 - n = 0
+Axiom “Subtraction of zero from successor”:   suc m - 0 = suc m
+Axiom “Subtraction of successor from successor”:   suc m - suc n = m - n
+Theorem “Right-identity of subtraction”:   m - 0 = m
+Theorem “Self-cancellation of subtraction”:   m - m = 0
+Theorem “Subtraction after addition”:   (m + n) - n = m
+Theorem “Subtraction from multiplication with successor”:   m · suc n - m = m · n
+Theorem “Subtraction of sum”:   k - (m + n) = (k - m) - n
+Theorem “Distributivity of · over subtraction”:   k · (m - n) = k · m - k · n
+Theorem “Monus exchange”:   m + (n - m) = n + (m - n)
+Week3.Homework-7_Nat-sucInd_SOL
+Axiom “Definition of + for 0” “Left-identity of +”:   0 + n = n
+Axiom “Definition of + for `suc`”:   suc m + n = suc (m + n)
+Theorem “Right-identity of +”:   m + 0 = m
+Theorem “Shifting `suc` over +”:   suc m + n = m + suc n
+Theorem “Symmetry of +”:   m + n = n + m
+Axiom “Definition of `double`”:   double 0 = 0
+Axiom “Definition of `double`”:   double (suc n) = 2 + double n
+Theorem “Doubling”:   double n = n + n
+OK

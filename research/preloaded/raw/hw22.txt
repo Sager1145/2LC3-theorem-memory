@@ -1,0 +1,356 @@
+H22 Theorem List
+❌
+Symbol Entry Codes
+Operator Precedences
+Equality
+Axiom (1.2) “Reflexivity of =”:   x = x
+Axiom (1.3) “Symmetry of =”:   (x = y) = (y = x)
+Derived inference rule “Transitivity of =” (1.4):
+                `X = Y`
+                , `Y = Z`
+                ⊦ `X = Z`
+Derived inference rule “Leibniz” (1.5):
+                `X = Y`
+                ⊦ `E[z ≔ X] = E[z ≔ Y]`
+Inequality
+Axiom “Definition of ≠”:   x ≠ y ≡ ¬ (x = y)
+Theorem “Definition of ≠”:   x ≠ y ≡ (x = y ≡ false)
+Theorem “Negation of ≠”:   ¬ (x ≠ y) ≡ x = y
+Theorem “Irreflexivity of ≠”:   ¬ (x ≠ x)
+Theorem “Irreflexivity of ≠”:   x ≠ x ≡ false
+Theorem “Symmetry of ≠”:   x ≠ y ≡ y ≠ x
+PropLogic.All
+Axiom “Definition of ≡”:   (p ≡ q) = (p = q)
+Axiom (3.1) “Associativity of ≡”:   ((p ≡ q) ≡ r) ≡ (p ≡ (q ≡ r))
+Axiom (3.2) “Symmetry of ≡”:   (p ≡ q) ≡ (q ≡ p)
+Axiom (3.3) “Identity of ≡”:   true ≡ (q ≡ q)
+Theorem (3.4):   true
+Theorem (3.5) “Reflexivity of ≡”:   p ≡ p
+Axiom (3.8) “Definition of `false`”:   false ≡ ¬ true
+Axiom (3.9) “Commutativity of ¬ with ≡”:   ¬ (p ≡ q) ≡ (¬ p ≡ q)
+Axiom (3.10) “Definition of ≢”:   (p ≢ q) ≡ ¬ (p ≡ q)
+Theorem (3.11) “¬ connection”:   ¬ p ≡ (q ≡ (p ≡ ¬ q))
+Theorem “Cancellation of ¬”:   (¬ p ≡ ¬ q) = (p ≡ q)
+Theorem (3.12) “Double negation”:   ¬ (¬ p) ≡ p
+Theorem (3.13) “Negation of `false`”:   ¬ false ≡ true
+Theorem (3.14):   (p ≢ q) ≡ (¬ p ≡ q)
+Theorem (3.15) “Definition of ¬ from ≡”:   ¬ p ≡ (p ≡ false)
+Theorem “Identity of ≢”:   (p ≢ false) ≡ p
+Theorem (3.16) “Symmetry of ≢”:   (p ≢ q) ≡ (q ≢ p)
+Theorem (3.17) “Associativity of ≢”:   ((p ≢ q) ≢ r) ≡ (p ≢ (q ≢ r))
+Theorem (3.18) “Mutual associativity of ≡ with ≢”:   ((p ≢ q) ≡ r) ≡ (p ≢ (q ≡ r))
+Theorem (3.19) “Mutual interchangeability of ≡ with ≢”:   (p ≢ (q ≡ r)) ≡ (p ≡ (q ≢ r))
+Axiom (3.24) “Symmetry of ∨”:   p ∨ q ≡ q ∨ p
+Axiom (3.25) “Associativity of ∨”:   (p ∨ q) ∨ r ≡ p ∨ (q ∨ r)
+Axiom (3.26) “Idempotency of ∨”:   p ∨ p ≡ p
+Axiom (3.27) “Distributivity of ∨ over ≡”:   p ∨ (q ≡ r) ≡ (p ∨ q ≡ p ∨ r)
+Axiom (3.28) “Excluded middle” “LEM”:   p ∨ ¬ p
+Theorem (3.29) “Zero of ∨”:   p ∨ true ≡ true
+Theorem (3.30) “Identity of ∨”:   p ∨ false ≡ p
+Theorem (3.31) “Distributivity of ∨ over ∨”:   p ∨ (q ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)
+Theorem (3.32):   p ∨ q ≡ (p ∨ ¬ q ≡ p)
+Axiom (3.35) “Golden rule”:   p ∧ q ≡ (p ≡ (q ≡ p ∨ q))
+Lemma “Definition of ∧”:   (p ∧ q) = (p ≡ (q ≡ p ∨ q))
+Theorem (3.36) “Symmetry of ∧”:   p ∧ q ≡ q ∧ p
+Theorem (3.37) “Associativity of ∧”:   (p ∧ q) ∧ r ≡ p ∧ (q ∧ r)
+Theorem (3.38) “Idempotency of ∧”:   p ∧ p ≡ p
+Theorem (3.39) “Identity of ∧”:   p ∧ true ≡ p
+Theorem (3.40) “Zero of ∧”:   p ∧ false ≡ false
+Theorem (3.41) “Distributivity of ∧ over ∧”:   p ∧ (q ∧ r) ≡ (p ∧ q) ∧ (p ∧ r)
+Theorem (3.42) “Contradiction”:   p ∧ ¬ p ≡ false
+Theorem (3.43) (3.43a) “Absorption”:   p ∧ (p ∨ q) ≡ p
+Theorem (3.43) (3.43b) “Absorption”:   p ∨ (p ∧ q) ≡ p
+Theorem (3.44) (3.44a) “Absorption”:   p ∧ (¬ p ∨ q) ≡ p ∧ q
+Theorem (3.44) (3.44b) “Absorption”:   p ∨ (¬ p ∧ q) ≡ p ∨ q
+Theorem (3.44) (3.44c) “Absorption”:   ¬ p ∧ (p ∨ q) ≡ ¬ p ∧ q
+Theorem (3.44) (3.44d) “Absorption”:   ¬ p ∨ (p ∧ q) ≡ ¬ p ∨ q
+Theorem (3.45) “Distributivity of ∨ over ∧”:   p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)
+Theorem (3.46) “Distributivity of ∧ over ∨”:   p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)
+Theorem (3.47) (3.47a) “De Morgan”:   ¬ (p ∧ q) ≡ ¬ p ∨ ¬ q
+Theorem (3.47) (3.47b) “De Morgan”:   ¬ (p ∨ q) ≡ ¬ p ∧ ¬ q
+Theorem (3.47) (3.47c) “De Morgan”:   ¬ (¬ p ∧ q) ≡ p ∨ ¬ q
+Theorem (3.47) (3.47d) “De Morgan”:   ¬ (¬ p ∨ q) ≡ p ∧ ¬ q
+Theorem (3.47) (3.47e) “De Morgan dual of ∧”:   ¬ (¬ p ∧ ¬ q) ≡ p ∨ q
+Theorem (3.47) (3.47f) “De Morgan dual of ∨”:   ¬ (¬ p ∨ ¬ q) ≡ p ∧ q
+Theorem (3.48):   p ∧ q ≡ (p ∧ ¬ q ≡ ¬ p)
+Theorem (3.49) “Semi-distributivity of ∧ over ≡”:   p ∧ (q ≡ r) ≡ (p ∧ q ≡ (p ∧ r ≡ p))
+Theorem (3.50) “Strong modus ponens for ≡”:   p ∧ (q ≡ p) ≡ p ∧ q
+Theorem (3.51) “Replacement”:   (p ≡ q) ∧ (r ≡ p) ≡ (p ≡ q) ∧ (r ≡ q)
+Theorem (3.52) “Alternative definition of ≡”:   p ≡ (q ≡ (p ∧ q) ∨ (¬ p ∧ ¬ q))
+Theorem (3.53) “Exclusive or” “Alternative definition of ≢”:   (p ≢ q) ≡ (¬ p ∧ q) ∨ (p ∧ ¬ q)
+Theorem (3.55):   (p ∧ q) ∧ r ≡ (p ≡ (q ≡ (r ≡ (p ∨ q ≡ (q ∨ r ≡ (r ∨ p ≡ p ∨ (q ∨ r)))))))
+Axiom (3.57) “Definition of ⇒ via ∨” “Definition of ⇒ from ∨” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ (p ∨ q ≡ q)
+Axiom (3.58) “Definition of ⇐” “Consequence”:   p ⇐ q ≡ q ⇒ p
+Theorem (3.59) “Material implication” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ ¬ p ∨ q
+Theorem (3.60) “Definition of ⇒ via ∧” “Definition of ⇒ from ∧” “Definition of ⇒” “Definition of implication”:   p ⇒ q ≡ (p ∧ q ≡ p)
+Lemma (3.57=) “Implication via ∨”:   (p ⇒ q) = (p ∨ q ≡ q)
+Lemma (3.60=) “Implication via ∧”:   (p ⇒ q) = (p ∧ q ≡ p)
+Theorem (3.61) “Contrapositive”:   p ⇒ q ≡ ¬ q ⇒ ¬ p
+Theorem (3.61.1) “¬-connection for ⇒”:   p ⇒ ¬ q ≡ q ⇒ ¬ p
+Theorem (3.61.2) “¬-connection for ⇒”:   ¬ p ⇒ q ≡ ¬ q ⇒ p
+Theorem (3.62):   p ⇒ (q ≡ r) ≡ (p ∧ q ≡ p ∧ r)
+Theorem (3.63) “Distributivity of ⇒ over ≡”:   p ⇒ (q ≡ r) ≡ (p ⇒ q ≡ p ⇒ r)
+Theorem (3.64) “Self-distributivity of ⇒”:   p ⇒ (q ⇒ r) ≡ (p ⇒ q) ⇒ (p ⇒ r)
+Theorem (3.65) “Shunting”:   p ∧ q ⇒ r ≡ p ⇒ (q ⇒ r)
+Theorem (3.66) “Strong modus ponens”:   p ∧ (p ⇒ q) ≡ p ∧ q
+Theorem (3.67):   p ∧ (q ⇒ p) ≡ p
+Theorem (3.68):   p ∨ (p ⇒ q) ≡ true
+Theorem (3.69):   p ∨ (q ⇒ p) ≡ q ⇒ p
+Theorem (3.70):   p ∨ q ⇒ p ∧ q ≡ (p ≡ q)
+Theorem (3.71) “Reflexivity of ⇒”:   p ⇒ p
+Theorem (3.72) “Right-zero of ⇒”:   p ⇒ true
+Theorem (3.73) “Left-identity of ⇒”:   true ⇒ p ≡ p
+Theorem “Definition of ¬ from ⇒” (3.74):   p ⇒ false ≡ ¬ p
+Theorem (3.75) “ex falso quodlibet”:   false ⇒ p
+Theorem (3.76) (3.76a) “Weakening” “Strengthening”:   p ⇒ p ∨ q
+Theorem (3.76) (3.76b) “Weakening” “Strengthening”:   p ∧ q ⇒ p
+Theorem (3.76) (3.76c) “Weakening” “Strengthening”:   p ∧ q ⇒ p ∨ q
+Theorem (3.76) (3.76d) “Weakening” “Strengthening”:   p ∨ (q ∧ r) ⇒ p ∨ q
+Theorem (3.76) (3.76e) “Weakening” “Strengthening”:   p ∧ q ⇒ p ∧ (q ∨ r)
+Theorem (3.77) “Modus ponens”:   p ∧ (p ⇒ q) ⇒ q
+Theorem (3.78) “Case analysis”:   (p ⇒ r) ∧ (q ⇒ r) ≡ p ∨ q ⇒ r
+Theorem (3.79) “Case analysis”:   (p ⇒ r) ∧ (¬ p ⇒ r) ≡ r
+Theorem (3.80) “Mutual implication”:   (p ⇒ q) ∧ (q ⇒ p) ≡ (p ≡ q)
+Theorem (3.80.1) “Reflexivity of ⇒ wrt. ≡” “Reflexivity of ⇒”:   (p ≡ q) ⇒ (p ⇒ q)
+Theorem (3.81) “Antisymmetry of ⇒”:   (p ⇒ q) ∧ (q ⇒ p) ⇒ (p ≡ q)
+Theorem (3.82) (3.82a) “Transitivity of ⇒”:   (p ⇒ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)
+Theorem (3.82) (3.82b) “Transitivity of ⇒”:   (p ≡ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)
+Theorem (3.82) (3.82c) “Transitivity of ⇒”:   (p ⇒ q) ∧ (q ≡ r) ⇒ (p ⇒ r)
+Theorem (3.82.4) “Implication strengthening”:   p ⇒ q ≡ p ⇒ p ∧ q
+Theorem (3.82.5) “Right-distributivity of ⇒ over ∧”:   p ⇒ q ∧ r ≡ (p ⇒ q) ∧ (p ⇒ r)
+Axiom (3.83) “Leibniz”:   e = f ⇒ E[z ≔ e] = E[z ≔ f]
+Corollary “Leibniz” (3.83.1):   d = e ⇒ f d = f e
+Corollary “Leibniz” (3.83.2):   d = e ⇒ (p d ≡ p e)
+Corollary “Leibniz” (3.83.3):   (d ≡ e) ⇒ (p d ≡ p e)
+Corollary “Leibniz” (3.83.4):   (d ≡ e) ⇒ f d = f e
+Theorem (3.84) (3.84a) “Replacement”:   e = f ∧ E[z ≔ e] ≡ e = f ∧ E[z ≔ f]
+Theorem (3.84a≡) “Replacement”:   (e ≡ f) ∧ E[z ≔ e] ≡ (e ≡ f) ∧ E[z ≔ f]
+Theorem (3.84) (3.84b) “Replacement”:   e = f ⇒ E[z ≔ e] ≡ e = f ⇒ E[z ≔ f]
+Theorem (3.84b≡) “Replacement”:   (e ≡ f) ⇒ E[z ≔ e] ≡ (e ≡ f) ⇒ E[z ≔ f]
+Theorem (3.84) (3.84c) “Replacement”:   q ∧ e = f ⇒ E[z ≔ e] ≡ q ∧ e = f ⇒ E[z ≔ f]
+Theorem (3.84) (3.84c) “Replacement”:   q ∧ (e ≡ f) ⇒ E[z ≔ e] ≡ q ∧ (e ≡ f) ⇒ E[z ≔ f]
+Theorem “Abbreviated replacement in ∧” “Abbreviated replacement”:   P ∧ x = E ≡ P[x ≔ E] ∧ x = E
+Theorem “Abbreviated replacement in ⇒” “Abbreviated replacement”:   x = E ⇒ P ≡ x = E ⇒ P[x ≔ E]
+Theorem “Transitivity of =”:   e = f ∧ f = g ⇒ e = g
+Theorem (3.85) (3.85a) “Replace by `true`”:   p ⇒ E[z ≔ p] ≡ p ⇒ E[z ≔ true]
+Theorem (3.85) (3.85b) “Replace by `true`”:   q ∧ p ⇒ E[z ≔ p] ≡ q ∧ p ⇒ E[z ≔ true]
+Theorem (3.85c) “Replace by `false`”:   ¬ p ⇒ E[z ≔ p] ≡ ¬ p ⇒ E[z ≔ false]
+Theorem (3.85) (3.85d) “Replace by `false`”:   q ∧ ¬ p ⇒ E[z ≔ p] ≡ q ∧ ¬ p ⇒ E[z ≔ false]
+Theorem (3.85e) “Replace by `true`”:   p ⇒ E[z ≔ p] = E[z ≔ true]
+Theorem (3.86) (3.86a) “Replace by `false`”:   E[z ≔ p] ⇒ p ≡ E[z ≔ false] ⇒ p
+Theorem (3.86) (3.86b) “Replace by `false`”:   E[z ≔ p] ⇒ p ∨ q ≡ E[z ≔ false] ⇒ p ∨ q
+Theorem (3.87) “Replace by `true`”:   p ∧ E[z ≔ p] ≡ p ∧ E[z ≔ true]
+Theorem (3.87.1) “Abbreviated replace by `true`”:   p ∧ E ≡ p ∧ E[p ≔ true]
+Theorem (3.87.1) “Abbreviated replace by `false`”:   ¬ p ∧ E ≡ ¬ p ∧ E[p ≔ false]
+Theorem (3.88) “Replace by `false`”:   p ∨ E[z ≔ p] ≡ p ∨ E[z ≔ false]
+Theorem (3.89) “Shannon”:   E[z ≔ p] ≡ (p ∧ E[z ≔ true]) ∨ (¬ p ∧ E[z ≔ false])
+Primitive inference rule “⇒-Introduction”:
+                ( `p`
+                    ⊦ `q` )
+                ⊦ `p ⇒ q`
+Theorem “Left-monotonicity of ∨” “Monotonicity of ∨”:   (p ⇒ q) ⇒ (p ∨ r ⇒ q ∨ r)
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ ((r ⇒ s) ⇒ (p ∨ r ⇒ q ∨ s))
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ ((r ⇒ s) ⇒ (p ∨ r ⇒ q ∨ s))
+Theorem “Monotonicity of ∨”:   (p ⇒ q) ⇒ (p ∨ r ⇒ q ∨ r)
+Theorem (4.3) “Left-monotonicity of ∧” “Monotonicity of ∧”:   (p ⇒ q) ⇒ (p ∧ r ⇒ q ∧ r)
+Theorem “Monotonicity of ∧”:   (p ⇒ p') ⇒ ((q ⇒ q') ⇒ (p ∧ q ⇒ p' ∧ q'))
+Theorem “Antitonicity of ¬”:   (p ⇒ q) ⇒ (¬ q ⇒ ¬ p)
+Theorem “Monotonicity of ⇒” “Right-monotonicity of ⇒”:   (p ⇒ q) ⇒ ((r ⇒ p) ⇒ (r ⇒ q))
+Theorem “Antitonicity of ⇒” “Left-antitonicity of ⇒”:   (p ⇒ q) ⇒ ((q ⇒ r) ⇒ (p ⇒ r))
+Theorem “Proof by contradiction”:   ¬ p ⇒ false ≡ p
+Lemma “Disjunction as implication”:   p ∨ q ≡ ¬ p ⇒ q
+Theorem “Case shuffling”:   (p ∨ q) ∧ (¬ p ∨ r) ≡ (p ∧ r) ∨ (¬ p ∧ q)
+Theorem “Case shuffling”:   (p ⇒ q) ∧ (¬ p ⇒ r) ≡ (p ∧ q) ∨ (¬ p ∧ r)
+Theorem “Right-distributivity of ⇒ over ∧”:   p ⇒ q ∧ r ≡ (p ⇒ q) ∧ (p ⇒ r)
+Theorem “Right-distributivity of ⇒ over ∧₃”:   p ⇒ q ∧ (r ∧ s) ≡ (p ⇒ q) ∧ ((p ⇒ r) ∧ (p ⇒ s))
+Theorem “Right-distributivity of ⇒ over ∧₄”:   p ⇒ q ∧ (r ∧ (s ∧ t)) ≡ (p ⇒ q) ∧ ((p ⇒ r) ∧ ((p ⇒ s) ∧ (p ⇒ t)))
+Theorem “Equivalence enrichment”:   (p ≡ q) ⇒ ((p ⇒ r) ⇒ (p ⇒ q ∧ r))
+Theorem “Contributing conjunct to ≡”:   (p ∧ q ≡ r) ∧ p ⇒ (q ≡ r)
+Theorem “Preserving conjunct after ⇒”:   p ∧ q ⇒ r ≡ p ∧ q ⇒ p ∧ r
+Theorem “Adding consequent to ∧”:   (p ⇒ q) ⇒ (p ∧ r ⇒ p ∧ (q ∧ r))
+Theorem “Exclusive or implies inclusive”:   (p ≢ q) ⇒ p ∨ q
+Theorem “Weakening” “Strengthening”:   (p ∨ q) ∧ r ⇒ p ∨ (q ∧ r)
+Theorem “∧-Introduction”:   p ⇒ (q ⇒ p ∧ q)
+Theorem “∧₃-Introduction”:   p ⇒ (q ⇒ (r ⇒ p ∧ (q ∧ r)))
+Theorem “∧₄-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ p ∧ (q ∧ (r ∧ s)))))
+Theorem “∧₅-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ p ∧ (q ∧ (r ∧ (s ∧ t)))))))
+Theorem “∧₅-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ p ∧ (q ∧ (r ∧ (s ∧ t)))))))
+Theorem “∧₆-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ (u ⇒ p ∧ (q ∧ (r ∧ (s ∧ (t ∧ u)))))))))
+Theorem “∧₇-Introduction”:   p ⇒ (q ⇒ (r ⇒ (s ⇒ (t ⇒ (u ⇒ (v ⇒ p ∧ (q ∧ (r ∧ (s ∧ (t ∧ (u ∧ v)))))))))))
+Theorem “Residual of ∧”:   x ∧ p ⇒ q ≡ x ⇒ (p ⇒ q)
+Theorem “Co-residual of ∨”:   q ⇒ x ∨ p ≡ ¬ p ∧ q ⇒ x
+Reference.Ref_RA_AllegoryDom_SOL
+Theorem (dom.100) “Converse of subidentity”:   q ⊆ 𝕀 ⇒ q ˘ ⊆ 𝕀
+Theorem (dom.101) “Subidentity included in ˘”:   q ⊆ 𝕀 ⇒ q ⊆ q ˘
+Theorem (dom.102) “Symmetry of subidentity”:   q ⊆ 𝕀 ⇒ q ˘ = q
+Theorem (dom.103) “Idempotency of subidentity”:   q ⊆ 𝕀 ⇒ q ⨾ q = q
+Theorem (dom.104) “Univalence of subidentity”:   q ⊆ 𝕀 ⇒ univalent q
+Theorem (dom.105) “Injectivity of subidentity”:   q ⊆ 𝕀 ⇒ injective q
+Theorem (dom.106) “Composition of subidentities”:   p ⊆ 𝕀 ∧ q ⊆ 𝕀 ⇒ p ⨾ q ⊆ 𝕀
+Theorem (dom.107) “Sub-commutativity of subidentities”:   p ⊆ 𝕀 ∧ q ⊆ 𝕀 ⇒ p ⨾ q ⊆ q ⨾ p
+Theorem (dom.108) “Commutativity of subidentities”:   p ⊆ 𝕀 ∧ q ⊆ 𝕀 ⇒ p ⨾ q = q ⨾ p
+Theorem (dom.109) “Modal rule with injective”:   injective Q ⇒ Q ⨾ R ∩ S = Q ⨾ (R ∩ Q ˘ ⨾ S)
+Theorem (dom.110) “Modal rule with univalent”:   univalent R ⇒ Q ⨾ R ∩ S = (Q ∩ S ⨾ R ˘) ⨾ R
+Theorem (dom.111) “Subidentity ∩”:   p ⊆ 𝕀 ∧ q ⊆ 𝕀 ⇒ p ∩ q = p ⨾ q
+Axiom (dom.200) “`dom` via ∩” “Relation-algebraic definition of `dom`”:   dom R = R ⨾ R ˘ ∩ 𝕀
+Axiom (dom.201) “`ran` via ∩” “Relation-algebraic definition of `ran`”:   ran R = R ˘ ⨾ R ∩ 𝕀
+Theorem (dom.202) “`dom` of converse” “`ran` via `dom`”:   dom (R ˘) = ran R
+Theorem (dom.203) “`ran` of converse” “`dom` via `ran`”:   ran (R ˘) = dom R
+Theorem (dom.204) “Subidentity `dom`”:   dom R ⊆ 𝕀
+Theorem (dom.205) “Subidentity `ran`”:   ran R ⊆ 𝕀
+Theorem (dom.206) “Symmetry of `dom`” “Converse of `dom`”:   dom R ˘ = dom R
+Theorem (dom.207) “Symmetry of `ran`” “Converse of `ran`”:   ran R ˘ = ran R
+Theorem (dom.208) “Univalence of `dom`”:   univalent (dom R)
+Theorem (dom.209) “Univalence of `ran`”:   univalent (ran R)
+Theorem (dom.210) “Injectivity of `dom`”:   injective (dom R)
+Theorem (dom.211) “Injectivity of `ran`”:   injective (ran R)
+Theorem (dom.212) “Absorption of `dom`”:   dom R ⨾ R = R
+Theorem (dom.213) “Absorption of `ran`”:   R ⨾ ran R = R
+Theorem (dom.214) “Idempotency wrt. ⨾ of `dom`”:   dom R ⨾ dom R = dom R
+Theorem (dom.215) “Idempotency wrt. ⨾ of `ran`”:   ran R ⨾ ran R = ran R
+Theorem (dom.216) “Monotonicity of `dom`”:   Q ⊆ R ⇒ dom Q ⊆ dom R
+Theorem (dom.217) “Monotonicity of `ran`”:   Q ⊆ R ⇒ ran Q ⊆ ran R
+Theorem (dom.218) “Absorption of `dom` of greater”:   Q ⊆ R ⇒ Q = dom R ⨾ Q
+Theorem (dom.219) “Absorption of `ran` of greater”:   Q ⊆ R ⇒ Q = Q ⨾ ran R
+Theorem (dom.220) “Least left-preserver is `dom`”:   d ⊆ 𝕀 ∧ R ⊆ d ⨾ R ⇒ dom R ⊆ d
+Theorem (dom.221) “Least right-preserver is `ran`”:   d ⊆ 𝕀 ∧ R ⊆ R ⨾ d ⇒ ran R ⊆ d
+Theorem (dom.222) “Locality of `dom`”:   dom (R ⨾ S) = dom (R ⨾ dom S)
+Theorem (dom.223) “Locality of `ran`”:   ran (R ⨾ S) = ran (ran R ⨾ S)
+Theorem (dom.224) “Commuting `dom-⨾` with `dom`”:   dom (dom R ⨾ S) = dom R ⨾ dom S
+Theorem (dom.225) “Commuting `⨾-ran` with `ran`”:   ran (R ⨾ ran S) = ran S ⨾ ran R
+Theorem (dom.226) “Commuting `dom-⨾-dom`”:   dom R ⨾ dom S = dom S ⨾ dom R
+Theorem (dom.227) “Commuting `ran-⨾-ran`”:   ran R ⨾ ran S = ran S ⨾ ran R
+Theorem (dom.228) “`dom-⨾-dom` to ∩”:   dom R ⨾ dom S = dom R ∩ dom S
+Theorem (dom.229) “`ran-⨾-ran` to ∩”:   ran R ⨾ ran S = ran R ∩ ran S
+Reference.Ref_RA_LSLCC_SOL
+Axiom “Characterisation of ∩”:   Q ⊆ R ∩ S ≡ Q ⊆ R ∧ Q ⊆ S
+Theorem “Weakening for ∩”:   Q ∩ R ⊆ Q ∧ Q ∩ R ⊆ R
+Theorem “Symmetry of ∩”:   Q ∩ R ⊆ R ∩ Q
+Corollary “Symmetry of ∩”:   Q ∩ R = R ∩ Q
+Theorem “Associativity of ∩”:   (Q ∩ R) ∩ S ⊆ Q ∩ (R ∩ S)
+Corollary “Associativity of ∩”:   (Q ∩ R) ∩ S = Q ∩ (R ∩ S)
+Theorem “Idempotency of ∩”:   R ∩ R = R
+Theorem “Monotonicity of ∩”:   Q ⊆ R ⇒ Q ∩ S ⊆ R ∩ S
+Theorem “Monotonicity of ∩”:   Q ⊆ R ⇒ (S ⊆ T ⇒ Q ∩ S ⊆ R ∩ T)
+Theorem “Inclusion via ∩”:   Q ⊆ R ≡ Q ∩ R = Q
+Theorem “Sub-distributivity of ⨾ over ∩”:   Q ⨾ (R ∩ S) ⊆ Q ⨾ R ∩ Q ⨾ S
+Theorem “Sub-distributivity of ⨾ over ∩”:   (Q ∩ R) ⨾ S ⊆ Q ⨾ S ∩ R ⨾ S
+Theorem “Converse of ∩”:   (R ∩ S) ˘ ⊆ R ˘ ∩ S ˘
+Theorem “Converse of ∩”:   (R ∩ S) ˘ = R ˘ ∩ S ˘
+Theorem “Equivalence induced by preorder”:   preorder E ⇒ equivalence (E ∩ E ˘)
+Axiom “Definition of antisymmetry”:   antisymmetric R ≡ R ∩ R ˘ ⊆ 𝕀
+Axiom “Definition of order”:   order R ≡ reflexive R ∧ (antisymmetric R ∧ transitive R)
+Theorem “Antisymmetry of converse”:   antisymmetric R ≡ antisymmetric (R ˘)
+Theorem “Converse of an order”:   order E ≡ order (E ˘)
+Theorem “Order is preorder”:   order E ⇒ preorder E
+Theorem “Order is idempotent”:   order E ⇒ idempotent E
+Theorem “Definition of order”:   order E ≡ 𝕀 ⊆ E ∧ (E ∩ E ˘ ⊆ 𝕀 ∧ (E ⨾ E ⊆ E ∧ E ⨾ E = E))
+Reference.Ref_RA_OCC_SOL
+Axiom “Self-inverse of ˘”:   (R ˘) ˘ = R
+Lemma “Cancellation of ˘”:   R ˘ = S ˘ ≡ R = S
+Axiom “Monotonicity of ˘”:   R ⊆ S ⇒ R ˘ ⊆ S ˘
+Theorem “Isotonicity of ˘”:   R ⊆ S ≡ R ˘ ⊆ S ˘
+Theorem “˘ connection”:   R ⊆ S ˘ ≡ R ˘ ⊆ S
+Axiom “Converse of 𝕀”:   𝕀 ˘ = 𝕀
+Axiom “Converse of ⨾”:   (R ⨾ S) ˘ = S ˘ ⨾ R ˘
+Theorem “Converse of bottom relations”:   is-bottom R ≡ is-bottom (R ˘)
+Theorem “Converse of top relations”:   is-top R ≡ is-top (R ˘)
+Axiom “Definition of symmetry”:   symmetric R ≡ R ˘ ⊆ R
+Axiom “Definition of equivalence”:   equivalence R ≡ reflexive R ∧ (symmetric R ∧ transitive R)
+Axiom “Definition of PER”:   is-PER R ≡ symmetric R ∧ transitive R
+Lemma “Definition of symmetry”:   symmetric R ≡ R ˘ = R
+Lemma “Weaker definition of symmetry”:   R ˘ ⊆ R ⇒ R ˘ = R
+Lemma “Definition of PER”:   is-PER R ≡ R ˘ ⊆ R ∧ R ⨾ R ⊆ R
+Lemma “Definition of PER”:   is-PER R ≡ R ˘ = R ∧ R ⨾ R ⊆ R
+Lemma “Definition of equivalence”:   equivalence R ≡ 𝕀 ⊆ R ∧ (R ˘ ⊆ R ∧ R ⨾ R ⊆ R)
+Theorem “Reflexivity of converse”:   reflexive R ≡ reflexive (R ˘)
+Theorem “Symmetry of converse”:   symmetric R ≡ symmetric (R ˘)
+Theorem “Transitivity of converse”:   transitive R ≡ transitive (R ˘)
+Theorem “Idempotency of converse”:   idempotent R ≡ idempotent (R ˘)
+Theorem “Converse of an equivalence”:   equivalence R ≡ equivalence (R ˘)
+Axiom “Definition of univalence”:   univalent R ≡ R ˘ ⨾ R ⊆ 𝕀
+Axiom “Definition of totality”:   total R ≡ 𝕀 ⊆ R ⨾ R ˘
+Axiom “Definition of injectivity”:   injective R ≡ R ⨾ R ˘ ⊆ 𝕀
+Axiom “Definition of surjectivity”:   surjective R ≡ 𝕀 ⊆ R ˘ ⨾ R
+Axiom “Definition of mappings”:   mapping R ≡ univalent R ∧ total R
+Axiom “Definition of bijectivity”:   bijective R ≡ injective R ∧ surjective R
+Lemma “Definition of mappings”:   mapping R ≡ R ˘ ⨾ R ⊆ 𝕀 ∧ 𝕀 ⊆ R ⨾ R ˘
+Lemma “Definition of bijectivity”:   bijective R ≡ R ⨾ R ˘ ⊆ 𝕀 ∧ 𝕀 ⊆ R ˘ ⨾ R
+Theorem “𝕀 is univalent”:   univalent 𝕀
+Theorem “𝕀 is total”:   total 𝕀
+Theorem “𝕀 is injective”:   injective 𝕀
+Theorem “𝕀 is surjective”:   surjective 𝕀
+Theorem “𝕀 is mapping”:   mapping 𝕀
+Theorem “𝕀 is bijective”:   bijective 𝕀
+Theorem “total in univalent”:   total R ⇒ (univalent S ⇒ (R ⊆ S ⇒ R = S))
+Theorem “total in univalent”:   total R ⇒ (univalent S ⇒ (R ⊆ S ⇒ R = S))
+Theorem “total in univalent”:   total R ⇒ (univalent S ⇒ (R ⊆ S ⇒ R = S))
+Theorem “Flip `⊆-univalent-⨾`”:   univalent F ⇒ (Q ⊆ F ⨾ R ⇒ F ˘ ⨾ Q ⊆ R)
+Theorem “Flip `⊆-⨾-univalent˘`”:   univalent F ⇒ (Q ⊆ R ⨾ F ˘ ⇒ Q ⨾ F ⊆ R)
+Theorem “Flip `⊆-⨾-injective`”:   injective F ⇒ (Q ⊆ R ⨾ F ⇒ Q ⨾ F ˘ ⊆ R)
+Theorem “Flip `total˘-⨾-⊆`”:   total F ⇒ (F ˘ ⨾ Q ⊆ R ⇒ Q ⊆ F ⨾ R)
+Theorem “Flip `⨾-total-⊆`”:   total F ⇒ (Q ⨾ F ⊆ R ⇒ Q ⊆ R ⨾ F ˘)
+Theorem “Flip `⨾-mapping-⊆`”:   mapping F ⇒ (Q ⨾ F ⊆ R ≡ Q ⊆ R ⨾ F ˘)
+Theorem “Flip `mapping˘-⨾-⊆`”:   mapping F ⇒ (F ˘ ⨾ Q ⊆ R ≡ Q ⊆ F ⨾ R)
+Theorem “Flip `surj-⨾-⊆`”:   surjective F ⇒ (F ⨾ Q ⊆ R ⇒ Q ⊆ F ˘ ⨾ R)
+Theorem “Composition of mappings”:   mapping F ∧ mapping G ⇒ mapping (F ⨾ G)
+Theorem “Inverse of mapping”:   mapping f ⇒ (g is-inverse-of f ⇒ g = f ˘)
+Theorem “Kernel of mappings”:   mapping F ⇒ equivalence (F ⨾ F ˘)
+Reference.Ref_RA_OrdCat_SOL
+Axiom “Reflexivity of ⊆”:   R ⊆ R
+Axiom “Transitivity of ⊆”:   Q ⊆ R ⇒ (R ⊆ S ⇒ Q ⊆ S)
+Axiom “Antisymmetry of ⊆”:   R ⊆ S ⇒ (S ⊆ R ⇒ R = S)
+Theorem “Transitivity of ⊆”:   Q ⊆ R ∧ R ⊆ S ⇒ Q ⊆ S
+Lemma “Flipped transitivity of ⊆” “Flipped Transitivity of ⊆”:   R ⊆ S ⇒ (Q ⊆ R ⇒ Q ⊆ S)
+Lemma “Reflexivity of ⊆”:   R = S ⇒ R ⊆ S
+Theorem “Mutual inclusion”:   R = S ≡ R ⊆ S ∧ S ⊆ R
+Axiom “Opposite inclusion”:   R ⊇ S ≡ S ⊆ R
+Theorem “Indirect Relation Equality” “Indirect Relation Equality from above”:   Q = R ≡ (∀ S • Q ⊆ S ≡ R ⊆ S )   
+    — CalcCheck: Proviso: ¬occurs(`S`, `Q, R`)
+Theorem “Indirect Relation Equality” “Indirect Relation Equality from below”:   Q = R ≡ (∀ S • S ⊆ Q ≡ S ⊆ R )   
+    — CalcCheck: Proviso: ¬occurs(`S`, `Q, R`)
+Theorem “Indirect Relation Inclusion” “Indirect Relation Inclusion from above”:   Q ⊆ R ≡ (∀ S • R ⊆ S ⇒ Q ⊆ S )   
+    — CalcCheck: Proviso: ¬occurs(`S`, `Q, R`)
+Theorem “Indirect Relation Inclusion” “Indirect Relation Inclusion from below”:   Q ⊆ R ≡ (∀ S • S ⊆ Q ⇒ S ⊆ R )   
+    — CalcCheck: Proviso: ¬occurs(`S`, `Q, R`)
+Axiom “Definition of `is-top`”:   is-top R ≡ (∀ Q • Q ⊆ R )   
+    — CalcCheck: Proviso: ¬occurs(`Q`, `R`)
+Theorem “Uniqueness of top relation”:   is-top R ∧ is-top S ⇒ R = S
+Axiom “Definition of `is-bottom`”:   is-bottom R ≡ (∀ S • R ⊆ S )   
+    — CalcCheck: Proviso: ¬occurs(`S`, `R`)
+Theorem “Uniqueness of bottom relation”:   is-bottom R ∧ is-bottom S ⇒ R = S
+Axiom “Associativity of ⨾”:   (Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)
+Axiom “Monotonicity of ⨾”:   P ⊆ Q ⇒ (R ⊆ S ⇒ P ⨾ R ⊆ Q ⨾ S)
+Theorem “Left-monotonicity of ⨾” “Monotonicity of ⨾”:   Q ⊆ R ⇒ Q ⨾ S ⊆ R ⨾ S
+Theorem “Right-monotonicity of ⨾” “Monotonicity of ⨾”:   R ⊆ S ⇒ Q ⨾ R ⊆ Q ⨾ S
+Axiom “Identity of ⨾”:   𝕀 ⨾ R = R
+Axiom “Identity of ⨾”:   R ⨾ 𝕀 = R
+Axiom “Definition of reflexivity”:   reflexive R ≡ 𝕀 ⊆ R
+Axiom “Definition of coreflexivity”:   coreflexive R ≡ R ⊆ 𝕀
+Axiom “Definition of transitivity”:   transitive R ≡ R ⨾ R ⊆ R
+Axiom “Definition of idempotency”:   idempotent R ≡ R ⨾ R = R
+Axiom “Definition of preorder”:   preorder R ≡ reflexive R ∧ transitive R
+Lemma “Definition of preorder”:   preorder R ≡ 𝕀 ⊆ R ∧ R ⨾ R ⊆ R
+Theorem “Reflexivity of 𝕀”:   reflexive 𝕀
+Theorem “Coreflexivity of 𝕀”:   coreflexive 𝕀
+Theorem “Transitivity of 𝕀”:   transitive 𝕀
+Theorem “Idempotency of 𝕀”:   idempotent 𝕀
+Theorem “Identity preorder”:   preorder 𝕀
+Theorem “Reflexivity of ⨾”:   reflexive R ⇒ (reflexive S ⇒ reflexive (R ⨾ S))
+Theorem “Coreflexivity of ⨾”:   coreflexive R ⇒ (coreflexive S ⇒ coreflexive (R ⨾ S))
+Theorem “Idempotency from reflexive and transitive”:   reflexive R ⇒ (transitive R ⇒ idempotent R)
+Corollary “Idempotency of preorders”:   preorder R ⇒ idempotent R
+Axiom “Definition of inverse”:   S is-inverse-of R ≡ S ⨾ R = 𝕀 ∧ R ⨾ S = 𝕀
+Theorem “Inverse of 𝕀”:   𝕀 is-inverse-of 𝕀
+Theorem “Inverse of ⨾”:   S₁ is-inverse-of R₁ ∧ S₂ is-inverse-of R₂ ⇒ S₂ ⨾ S₁ is-inverse-of R₁ ⨾ R₂
+Week11.Exercise-11-4_Allegory_SOL
+Axiom “Dedekind rule”:   Q ⨾ R ∩ S ⊆ (Q ∩ S ⨾ R ˘) ⨾ (R ∩ Q ˘ ⨾ S)
+Theorem “Modal rule”:   Q ⨾ R ∩ S ⊆ (Q ∩ S ⨾ R ˘) ⨾ R
+Theorem “Modal rule”:   Q ⨾ R ∩ S ⊆ Q ⨾ (R ∩ Q ˘ ⨾ S)
+Theorem “Hesitation”:   R ⊆ R ⨾ (R ˘ ⨾ R)
+Theorem “PER factoring”:   symmetric Q ⇒ (transitive Q ⇒ Q ⨾ R ∩ Q = Q ⨾ (R ∩ Q))
+Theorem “Reflexive implies total”:   reflexive R ⇒ total R
+Theorem “Idempotency from symmetric and transitive”:   symmetric R ⇒ (transitive R ⇒ idempotent R)
+Theorem “Right-distributivity of ⨾ with univalent over ∩”:   univalent F ⇒ F ⨾ (R ∩ S) = F ⨾ R ∩ F ⨾ S
+Theorem “Swapping mapping across ⊆”:   mapping F ⇒ (R ⨾ F ⊆ S ≡ R ⊆ S ⨾ F ˘)
+OK

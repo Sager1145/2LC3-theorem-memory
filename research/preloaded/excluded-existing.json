@@ -1,0 +1,463 @@
+[
+  {
+    "id": "t-fb4e5f786aae",
+    "name": "Distributivity of ∧ over ≢",
+    "numbers": [],
+    "formula": "p ∧ (q ≢ r) ≡ (p ∧ q ≢ p ∧ r)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-cf0c0f563b13",
+    "name": "Set membership",
+    "numbers": [
+      "11.3"
+    ],
+    "formula": "F ∈ { x ❙ R • E } ≡ (∃ x ❙ R • E = F)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-2c77ce156930",
+    "name": "Set extensionality",
+    "numbers": [
+      "11.4"
+    ],
+    "formula": "S = T ≡ (∀ x • x ∈ S ≡ x ∈ T)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-556d261ff18f",
+    "name": "Simple membership",
+    "numbers": [
+      "11.7b"
+    ],
+    "formula": "F ∈ { x ❙ R } ≡ R[x ≔ F]",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-b242e36ffe7b",
+    "name": "Set inclusion",
+    "numbers": [
+      "11.13"
+    ],
+    "formula": "S ⊆ T ≡ (∀ x ❙ x ∈ S • x ∈ T)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-2c4166dc877c",
+    "name": "Set complement",
+    "numbers": [
+      "11.17"
+    ],
+    "formula": "v ∈ ∼ S ≡ ¬ (v ∈ S)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-ce660f82006d",
+    "name": "Set complement via difference",
+    "numbers": [
+      "11.55.1"
+    ],
+    "formula": "∼ S = 𝐔 - S",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-4a39eaf8841f",
+    "name": "Cross product",
+    "numbers": [
+      "14.3"
+    ],
+    "formula": "S × T = { b, c ❙ b ∈ S ∧ c ∈ T • ⟨ b, c ⟩ }",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-a5bc54674f4f",
+    "name": "Membership",
+    "numbers": [
+      "14.4"
+    ],
+    "formula": "⟨ b, c ⟩ ∈ S × T ≡ b ∈ S ∧ c ∈ T",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-680f01cae362",
+    "name": "原文未命名",
+    "numbers": [
+      "14.6"
+    ],
+    "formula": "S = {} ⇒ S × T = T × S = {}",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-96403291b0d6",
+    "name": "原文未命名",
+    "numbers": [
+      "14.7"
+    ],
+    "formula": "S × T = T × S ≡ S = {} ∨ T = {} ∨ S = T",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-a828195775bd",
+    "name": "Distributivity of × over -",
+    "numbers": [
+      "14.10"
+    ],
+    "formula": "S × (T - U) = (S × T) - (S × U)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-bc63f4a0339a",
+    "name": "Distributivity of × over -",
+    "numbers": [
+      "14.10"
+    ],
+    "formula": "(S - T) × U = (S × U) - (T × U)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-3e51a686b4f2",
+    "name": "Monotonicity",
+    "numbers": [
+      "14.12"
+    ],
+    "formula": "S ⊆ S' ∧ T ⊆ T' ⇒ S × T ⊆ S' × T'",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-7f6d8d60a18a",
+    "name": "Empty set",
+    "numbers": [],
+    "formula": "v ∈ {} ≡ false",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-991f3be283d6",
+    "name": "One-point set comprehension",
+    "numbers": [],
+    "formula": "{ x ❙ x = E • F } = { F[x ≔ E] }",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-8d93ece14cd8",
+    "name": "Set inclusion",
+    "numbers": [],
+    "formula": "S ⊆ T ≡ (∀ x • x ∈ S ⇒ x ∈ T)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-b4d6b9594307",
+    "name": "Singleton sets",
+    "numbers": [],
+    "formula": "{ x ❙ x = E • x } = { E }",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-1a7f2a45b023",
+    "name": "The empty set",
+    "numbers": [],
+    "formula": "{ x ❙ false • x } = {}",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-d7658b54f03e",
+    "name": "Universal set",
+    "numbers": [],
+    "formula": "v ∈ 𝐔 ≡ true",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-9aae25d9a052",
+    "name": "Empty Range",
+    "numbers": [
+      "8.13"
+    ],
+    "formula": "(∀ x ❙ false • P) = true",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-91acf54254cb",
+    "name": "Empty Range",
+    "numbers": [
+      "8.13"
+    ],
+    "formula": "(∃ x ❙ false • P) = false",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-e97ec0152e4c",
+    "name": "Monotonicity of ∀",
+    "numbers": [
+      "9.12"
+    ],
+    "formula": "(∀ x ❙ R • P₁ ⇒ P₂) ⇒ ((∀ x ❙ R • P₁) ⇒ (∀ x ❙ R • P₂))",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-1bfedd6465a0",
+    "name": "(Body) Monotonicity of ∃",
+    "numbers": [
+      "9.27"
+    ],
+    "formula": "(∀ x ❙ R • P₁ ⇒ P₂) ⇒ ((∃ x ❙ R • P₁) ⇒ (∃ x ❙ R • P₂))",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-b6c949d73a6d",
+    "name": "Range-Antitonicity of ∀",
+    "numbers": [],
+    "formula": "(∀ x • R₂ ⇒ R₁) ⇒ ((∀ x ❙ R₁ • P) ⇒ (∀ x ❙ R₂ • P))",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-8294cc0db566",
+    "name": "Range-Monotonicity of ∃",
+    "numbers": [],
+    "formula": "(∀ x • R₁ ⇒ R₂) ⇒ ((∃ x ❙ R₁ • P) ⇒ (∃ x ❙ R₂ • P))",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-40ed1ece7493",
+    "name": "原文未命名",
+    "numbers": [
+      "1"
+    ],
+    "formula": "x + y = 13 ⇒⁅ (x := x + 7) ⁆ x + y = 20",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-d097db2afa87",
+    "name": "原文未命名",
+    "numbers": [
+      "2"
+    ],
+    "formula": "n = n₀ ⇒⁅ (n := n + d) ⁆ n = n₀ + d",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-a001f167cf8b",
+    "name": "原文未命名",
+    "numbers": [
+      "3"
+    ],
+    "formula": "x = x₀ ⇒⁅ (y := x + d) ⁆ x = x₀",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-6f380542ccdd",
+    "name": "原文未命名",
+    "numbers": [
+      "4"
+    ],
+    "formula": "x = 5 ⇒⁅ (y := x + 1 ⍮ x := y + y) ⁆ x = 12",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-3260822fba18",
+    "name": "原文未命名",
+    "numbers": [
+      "5"
+    ],
+    "formula": "p = p₀ ∧ q = q₀ ⇒⁅ (p := p + q ⍮ (q := p - q ⍮ p := p - q)) ⁆ p = q₀ ∧ q = p₀",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-d2bcaaa9efca",
+    "name": "Assignment",
+    "numbers": [],
+    "formula": "Q[x ≔ E] ⇒⁅ x := E ⁆ Q",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-8295d6367408",
+    "name": "M1.2.4",
+    "numbers": [],
+    "formula": "s + 2 · t + 2 = (∑ i : ℤ ❙ b < i ≤ t + 1 • 2 · i) ⇒⁅ i := 1 ⍮ t := t + i ⍮ s := s + 2 · t ⁆ s = (∑ i : ℤ ❙ b < i ≤ t • 2 · i)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-f9d8ae4320f2",
+    "name": "Trichotomy",
+    "numbers": [
+      "15.44"
+    ],
+    "formula": "(a < b ≡ a = b ≡ a > b) ∧ ¬ (a < b ∧ a = b ∧ a > b)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-e9e09a1e0f53",
+    "name": "Antisymmetry of ≤",
+    "numbers": [
+      "15.45"
+    ],
+    "formula": "a ≤ b ∧ a ≥ b ≡ a = b",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-bee29d1902fa",
+    "name": "At least successor",
+    "numbers": [],
+    "formula": "a ≥ b + 1 ≡ a > b",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-82b334be8997",
+    "name": "Flipped transitivity of ≤",
+    "numbers": [],
+    "formula": "b ≤ c ⇒ (a ≤ b ⇒ a ≤ c)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-b223a4e11cb0",
+    "name": "M1.2.1",
+    "numbers": [],
+    "formula": "k ≤ 3 · n ⇒ n ≤ k - 2 ⇒ (9 - (n + 7)) + k ≤ (9 - (n + 5)) + 3 · (3 · n - 2)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-aed7a3012116",
+    "name": "Successor at most",
+    "numbers": [],
+    "formula": "a + 1 ≤ b ≡ a < b",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-07cc265e9c30",
+    "name": "Disjoint case analysis",
+    "numbers": [],
+    "formula": "(p ≢ q) ∧ ((p ⇒ s) ∧ (q ⇒ s)) ⇒ s",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-cf07f9889aa8",
+    "name": "Replace variable by `false`",
+    "numbers": [],
+    "formula": "¬ p ⇒ E ≡ ¬ p ⇒ E[p ≔ false]",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-29b92503f5ab",
+    "name": "Replace variable by `true`",
+    "numbers": [],
+    "formula": "p ⇒ E ≡ p ⇒ E[p ≔ true]",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-9b2e698d86c6",
+    "name": "Worked mutual associativity",
+    "numbers": [],
+    "formula": "a + (b - c) = (a + b) - c",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-85fda410f339",
+    "name": "Worked self-subtraction",
+    "numbers": [],
+    "formula": "a - a = 0",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-4a7ef0d134a8",
+    "name": "Worked subtraction from zero",
+    "numbers": [],
+    "formula": "0 - a = - a",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-7a71e1ade60e",
+    "name": "Worked subtraction of addition",
+    "numbers": [],
+    "formula": "a - (b + c) = (a - b) - c",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-de8fdb29141f",
+    "name": "Even addition",
+    "numbers": [],
+    "formula": "even (m + n) ≡ even m ≡ even n",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-e1e536db829a",
+    "name": "Even is not odd",
+    "numbers": [],
+    "formula": "even n ≡ ¬ (odd n)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-53e241cdea9e",
+    "name": "Even product",
+    "numbers": [],
+    "formula": "even a ⇒ even (a · b)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-f70a180f2f73",
+    "name": "Even successor",
+    "numbers": [],
+    "formula": "even (suc n) ≡ ¬ (even n)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-ffbec2e2578c",
+    "name": "Odd addition",
+    "numbers": [],
+    "formula": "odd m ≡ odd (m + n) ≡ even n",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-1e8755a398b4",
+    "name": "Odd factor",
+    "numbers": [],
+    "formula": "even (a · b) ≡ (odd b ⇒ even a)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-023fa9a8e2a5",
+    "name": "Odd is not even",
+    "numbers": [],
+    "formula": "odd n ≡ ¬ (even n)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-fb7ba56897f6",
+    "name": "Odd successor",
+    "numbers": [],
+    "formula": "odd (suc n) ≡ ¬ (odd n)",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-30e77eee60c8",
+    "name": "Odd xor even",
+    "numbers": [],
+    "formula": "odd a ≢ even a",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-857ba4314689",
+    "name": "Predecessor of non-zero",
+    "numbers": [],
+    "formula": "n ≠ 0 ≡ suc pred n = n",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-a51e69c85352",
+    "name": "Zero is not odd",
+    "numbers": [],
+    "formula": "¬ odd 0",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-60e1d9610a7b",
+    "name": "Knavehood",
+    "numbers": [],
+    "formula": "X says⟪ p ⟫ ≡ X is-knave ≡ ¬ p",
+    "reason": "not an exact declaration in copied preloaded lists"
+  },
+  {
+    "id": "t-d2f67bf7773d",
+    "name": "Knighthood",
+    "numbers": [],
+    "formula": "X says⟪ p ⟫ ≡ X is-knight ≡ p",
+    "reason": "not an exact declaration in copied preloaded lists"
+  }
+]

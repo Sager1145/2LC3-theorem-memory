@@ -2,7 +2,7 @@
 
 一个无需服务器、账号、API key 或前端依赖安装的 COMPSCI 2LC3 定理练习网站。采用短关卡、进度条、大按钮、即时反馈、连对 XP 和错题重试；界面与标志为独立设计，不是 Duolingo 或 CalcCheck 的官方产品。
 
-> **功能已实现；资料覆盖不宣称完整。** 当前发布 360 张来源可追踪的定理、公理、引理及推理规则卡，其中 282 张出现在已读取的近期笔记/提供材料，78 张来自额外核对的 2025 课件。仍有 128 条提取候选只列在资料审计中、不参加答题；部分 Project ZIP 和修订文件无法取得完整内容。“当前笔记”不表示全都属于 2026 课堂已讲范围。详见 `docs/SOURCE_AUDIT.md`。
+> **题库白名单：课程 Homework 的预载定理列表。** 已逐份展开并复制 2025 课程索引中的 26 份 CalcCheck Homework notebook，共 7,156 次声明，按原文与侧条件去重为 1,052 张卡。Notebook 正文中的待证明题不入库；这不是 2026 学期进度或所有课程材料的全集。逐份来源与旧题库排除记录见 `docs/SOURCE_AUDIT.md`。
 
 **在线练习：** https://sager1145.github.io/2LC3-theorem-memory/
 
@@ -34,7 +34,7 @@ python3 -m http.server 8000
 
 ## 手动划范围
 
-在“定理库”按主题、来源、当前/历史、Important、重复引用、收藏或错题筛选。编号输入支持：
+在“定理库”按模块、Homework 来源、Important、重复预载、收藏或错题筛选。编号输入支持：
 
 ```text
 3.47
@@ -48,7 +48,7 @@ python3 -m http.server 8000
 
 ## 原文重点与错题
 
-`★ IMPORTANT`：仅标注原资料明确的 Important 标题/标记，本版有 11 张；卡片内可展开依据。`↻ 引用 N 次`：基于可读材料、按来源家族去重的名称或编号引用统计；同名家族共享的统计不能理解为每个变体各自的调用次数。个人收藏单独显示，不改变原文重点。
+`★ IMPORTANT`：只在旧资料有明确 Important 证据且该条也出现在预载列表时保留；卡片内可展开依据。`↻ 预载于 N 份`：同一声明出现在多少份 Homework 弹窗中，不表示课堂引用次数或重要程度。个人收藏单独显示。
 
 答错、跳过、使用提示会进入错题本，并在本轮稍后安排重试（每题最多追加两次，防止一关无限延长）。错题按**定理＋题型**记录：做错的那一种题型连续无提示答对 2 次才归档。答对另一题型不会把原错误清掉；错题历史会保留。
 
@@ -115,21 +115,17 @@ python3 tests/browser_smoke.py --screenshots test-results/screenshots
 
 `docs/TEST_REPORT.md` 明确区分已跑测试和未验证项目。本环境浏览器测试采用内存存储替身，不能据此声称测试了真实 GitHub Pages、浏览器原生持久化或 Service Worker 离线安装。
 
-## 后续增量整理课程文件
+## 更新课程预载列表
 
-网站部署不需要原始资料。要更新题库，在自己电脑上把有权使用的原件放在不提交到 Git 的 `private-sources/`：
+`research/preloaded/raw/` 保存从 26 份 Homework 弹窗逐份复制的文本；导入器只读取这些文本，不扫描 notebook 正文。更新或更正文本后运行：
 
 ```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python3 -m pip install -r tools/requirements.txt
-python3 tools/build_corpus.py private-sources --out .build/raw-bank
-node tools/finalize_bank.js .build/raw-bank
+python3 tools/import_preloaded.py
 node --test tests/engine.test.js
 python3 tools/build_site.py --out _site
 ```
 
-以上是**重新整理，不是自动证明或自动补全**。保持原有来源和文件名，才能复用 `tools/curations.json` 内已有校核的 source ID；缺少对应来源时 finalizer 会报错，不静默丢失人工校核。改名或替换资料后，应重新核对来源定位。新候选先在 `review-candidates.json` 中核对，再添加明确的公式、编号、类型、侧条件和来源。更新覆盖说明，不能把 `completeProjectAccess` 自动设为 true。发布后如修改静态资源，应相应更新 `sw.js` 的缓存版本。
+`research/preloaded/legacy-*` 保留旧题库及原始审计材料，`excluded-existing.json` 列出未能逐字对应预载声明的旧卡。新增 Homework 时先核对其确是课程提供的预载弹窗，再在导入器的 `PORTS` 中登记地址。发布后如修改静态资源，应更新 `sw.js` 的缓存版本。
 
 ## 结构
 
@@ -140,14 +136,16 @@ assets/engine.js            分词、匹配、队列和学习状态；可独立�
 assets/data.js              自动生成的浏览器题库包
 assets/style.css            响应式视觉与交互
  data/theorems.json         卡片与原写法变体
- data/sources.json          来源、哈希、阅读状态及归档关系
- data/review-candidates.json 未核对片段；不出题
- data/extraction-audit.json 合并及人工核对记录
- data/coverage.json         覆盖范围及明确缺口
- tools/                    提取、整理、静态构建
+ data/sources.json          26 份 Homework 弹窗来源
+ data/review-candidates.json 当前为空；旧候选已归档
+ data/extraction-audit.json 导入范围与旧卡排除摘要
+ data/coverage.json         预载列表覆盖统计
+ research/preloaded/        原始弹窗文本、旧版审计与排除清单
+ tools/import_preloaded.py  从弹窗文本重建题库
+ tools/                    旧提取工具与静态构建
  tests/                    自动测试
  docs/                     规划、资料审计、测试报告
  .github/workflows/pages.yml 自动测试及 Pages 部署
 ```
 
-源文件只作为学习材料输入；题库中保留必要的定理声明和来源定位，不附完整课件或学生提交。没有跟踪器、广告、外部字体或运行时 AI 请求。
+题库保留预载定理声明及其 Homework、模块、行号，不附完整课件或学生提交。没有跟踪器、广告、外部字体或运行时 AI 请求。
