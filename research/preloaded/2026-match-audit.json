@@ -1,6 +1,6 @@
 {
   "matches": {
-    "formula": 1094,
+    "formula": 1907,
     "reference": 0,
     "new": 4
   },
@@ -16,12 +16,12 @@
       "raw": "Theorem “Replace variable by `false`”:   ¬ p ⇒ E ≡ ¬ p ⇒ E[p ≔ false]"
     },
     {
-      "port": 16027,
+      "port": 16025,
       "id": "y26-ae4b0b730247",
       "raw": "Corollary “Zero of ·”:   0 · a = 0"
     },
     {
-      "port": 16027,
+      "port": 16025,
       "id": "y26-8ee7c4234f61",
       "raw": "Theorem “Predecessor of non-zero”:   n ≠ 0 ≡ suc pred n = n"
     }

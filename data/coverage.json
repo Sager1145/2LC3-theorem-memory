@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "builtAt": "2026-09-30",
   "completeProjectAccess": false,
-  "sourceFiles": 37,
-  "readFiles": 37,
+  "sourceFiles": 54,
+  "readFiles": 54,
   "pdfPagesRead": 0,
   "theoremCount": 1056,
   "currentCount": 1052,
   "reviewCount": 0,
   "importantCount": 11,
   "repeatedCount": 796,
-  "notice": "2026 当前范围只使用 11 份 Homework/Assignment 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。",
+  "notice": "2026 当前范围只使用 28 份已复制 notebook 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。",
   "countMethod": "重复次数表示同一声明出现在几份 Homework 的预载弹窗中；H19 与 H19v 分别计数。不是课件引用次数或重要程度。",
   "historicalCount": 0,
   "curationCount": 82,
@@ -33,5 +33,5 @@
   "excludedPriorCards": 59,
   "completePreloadedAccess": true,
   "current2026Count": 248,
-  "current2026NotebookCount": 11
+  "current2026NotebookCount": 28
 }

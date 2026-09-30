@@ -7,12 +7,13 @@
   const records = D.theorems, byId = new Map(records.map(r=>[r.id,r])), sourceMap = new Map(D.sources.map(s=>[s.id,s]));
   const KEYS = {progress:'tq.progress.v1', settings:'tq.settings.v1', session:'tq.session.v1'};
   const MODE = {
-    name:{title:'名称回忆',icon:'Aa',prompt:'这条定理叫什么？',desc:'输入前三个字符，补全名称与编号'},
+    name:{title:'名称回忆',icon:'Aa',prompt:'这条定理叫什么？',desc:'同名定理点选填空，其他条目输入名称'},
     choice:{title:'名称选择',icon:'☷',prompt:'为公式选择正确的定理',desc:'从名称与编号列表中选择'},
     blanks:{title:'字母填空',icon:'_p',prompt:'补上字母，还原这条定理',desc:'符号已给出，允许一致改名'},
-    formula:{title:'公式拼写',icon:'∧',prompt:'写出这条定理的内容',desc:'符号按键，或 CalcCheck 风格输入'}
+    formula:{title:'公式拼写',icon:'∧',prompt:'写出这条定理的内容',desc:'符号按键，或 CalcCheck 风格输入'},
+    symbol:{title:'反斜线符号',icon:'\\',prompt:'这个符号的反斜线代码是什么？',desc:'输入 \\ 命令，可用字符补全'}
   };
-  const defaults = {modes:['name','choice','blanks','formula'],count:10,goal:20,sound:false,retry:true,scope:{query:'',topic:'',source:'',range:'',era:'2026',notebook:'',archiveWeek:'',important:false,repeated:false,starred:false,wrong:false,manual:false,selected:[]},presets:[]};
+  const defaults = {modes:['name','choice','blanks','formula','symbol'],count:10,goal:20,sound:false,retry:true,scope:{query:'',topic:'',source:'',range:'',era:'2026',notebook:'',archiveWeek:'',important:false,repeated:false,starred:false,wrong:false,manual:false,selected:[]},presets:[]};
   let storageOK=true, toastTimer, activeInput=null, lastFocus=null, view='home', page=1, wrongTab='active', auditQuery='', auditPage=1, session=null, qState=null;
   const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const attr=esc, $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -40,7 +41,7 @@
   function cleanSession(x){
     if(!x||!Array.isArray(x.queue)||x.queue.length>300||!Number.isInteger(x.index)||x.index<0||x.index>=x.queue.length)return null;
     if(x.queue.some(v=>!v||!byId.has(v.id)||!MODE[v.mode]))return null;
-    return {...x,queue:x.queue.map(v=>({id:v.id,mode:v.mode,retry:Math.min(2,Math.max(0,v.retry||0))})),label:String(x.label||'自由练习').slice(0,100),results:Array.isArray(x.results)?x.results.slice(0,300):[],combo:Number(x.combo)||0,bestCombo:Number(x.bestCombo)||0,xp:Number(x.xp)||0,state:x.state&&typeof x.state==='object'?x.state:null};
+    return {...x,queue:x.queue.map(v=>({id:v.id,mode:v.mode,retry:Math.min(2,Math.max(0,v.retry||0)),symbol:v.mode==='symbol'&&E.symbolsInFormula(byId.get(v.id).formula).includes(v.symbol)?v.symbol:null})),label:String(x.label||'自由练习').slice(0,100),results:Array.isArray(x.results)?x.results.slice(0,300):[],combo:Number(x.combo)||0,bestCombo:Number(x.bestCombo)||0,xp:Number(x.xp)||0,state:x.state&&typeof x.state==='object'?x.state:null};
   }
   const save=()=>write(KEYS.progress,progress), saveSettings=()=>write(KEYS.settings,settings);
   function saveSession(){if(session){session.state=qState;write(KEYS.session,session);resume=session;}}
@@ -50,15 +51,15 @@
   const mastered=()=>records.filter(r=>(progress.records[r.id]?.streak||0)>=3).length;
   function dateText(n){return n?new Date(n).toLocaleString('zh-CN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'尚未练习';}
   function streakDays(){let n=0,d=new Date();if(!progress.days[E.localDay(d)])d.setDate(d.getDate()-1);while(progress.days[E.localDay(d)]&&n<10000){n++;d.setDate(d.getDate()-1);}return n;}
-  const notebookNames={16001:'H1 · 入门与 CalcCheck',16009:'H2 · 表达式与计算',16010:'H3 · 赋值命令正确性',16017:'H4 · 命题演算入门',16018:'H5 · 命题演算',16020:'A1.2 · 布尔赋值命令',16021:'H6 · 自然数与归纳',16026:'H7.1 · 单调性',16027:'H7.2 · 自然数的序',16028:'H8.1 · Leibniz 与替换',16029:'H8.2 · 结构化证明'};
-  const archiveWeekNames={'Week3.Exercise-3-2_NatInd_SOL':'Week 3 · 自然数归纳','Week3.Exercise-3-3_MonusSubtraction_SOL':'Week 3 · 截断减法','Week3.Exercise-3-3_NatPred_SOL':'Week 3 · 自然数前驱','Week3.Homework-7_Nat-sucInd_SOL':'Week 3 · 后继归纳','Week4.Exercise-4-4_IntegerOrder_SOL':'Week 4 · 整数的序','Week6.Exercise-6-1_Sequences1_SOL':'Week 6 · 序列基础','Week6.Exercise-6-2_Sequences2_SOL':'Week 6 · 序列进阶','Week7.Exercise-7-2_CartesianProducts_SOL':'Week 7 · 笛卡儿积','Week7.Homework-15-2_Relations_SOL':'Week 7 · 关系','Week11.Exercise-11-4_Allegory_SOL':'Week 11 · Allegory'};
+  const notebookNames={16001:'H1 · 入门与 CalcCheck',16002:'Ex1.1 · 简单计算',16003:'Ex1.2 · 整数等式',16004:'Ex1.3 · 替换',16005:'Ex1.4 · 严格匹配',16006:'Ex1.5 · 结合与对称',16007:'Ex1.6 · 高难度练习',16008:'Ex1.7 · 赋值命令',16009:'H2 · 表达式与计算',16010:'H3 · 赋值命令正确性',16011:'Ex2.1 · 命题演算入门',16012:'Ex2.2 · 析取',16013:'Ex2.3 · 合取',16014:'Ex2.4 · 蕴含',16015:'Ex2.5 · 骑士与骗子',16016:'Ex2.6 · 布尔变量赋值',16017:'H4 · 命题演算入门',16018:'H5 · 命题演算',16020:'A1.2 · 布尔赋值命令',16021:'H6 · 自然数与归纳',16022:'Ex3.1 · 加法与乘法',16023:'Ex3.2 · 截断减法',16024:'Ex3.3 · 相等与前驱',16025:'Ex3.4 · 分类证明',16026:'H7.1 · 单调性',16027:'H7.2 · 自然数的序',16028:'H8.1 · Leibniz 与替换',16029:'H8.2 · 结构化证明'};
+  const archiveWeekNames={'Week3.Exercise-3-1_NatInd_SOL':'Week 3 · 自然数归纳','Week3.Exercise-3-2_NatInd_SOL':'Week 3 · 自然数归纳','Week3.Exercise-3-2_MonusSubtraction_SOL':'Week 3 · 截断减法','Week3.Exercise-3-3_MonusSubtraction_SOL':'Week 3 · 截断减法','Week3.Exercise-3-3_NatPred_SOL':'Week 3 · 自然数前驱','Week3.Homework-6_Nat-sucInd_SOL':'Week 3 · 后继归纳','Week3.Homework-7_Nat-sucInd_SOL':'Week 3 · 后继归纳','Week4.Exercise-4-4_IntegerOrder_SOL':'Week 4 · 整数的序','Week6.Exercise-6-1_Sequences1_SOL':'Week 6 · 序列基础','Week6.Exercise-6-2_Sequences2_SOL':'Week 6 · 序列进阶','Week7.Exercise-7-2_CartesianProducts_SOL':'Week 7 · 笛卡儿积','Week7.Homework-15-2_Relations_SOL':'Week 7 · 关系','Week11.Exercise-11-4_Allegory_SOL':'Week 11 · Allegory'};
   const topicLabel=t=>archiveWeekNames[t]||t;
-  const studyPicker=()=>`<div class="study-picker"><label><span class="field-label">学期资料</span><select data-filter="era"><option value="2026" ${settings.scope.era==='2026'?'selected':''}>2026 已核对预载列表</option><option value="all" ${settings.scope.era==='all'?'selected':''}>全部年份</option><option value="2025" ${settings.scope.era==='2025'?'selected':''}>2025 归档题库</option></select></label><label><span class="field-label">当前学习的 notebook</span><select data-filter="notebook"><option value="">全部已核对 notebook</option>${Object.entries(notebookNames).map(([port,name])=>`<option value="${port}" ${settings.scope.notebook===port?'selected':''}>${esc(name)}</option>`).join('')}</select></label><label><span class="field-label">资料 Week（原模块标签）</span><select data-filter="archiveWeek"><option value="">全部 Week</option>${[3,4,6,7,11].map(w=>`<option value="${w}" ${settings.scope.archiveWeek===String(w)?'selected':''}>Week ${w}</option>`).join('')}</select></label></div>`;
+  const studyPicker=()=>`<div class="study-picker"><label><span class="field-label">学期资料</span><select data-filter="era"><option value="2026" ${settings.scope.era==='2026'?'selected':''}>2026 已核对预载列表</option><option value="all" ${settings.scope.era==='all'?'selected':''}>全部年份</option><option value="2025" ${settings.scope.era==='2025'?'selected':''}>2025 归档题库</option></select></label><label><span class="field-label">当前学习的 notebook</span><select data-filter="notebook"><option value="">全部已核对 notebook</option>${Object.entries(notebookNames).map(([port,name])=>`<option value="${port}" ${settings.scope.notebook===port?'selected':''}>${esc(name)}</option>`).join('')}</select></label><label><span class="field-label">资料 Week（原模块标签）</span><select data-filter="archiveWeek"><option value="">全部 Week</option>${(settings.scope.era==='2026'?[3]:[3,4,6,7,11]).map(w=>`<option value="${w}" ${settings.scope.archiveWeek===String(w)?'selected':''}>Week ${w}</option>`).join('')}</select></label></div>`;
   function badges(r,extra=true){
     const p=progress.records[r.id];return `<div class="badge-row">${r.important?'<span class="badge important" title="原资料 Important 标题明确覆盖">★ IMPORTANT</span>':''}${r.emphasisEvidence?.length?'<span class="badge important" title="原资料感叹号强调，与 Important 标签分开">原文 !!</span>':''}${r.repeated?`<span class="badge repeat" title="同一声明出现于多份 Homework 的预载列表">↻ 预载于 ${r.occurrences} 份</span>`:''}${p?.active?'<span class="badge wrong">待复练</span>':p?.streak>=3?'<span class="badge good">已熟悉</span>':''}${extra?`<span class="badge">${esc(topicLabel(r.topic))}</span>${r.preloaded2026?.length?'<span class="badge good">2026 预载</span>':'<span class="badge">2025 归档</span>'}`:''}${r.domain?`<span class="badge">${esc(r.domain)}</span>`:''}</div>`;
   }
   function visibleRecords(){
-    const f=settings.scope;let rs=records.filter(r=>(f.era!=='2026'||r.preloaded2026?.length)&&(f.era!=='2025'||r.preloadedHomework?.length)&&(!f.notebook||r.preloaded2026?.includes(Number(f.notebook)))&&(!f.archiveWeek||r.archiveWeeks?.includes(Number(f.archiveWeek)))&&(!f.topic||r.topic===f.topic)&&(!f.source||r.sources.some(s=>s.sourceId===f.source))&&
+    const f=settings.scope;let rs=records.filter(r=>(f.era!=='2026'||r.preloaded2026?.length)&&(f.era!=='2025'||r.preloadedHomework?.length)&&(!f.notebook||r.preloaded2026?.includes(Number(f.notebook)))&&(!f.archiveWeek||(f.era==='2026'?r.preloaded2026Weeks?.includes(Number(f.archiveWeek)):f.era==='2025'?r.archiveWeeks?.includes(Number(f.archiveWeek)):r.preloaded2026Weeks?.includes(Number(f.archiveWeek))||r.archiveWeeks?.includes(Number(f.archiveWeek))))&&(!f.topic||r.topic===f.topic)&&(!f.source||r.sources.some(s=>s.sourceId===f.source))&&
       (!f.important||r.important)&&(!f.repeated||r.repeated)&&(!f.starred||progress.stars.includes(r.id))&&(!f.wrong||progress.records[r.id]?.active)&&E.referenceInRange(r.numbers,f.range));
     if(f.query)rs=E.searchRecords(rs,f.query);return rs;
   }
@@ -109,7 +110,11 @@
   function closeModal(){modalRoot.innerHTML='';document.body.style.overflow='';if(lastFocus?.isConnected)lastFocus.focus();}
   function configure(){openModal('这一关，想怎么练？',`<p class="small muted">当前 ${scopeRecords().length} 条定理。勾选的题型将随机出现，至少选一种。</p>${modeFields()}<div class="btn-row"><button class="btn primary" data-action="modal-start" ${!scopeRecords().length||!settings.modes.length?'disabled':''}>开始 ${settings.count} 题</button><button class="btn" data-action="modal-library">调整记忆范围</button></div>`);}
   function detail(id){const r=byId.get(id);if(!r)return;const p=progress.records[id];openModal('定理卡片',`<div class="question-name">${titleHTML(r)}</div>${r.variantLabel?`<span class="badge">${esc(r.variantLabel)}</span>`:''}${badges(r)}<div class="math">${esc(r.formula)}</div>${r.formulaVariants?.length>1?`<details><summary>同条目在原资料中的其他写法 · ${r.formulaVariants.length}</summary>${r.formulaVariants.map(f=>`<div class="source-formula">${esc(f)}</div>`).join('')}</details>`:''}${r.sideCondition?`<div class="callout"><strong>适用条件</strong><br>${esc(r.sideCondition)}</div>`:''}<p class="small"><strong>原文类型：</strong>${esc(r.kind)}${r.domain?' · '+esc(r.domain):''}</p><p class="small"><strong>所有编号：</strong>${r.numbers.length?r.numbers.map(n=>'('+esc(n)+')').join('、'):'原文未编号；内部卡片 ID 仅供网站索引'}</p>${r.aliases.length?`<p class="small"><strong>同条目别名：</strong>${r.aliases.map(esc).join(' · ')}</p>`:''}${r.importantEvidence?.length?`<details open><summary>★ 原文 Important 依据</summary>${r.importantEvidence.map(x=>`<p>${esc(x.label)}<br>${esc(shortSource(sourceMap.get(x.sourceId)?.name||x.sourceId))}</p>`).join('')}</details>`:''}<details><summary>来源与原文片段 · ${r.sources.length} 个位置</summary><div class="source-list">${r.sources.map(s=>`<div class="source-item"><strong>${esc(sourceLabel(s))}</strong><div class="source-formula">${esc(s.excerpt)}</div></div>`).join('')}</div></details>${p?`<details><summary>学习记录 · ${p.correct}/${p.attempts} 次正确</summary>${(p.log||[]).map(l=>`<p>${dateText(l.at)} · ${esc(MODE[l.mode]?.title)} · ${l.ok?'正确':l.assisted?'使用提示':'需复练'}<br><span class="source-formula">${esc(l.answer||'未作答')}</span></p>`).join('')}</details>`:''}<div class="btn-row"><button class="btn primary" data-action="practice-one" data-id="${id}">练习这条</button><button class="btn" data-action="copy-formula" data-id="${id}">复制公式</button><button class="btn" data-action="star" data-id="${id}">${progress.stars.includes(id)?'★ 已收藏':'☆ 收藏'}</button></div>`);}
-  function shortcuts(){const rows=[['\\equiv / \\==','≡'],['\\nequiv','≢'],['\\land / \\lor / \\lnot','∧ ∨ ¬'],['\\implies / \\follows','⇒ ⇐'],['\\neq / \\leq / \\geq','≠ ≤ ≥'],['\\becomes / \\:=','≔（替换）'],[':=',':=（赋值命令，不转换）'],['\\cdot / \\.','·'],['\\forall / \\exists','∀ ∃'],['\\with / \\spot','❙ •'],['\\[- / \\]- / \\;_','⁅ ⁆ ⍮'],['\\NN / \\ZZ / \\BB','ℕ ℤ 𝔹'],['\\sum / \\product','∑ ∏'],['\\<< / \\>>','⟪ ⟫']];openModal('符号输入与判题',`<p class="small">公式输入框中，输入代码后按 <kbd>Tab</kbd> 或 <kbd>空格</kbd> 转换；也可以整式粘贴，提交时会转换。单独的 <kbd>Enter</kbd> 检查，<kbd>Shift</kbd> + <kbd>Enter</kbd> 换行。</p><table class="readable-table"><thead><tr><th>输入</th><th>符号</th></tr></thead><tbody>${rows.map(([a,b])=>`<tr><td><code>${esc(a)}</code></td><td class="math small">${esc(b)}</td></tr>`).join('')}</tbody></table><p class="callout blue">这是基于所提供 CalcCheck 输入说明实现的常用快捷键子集，不是完整 CalcCheck 编辑器。≡ 与 = 保持不同；plain := 与 ≔ 保持不同。</p><p class="small muted">接受 a、p′、n₀、α 等字母变量的一致改名。复杂命令、量词和替换题请保留原符号结构及侧条件；不会用真假表把所有恒真式当作同一条定理。</p>`);}
+  function shortcuts(){
+    const rows=Object.entries(E.SHORTCUTS).sort(([a],[b])=>a.localeCompare(b));
+    openModal('反斜线符号输入',`<p class="small">公式题中输入反斜线及代码前缀即可看到候选；按 ↓ / ↑ 选择，Tab 补成符号。完整代码后也可按空格转换。符号题中用相同的候选补全代码；下列同一符号的任意代码都可作答。</p><table class="readable-table"><thead><tr><th>反斜线代码</th><th>符号</th></tr></thead><tbody>${rows.map(([code,symbol])=>`<tr><td><code>${esc(code)}</code></td><td class="math small">${esc(symbol)}</td></tr>`).join('')}</tbody></table><p class="callout blue">直接输入 := 是命令赋值；\\:= 才转换成替换符号 ≔。≡ 与 = 分开判题。</p>`);
+  }
+
   function launch(rs,label='自由练习',review=false,count=settings.count){
     if(!settings.modes.length){toast('请至少勾选一种题型。');configure();return;}
     let queue;
@@ -122,7 +127,12 @@
     }catch(e){toast(e.message);return;}
     closeModal();session={queue,index:0,label,results:[],combo:0,bestCombo:0,xp:0,startedAt:Date.now(),state:null};qState=null;saveSession();view='quiz';render();window.scrollTo({top:0});
   }
-  function newQuestionState(){const q=session.queue[session.index],r=byId.get(q.id);let candidates=records.filter(v=>v.id!==r.id&&E.label(v)!==E.label(r)&&!E.compareFormula(r.formula,v.formula).ok);const nearby=E.shuffle(candidates.filter(v=>v.topic===r.topic)),other=E.shuffle(candidates.filter(v=>v.topic!==r.topic));return {checked:false,selected:null,typed:'',answer:'',assisted:false,options:E.shuffle([r,...nearby.concat(other).slice(0,3)]).map(v=>v.id),suggestions:[],suggestionIndex:0,keys:'common',feedback:null};}
+  function newQuestionState(){const q=session.queue[session.index],r=byId.get(q.id);let candidates=records.filter(v=>v.id!==r.id&&E.label(v)!==E.label(r)&&!E.compareFormula(r.formula,v.formula).ok);const nearby=E.shuffle(candidates.filter(v=>v.topic===r.topic)),other=E.shuffle(candidates.filter(v=>v.topic!==r.topic));if(q.mode==='symbol'&&!q.symbol)q.symbol=E.shuffle(E.symbolsInFormula(r.formula))[0];return {checked:false,selected:null,groupSelected:false,typed:'',answer:'',assisted:false,options:E.shuffle([r,...nearby.concat(other).slice(0,3)]).map(v=>v.id),suggestions:[],suggestionIndex:0,shortcutIndex:0,symbolTarget:q.symbol||null,keys:'context',feedback:null};}
+  function theoremTokens(r){return [...new Set((r.formulaVariants?.length?r.formulaVariants:[r.formula]).flatMap(f=>E.tokenize(f)))];}
+  function theoremSymbolsHTML(r){
+    const symbols=theoremTokens(r).filter(t=>!E.isVariable(t)&&!/^[A-Za-z0-9_]+$/.test(t));
+    return symbols.length?`<div class="theorem-symbols" role="group" aria-label="本题特殊符号"><span class="theorem-symbols-label">本题符号</span>${symbols.map(t=>`<span class="theorem-symbol" title="${attr(t)}">${esc(t)}</span>`).join('')}</div>`:'';
+  }
   function renderQuiz(){
     if(!session){navigate('home');return;}if(session.index>=session.queue.length){endSession();return;}
     if(!qState)qState=session.state||newQuestionState();
@@ -132,41 +142,78 @@
     else question=`<div class="question-card"><div class="mini-mascot" aria-hidden="true"><span class="mark">∴</span></div><div class="speech question-name">${titleHTML(r)}${r.variantLabel?`<span class="variant-hint">${esc(r.variantLabel)}</span>`:''}</div></div>${r.sideCondition?`<div class="callout blue small">适用条件：${esc(r.sideCondition)}</div>`:''}`;
     let answer='';
     if(q.mode==='choice')answer=`<div class="choices" role="group" aria-label="选择定理名称">${qState.options.map((id,i)=>{const x=byId.get(id);return `<button class="choice ${qState.selected===id?'selected':''} ${qState.checked&&id===r.id?'correct':''} ${qState.checked&&qState.selected===id&&!qState.feedback?.ok?'incorrect':''}" data-action="choose" data-id="${id}" aria-pressed="${qState.selected===id}" ${qState.checked?'disabled':''}><span class="choice-key">${i+1}</span><span>${titleHTML(x)}</span></button>`;}).join('')}</div><p class="input-hint">可按 1–4 选择，再按 Enter 检查。</p>`;
-    if(q.mode==='name')answer=`<label class="field-label" for="name-answer">输入名称前 3 个字符，或直接输入编号</label><input class="input name-input" id="name-answer" placeholder="例如 Gol、De M、3.35…" autocomplete="off" spellcheck="false" role="combobox" aria-controls="name-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="name-suggestions" class="autocomplete" role="listbox" hidden></div><div id="name-selection" class="name-selection" ${qState.selected?'':'hidden'}>${qState.selected?titleHTML(byId.get(qState.selected)):''}</div><p class="input-hint">↓ / ↑ 选择候选，Tab 或 Enter 补全。名称相同或前缀相同时，请明确选择编号；不会只凭 “De M” 自动猜中。</p>`;
+    if(q.mode==='name'){
+      const group=E.nameGroup(records,r);
+      answer=group.length>1?`<div class="field-label">补全定理名称；编号可留空。若选择编号，必须与公式对应。</div><div class="group-answer"><span class="group-blank-label">名称</span><button class="group-fill ${qState.groupSelected?'selected':''}" data-action="group-name" aria-pressed="${!!qState.groupSelected}" ${qState.checked?'disabled':''}>${esc(r.name)}</button><span class="group-blank-label">编号（可选）</span><div class="group-refs">${[...new Map(group.map(x=>[x.displayRef,x])).values()].map(x=>`<button class="group-fill ${qState.selected&&byId.get(qState.selected)?.displayRef===x.displayRef?'selected':''} ${qState.checked&&x.displayRef===r.displayRef?'correct':''}" data-action="group-ref" data-id="${x.id}" aria-pressed="${!!qState.selected&&byId.get(qState.selected)?.displayRef===x.displayRef}" ${qState.checked?'disabled':''}>${esc(x.displayRef)}</button>`).join('')}</div></div><p class="input-hint">只选名称即可按 group 作答；选了编号后按该编号对应的公式判题。</p>`:
+      `<label class="field-label" for="name-answer">输入名称、别名或编号</label><input class="input name-input" id="name-answer" placeholder="例如 Golden rule、3.35…" autocomplete="off" spellcheck="false" role="combobox" aria-controls="name-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="name-suggestions" class="autocomplete" role="listbox" hidden></div><div id="name-selection" class="name-selection" ${qState.selected?'':'hidden'}>${qState.selected?titleHTML(byId.get(qState.selected)):''}</div><p class="input-hint">可输入完整名称或别名；若指定编号，必须与这条公式对应。</p>`;
+    }
     if(q.mode==='blanks'){
       const template=E.blankTemplate(r.formula),idx=new Map(template.blanks.map((v,i)=>[v.index,i]));qState.template=template;
       answer=`<div class="blank-formula" role="group" aria-label="补全定理变量">${template.tokens.map((t,k)=>idx.has(k)?`<input class="blank-slot ${(qState.values?.[idx.get(k)]||'')?'filled':''}" data-slot="${idx.get(k)}" id="blank-${idx.get(k)}" aria-label="第 ${idx.get(k)+1} 个字母空" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="12" value="${attr(qState.values?.[idx.get(k)]||'')}" ${qState.checked?'disabled':''}>`:`<span>${esc(t)}</span>`).join('')}</div><p class="input-hint">需要 ${template.variables.length} 个不同变量。每处都要填写，重复字母须保持关系一致。Tab 或空格移到下一空；点字母键自动前进。</p><div id="keyboard">${keyboardHTML('blanks',r)}</div>`;
     }
-    if(q.mode==='formula')answer=`<label class="field-label" for="formula-answer">你的公式</label><textarea id="formula-answer" class="formula-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="用下方按键拼出公式，或键入 \\land、\\implies…" ${qState.checked?'disabled':''}>${esc(qState.typed)}</textarea><div class="formula-preview" id="formula-preview" aria-live="polite">${esc(E.normalizeInput(qState.typed||''))}</div><div id="keyboard">${keyboardHTML('formula',r)}</div><p class="input-hint">符号代码后按 Tab / 空格转换 · Enter 检查 · Shift + Enter 换行。可以自由改名字母，不能合并独立变量。</p>`;
-    app.innerHTML=`<div class="quiz-shell"><header class="quiz-top"><button class="icon-btn" data-action="exit-quiz" aria-label="退出并保存本关">×</button><div class="meter" role="progressbar" aria-label="本关进度" aria-valuenow="${session.index+(qState.checked?1:0)}" aria-valuemin="0" aria-valuemax="${session.queue.length}"><span style="width:${pct}%"></span></div><span class="quiz-progress-label">${session.index+(qState.checked?1:0)} / ${session.queue.length}</span><span class="combo">ϟ ${session.combo} 连对</span></header><main class="quiz-main" id="main" tabindex="-1"><div class="quiz-meta"><span class="badge">${esc(session.label)}</span><span class="badge good">${m.title}</span>${q.retry?`<span class="badge wrong">本轮复练 ${q.retry}/2</span>`:''}${r.important?'<span class="badge important">★ IMPORTANT</span>':''}</div>${r.domain?`<p class="small muted">类型：${esc(r.domain)}</p>`:''}<h1>${m.prompt}</h1><p class="quiz-instruction">${q.mode==='blanks'?'逻辑符号已经排好。字母不必与讲义相同，但逻辑结构要一致。':q.mode==='formula'?'回想运算符、变量关系和括号；不是逐字背诵。':'看清公式结构，再选择名称与编号。'}</p>${question}${answer}</main><footer class="quiz-bottom ${qState.checked?'feedback '+(qState.feedback.ok?'correct':'incorrect'):''}" id="quiz-bottom">${bottomHTML()}</footer></div>`;
-    if(!qState.checked)setTimeout(()=>{const target=q.mode==='name'?$('#name-answer'):q.mode==='formula'?$('#formula-answer'):q.mode==='blanks'?$('#blank-0'):null;if(target){target.focus({preventScroll:true});activeInput=target;}},35);
+    if(q.mode==='formula')answer=`<label class="field-label" for="formula-answer">你的公式</label><textarea id="formula-answer" class="formula-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="用下方按键拼出公式，或键入 \\land、\\implies…" aria-controls="shortcut-suggestions" aria-expanded="false" ${qState.checked?'disabled':''}>${esc(qState.typed)}</textarea><div id="shortcut-suggestions" class="autocomplete shortcut-suggestions" role="listbox" hidden></div><div class="formula-preview" id="formula-preview" aria-live="polite">${esc(E.normalizeInput(qState.typed||''))}</div><div id="keyboard">${keyboardHTML('formula',r)}</div><p class="input-hint">输入反斜线和代码前缀可看到全部匹配符号；↓ / ↑ 选项，Tab 补全。完整代码后按空格转换；Enter 检查。</p>`;
+    if(q.mode==='symbol')answer=`<div class="symbol-challenge" aria-label="要输入的符号">${esc(qState.symbolTarget)}</div><label class="field-label" for="symbol-answer">输入这个符号的反斜线代码</label><input class="input name-input" id="symbol-answer" placeholder="例如 \\land" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-controls="shortcut-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="shortcut-suggestions" class="autocomplete shortcut-suggestions" role="listbox" hidden></div><p class="input-hint">输入 \\ 后的字符；接受同一符号的所有已收录代码。↓ / ↑ 选择，Tab 补齐代码，Enter 检查。</p>`;
+    app.innerHTML=`<div class="quiz-shell"><header class="quiz-top"><button class="icon-btn" data-action="exit-quiz" aria-label="退出并保存本关">×</button><div class="meter" role="progressbar" aria-label="本关进度" aria-valuenow="${session.index+(qState.checked?1:0)}" aria-valuemin="0" aria-valuemax="${session.queue.length}"><span style="width:${pct}%"></span></div><span class="quiz-progress-label">${session.index+(qState.checked?1:0)} / ${session.queue.length}</span><span class="combo">ϟ ${session.combo} 连对</span></header><main class="quiz-main" id="main" tabindex="-1"><div class="quiz-meta"><span class="badge">${esc(session.label)}</span><span class="badge good">${m.title}</span>${q.retry?`<span class="badge wrong">本轮复练 ${q.retry}/2</span>`:''}${r.important?'<span class="badge important">★ IMPORTANT</span>':''}</div>${r.domain?`<p class="small muted">类型：${esc(r.domain)}</p>`:''}<h1>${m.prompt}</h1><p class="quiz-instruction">${q.mode==='blanks'?'逻辑符号已经排好。字母不必与讲义相同，但逻辑结构要一致。':q.mode==='formula'?'回想运算符、变量关系和括号；不是逐字背诵。':'看清公式结构，再选择名称与编号。'}</p>${question}${theoremSymbolsHTML(r)}${answer}</main><footer class="quiz-bottom ${qState.checked?'feedback '+(qState.feedback.ok?'correct':'incorrect'):''}" id="quiz-bottom">${bottomHTML()}</footer></div>`;
+    if(!qState.checked)setTimeout(()=>{const target=q.mode==='name'?$('#name-answer')||$('.group-fill'):q.mode==='formula'?$('#formula-answer'):q.mode==='symbol'?$('#symbol-answer'):q.mode==='blanks'?$('#blank-0'):null;if(target){target.focus({preventScroll:true});activeInput=target;}},35);
   }
   function keyboardHTML(mode,r){
-    const letters=[...new Set([...E.blankTemplate(r.formula).variables,'p','q','r','s','a','b','c','x','y','z','m','n',"p'","q'",'n₀','α','β'])];
-    if(mode==='blanks')return `<div class="key-panel"><div class="key-panel-head">字母按键 · 点一下填入并前进</div><div class="key-row">${letters.map(t=>keyHTML(t)).join('')}<button class="key word" data-action="key" data-key="BACKSPACE" aria-label="清除当前空">⌫</button></div></div>`;
+    const original=E.blankTemplate(r.formula).variables;
+    const letters=[...new Set([...original,...['p','q','r','x','y','z'].filter(t=>!original.includes(t)).slice(0,original.length===0?0:original.length<=3?3:1)])];
+    const controls=`<div class="key-row key-controls" role="group" aria-label="光标与编辑"><button class="key key-control" data-action="key" data-key="CURSOR_LEFT" aria-label="光标左移" ${qState.checked?'disabled':''}>← <span>左移</span></button><button class="key key-control" data-action="key" data-key="CURSOR_RIGHT" aria-label="光标右移" ${qState.checked?'disabled':''}>→ <span>右移</span></button><button class="key key-control key-delete" data-action="key" data-key="BACKSPACE" aria-label="退格" ${qState.checked?'disabled':''}>⌫ <span>退格</span></button></div>`;
+    if(mode==='blanks')return `<div class="key-panel"><div class="key-panel-head">字母按键 · 点一下填入并前进</div>${controls}<div class="key-row">${letters.map(t=>keyHTML(t)).join('')}</div></div>`;
     const common=['¬','∧','∨','≡','≢','⇒','⇐','=','≠','(',')','true','false','+','-','·','0','1','2','3','4','5','6','7','8','9','≤','≥','<','>'];
     const baseExtra=['∀','∃','∑','∏','❙','•',':','ℕ','ℤ','𝔹','∈','∉','∪','∩','⊆','⊂','∅','{','}','[',']','≔',':=','⁅','⁆','⍮','⟪','⟫','⨾','˘','⊦','suc','pred','even','odd','double'];
-    const extra=[...new Set([...baseExtra,...E.tokenize(r.formula).filter(t=>!E.isVariable(t)&&!common.includes(t))])];
-    return `<div class="key-panel"><div class="key-panel-head"><button data-action="key-tab" data-tab="common" class="${qState.keys==='common'?'active':''}">常用符号</button><button data-action="key-tab" data-tab="extra" class="${qState.keys==='extra'?'active':''}">量词 / 命令 / 函数</button><button data-action="shortcuts">键盘快捷输入 ?</button></div><div class="key-row">${(qState.keys==='extra'?extra:common).map(t=>keyHTML(t)).join('')}</div><div class="key-row">${letters.map(t=>keyHTML(t)).join('')}<button class="key word" data-action="key" data-key="SPACE">空格</button><button class="key word" data-action="key" data-key="BACKSPACE" aria-label="退格">⌫</button><button class="key word" data-action="key" data-key="CLEAR">清空</button></div></div>`;
+    const needed=theoremTokens(r).filter(t=>!E.isVariable(t));
+    const all=[...new Set([...common,...baseExtra,...needed])];
+    const full=qState.keys==='all';
+    return `<div class="key-panel"><div class="key-panel-head"><button data-action="key-tab" data-tab="context" class="${full?'':'active'}">本题按键</button><button data-action="key-tab" data-tab="all" class="${full?'active':''}">全部按键</button><button data-action="shortcuts">键盘快捷输入 ?</button></div>${controls}<div class="key-row">${(full?all:needed).map(t=>keyHTML(t)).join('')}</div><div class="key-row">${(full?[...new Set([...original,'p','q','r','s','a','b','c','x','y','z','m','n',"p'","q'",'n₀','α','β'])]:letters).map(t=>keyHTML(t)).join('')}<button class="key word" data-action="key" data-key="SPACE">空格</button>${full?'<button class="key word" data-action="key" data-key="CLEAR">清空</button>':''}</div></div>`;
   }
   function keyHTML(t){return `<button class="key ${t.length>2?'word':''}" data-action="key" data-key="${attr(t)}" aria-label="输入 ${attr(t)}" title="${attr(Object.entries(E.SHORTCUTS).find(([_,v])=>v===t)?.[0]||t)}" ${qState.checked?'disabled':''}>${esc(t)}</button>`;}
   function bottomHTML(){
     if(!qState.checked)return `<div class="bottom-inner"><div class="btn-row"><button class="btn ghost" data-action="skip">暂时不会</button><button class="btn small ghost" data-action="hint">提示</button><span class="small muted">准备好后按 Enter</span></div><button id="check-answer" class="btn primary" data-action="check" ${canCheck()?'':'disabled'}>检查答案</button></div>`;
     const q=session.queue[session.index],r=byId.get(q.id),f=qState.feedback;
-    return `<div class="bottom-inner"><div class="feedback-message" role="status" aria-live="polite"><span class="feedback-icon" aria-hidden="true">${f.ok?'✓':'↺'}</span><div class="feedback-text"><h2>${f.ok?(session.combo>=3?`${session.combo} 连对，保持这个节奏！`:'答对了！'):(qState.assisted?'带着提示，再记一次':'再记一次，就更近一步。')}</h2><p class="feedback-label">${esc(E.label(r))}${r.variantLabel?' · '+esc(r.variantLabel):''}</p><p class="feedback-formula">${esc(r.formula)}</p><p>${esc(f.message)}${f.ok?` +${f.xp||10} XP`:' 已记录到错题本。'}</p></div></div><button class="btn ${f.ok?'primary':'danger'}" data-action="continue">${session.index===session.queue.length-1?'查看本关成果':'继续'}</button></div>`;
+    const nameAnswer=q.mode==='name'||q.mode==='choice';
+    const symbolAnswer=q.mode==='symbol';
+    const formulas=[...new Set(r.formulaVariants?.length?r.formulaVariants:[r.formula])];
+    const correctAnswer=symbolAnswer?Object.entries(E.SHORTCUTS).filter(([,symbol])=>symbol===qState.symbolTarget).map(([code])=>code).join(' / '):nameAnswer?E.label(r):formulas.join(' / ');
+    const answerType=symbolAnswer?'反斜线代码':nameAnswer?'名称与编号':'公式';
+    const context=symbolAnswer?`对应符号：${qState.symbolTarget} · ${E.label(r)}`:nameAnswer?`对应公式：${r.formula}`:`定理：${E.label(r)}`;
+    const group=E.nameGroup(records,r);
+    const alternatives=`${r.aliases.length?'别名：'+r.aliases.join('、')+'。':''}${nameAnswer&&group.length>1?'同组名称可单独作答；本题对应 '+r.displayRef+'。':''}`;
+    const groupResults=nameAnswer&&group.length>1?`<details class="group-results"><summary>查看同组 ${group.length} 个编号与结果</summary>${group.map(x=>`<p><strong>${esc(x.displayRef)}</strong> ${esc(x.formula)}</p>`).join('')}</details>`:'';
+    return `<div class="bottom-inner"><div class="feedback-message" role="status" aria-live="polite"><span class="feedback-icon" aria-hidden="true">${f.ok?'✓':'↺'}</span><div class="feedback-text"><h2>${f.ok?(session.combo>=3?`${session.combo} 连对，保持这个节奏！`:'答对了！'):(qState.assisted?'带着提示，再记一次':'再记一次，就更近一步。')}</h2><p class="feedback-answer-heading">正确答案 · ${answerType}</p><p id="correct-answer" class="feedback-answer ${nameAnswer||symbolAnswer?'':'feedback-formula'}">${esc(correctAnswer)}</p>${alternatives?`<p class="feedback-context">${esc(alternatives)}</p>`:''}${groupResults}<p class="feedback-context">${esc(context)}${r.variantLabel?' · '+esc(r.variantLabel):''}</p><p>${esc(f.message)}${f.ok?` +${f.xp||10} XP`:' 已记录到错题本。'}</p></div></div><button class="btn ${f.ok?'primary':'danger'}" data-action="continue">${session.index===session.queue.length-1?'查看本关成果':'继续'}</button></div>`;
   }
-  function canCheck(){if(!session||!qState||qState.checked)return false;const m=session.queue[session.index].mode;if(m==='choice')return !!qState.selected;if(m==='name')return !!qState.selected||!!qState.typed.trim();if(m==='formula')return !!qState.typed.trim();return (qState.values||[]).length===qState.template?.blanks.length&&(qState.values||[]).every(v=>v?.trim());}
+  function canCheck(){if(!session||!qState||qState.checked)return false;const m=session.queue[session.index].mode;if(m==='choice')return !!qState.selected;if(m==='name')return !!qState.selected||!!qState.groupSelected||!!qState.typed.trim();if(m==='formula'||m==='symbol')return !!qState.typed.trim();return (qState.values||[]).length===qState.template?.blanks.length&&(qState.values||[]).every(v=>v?.trim());}
   function updateCheck(){const b=$('#check-answer');if(b)b.disabled=!canCheck();}
   function updateSuggestions(){
     const query=qState.typed.trim(),box=$('#name-suggestions');if(!box)return;
     if(qState.selected||Array.from(query).length<3&&!/^\(?\d/.test(query)){box.hidden=true;$('#name-answer')?.setAttribute('aria-expanded','false');return;}
     const q=E.normalizeName(query);
-    qState.suggestions=E.searchRecords(records,query).filter(r=>[r.name,...r.aliases,r.displayRef,...r.numbers].some(v=>E.normalizeName(v).includes(q))).slice(0,80).map(r=>r.id);
+    const eligible=new Set(scopeRecords().map(r=>r.id));
+    qState.suggestions=E.searchRecords(records,query).filter(r=>eligible.has(r.id)&&[r.name,...r.aliases,r.displayRef,...r.numbers].some(v=>E.normalizeName(v).includes(q))).slice(0,80).map(r=>r.id);
     qState.suggestionIndex=Math.min(qState.suggestionIndex||0,Math.max(0,qState.suggestions.length-1));box.hidden=false;
     box.innerHTML=qState.suggestions.length?qState.suggestions.map((id,i)=>`<button id="suggestion-${i}" class="suggestion ${i===qState.suggestionIndex?'focused':''}" data-action="suggest" data-id="${id}" role="option" aria-selected="${i===qState.suggestionIndex}">${titleHTML(byId.get(id))}</button>`).join(''):'<div class="small muted" style="padding:14px">没有匹配名称；也可以输入具体编号。</div>';
     $('#name-answer')?.setAttribute('aria-expanded','true');$('#name-answer')?.setAttribute('aria-activedescendant','suggestion-'+qState.suggestionIndex);
   }
   function selectName(id){if(!byId.has(id))return;qState.selected=id;qState.typed=E.label(byId.get(id));$('#name-answer').value=qState.typed;$('#name-suggestions').hidden=true;$('#name-answer').setAttribute('aria-expanded','false');$('#name-selection').innerHTML=titleHTML(byId.get(id));$('#name-selection').hidden=false;updateCheck();$('#name-answer').focus();}
+  function updateShortcutSuggestions(){
+    const input=$('#symbol-answer')||$('#formula-answer'),box=$('#shortcut-suggestions');if(!input||!box)return;
+    const mode=session.queue[session.index].mode;
+    const at=mode==='symbol'?E.shortcutPrefix(input.value.trim()):E.shortcutPrefix(input.value,input.selectionStart);
+    const matches=at?E.shortcutSuggestions(at.prefix):[];
+    qState.shortcutMatches=matches;qState.shortcutRange=at;
+    qState.shortcutIndex=Math.min(qState.shortcutIndex||0,Math.max(0,matches.length-1));
+    box.hidden=!matches.length;input.setAttribute('aria-expanded',String(!!matches.length));
+    input.setAttribute('aria-activedescendant',matches.length?'shortcut-'+qState.shortcutIndex:'');
+    box.innerHTML=matches.map(({key,symbol},i)=>`<button id="shortcut-${i}" class="suggestion ${i===qState.shortcutIndex?'focused':''}" data-action="shortcut" data-key="${attr(key)}" role="option" aria-selected="${i===qState.shortcutIndex}"><code>${esc(key)}</code> → <span class="math">${esc(symbol)}</span></button>`).join('');
+  }
+  function selectShortcut(key){
+    if(!Object.hasOwn(E.SHORTCUTS,key))return;
+    const mode=session.queue[session.index].mode,input=mode==='symbol'?$('#symbol-answer'):$('#formula-answer');if(!input)return;
+    if(mode==='symbol'){input.value=key;input.setSelectionRange(key.length,key.length);}
+    else{const at=qState.shortcutRange;if(!at)return;const end=input.selectionStart;input.value=input.value.slice(0,at.start)+E.SHORTCUTS[key]+input.value.slice(end);const caret=at.start+E.SHORTCUTS[key].length;input.setSelectionRange(caret,caret);}
+    input.focus();input.dispatchEvent(new Event('input',{bubbles:true}));$('#shortcut-suggestions').hidden=true;input.setAttribute('aria-expanded','false');
+  }
   function choose(id){if(qState.checked)return;qState.selected=id;$$('.choice').forEach(b=>{b.classList.toggle('selected',b.dataset.id===id);b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false');});updateCheck();}
   function check(skip=false){
     if(!session||!qState||qState.checked)return;
@@ -174,17 +221,12 @@
     if(!skip){
       if(!canCheck())return;
       if(q.mode==='name'||q.mode==='choice'){
-        let id=qState.selected;
-        if(!id&&q.mode==='name'){
-          const query=E.normalizeName(qState.typed).replace(/^\((.+)\)$/,'$1');
-          let exact=records.filter(x=>[E.label(x),x.name,...x.aliases,...x.numbers].some(v=>E.normalizeName(v)===query));
-          if(!exact.length&&Array.from(query).length>=3)exact=records.filter(x=>[x.name,...x.aliases].some(v=>E.normalizeName(v).startsWith(query)));
-          if(exact.length===1)id=exact[0].id;
-          else if(exact.length>1){toast('这个名称或前缀对应多条定理，请选择具体编号。');updateSuggestions();return;}
-        }
-        answer=id?E.label(byId.get(id)):qState.typed;
-        const equivalent=id&&E.compareFormula(r.formula,byId.get(id).formula).ok;
-        result={ok:id===r.id||!!equivalent,message:id===r.id?'名称与编号都选对了。':equivalent?'接受了描述同一公式结构的来源别名 / 变体。':'看清公式的主运算符和变量关系，再对应名称与编号。'};
+        const judged=q.mode==='choice'?{ok:qState.selected===r.id,kind:'numbered'}:E.gradeName(records,r,{selectedId:qState.selected,groupSelected:qState.groupSelected,typed:qState.typed});
+        answer=qState.selected?E.label(byId.get(qState.selected)):qState.groupSelected?r.name:qState.typed;
+        result={ok:judged.ok,message:judged.ok?(judged.kind==='group'?'同组名称正确；未指定编号。':'名称与编号对应正确。'):'名称或所选编号与当前公式不对应。'};
+      }else if(q.mode==='symbol'){
+        answer=qState.typed.trim();const ok=E.SHORTCUTS[answer]===qState.symbolTarget;
+        result={ok,message:ok?'符号代码正确。':'请用反斜线代码输入显示的符号。'};
       }else{
         answer=q.mode==='blanks'?(E.fillTemplate(qState.template,qState.values||[])||''):qState.typed;
         if(q.mode==='blanks'&&!answer){toast('每个空只能填一个字母变量，如 p、p′ 或 n₀。');return;}
@@ -195,11 +237,11 @@
     const ok=result.ok;const earned=E.applyAttempt(progress,r.id,q.mode,ok,answer,qState.assisted);
     session.combo=ok?session.combo+1:0;session.bestCombo=Math.max(session.bestCombo,session.combo);session.xp+=earned.xp;
     session.results.push({id:r.id,mode:q.mode,ok,retry:q.retry,assisted:qState.assisted});
-    if(!ok&&settings.retry&&q.retry<2)session.queue.splice(Math.min(session.index+4,session.queue.length),0,{id:r.id,mode:q.mode,retry:q.retry+1});
+    if(!ok&&settings.retry&&q.retry<2)session.queue.splice(Math.min(session.index+4,session.queue.length),0,{id:r.id,mode:q.mode,retry:q.retry+1,symbol:q.symbol||null});
     qState.checked=true;qState.answer=answer;qState.feedback={ok,message:result.message,xp:earned.xp};save();saveSession();beep(ok);renderQuiz();
   }
   function hint(){if(!qState||qState.checked)return;qState.assisted=true;const q=session.queue[session.index],r=byId.get(q.id),t=E.blankTemplate(r.formula);
-    const text=q.mode==='name'||q.mode==='choice'?`名称提示：${r.name==='原文未命名'?'这条定理原文没有名称，请按编号选择。':r.name.slice(0,3)+'…'}；主题：${r.topic}。`:`此公式有 ${t.variables.length} 个不同变量；常用原字母为 ${t.variables.join('、')||'无'}。${q.mode==='formula'?'主要符号：'+[...new Set(E.tokenize(r.formula).filter(x=>!E.isVariable(x)&&!['(',')'].includes(x)))].slice(0,14).join(' '):'同一个变量在不同空的位置要保持一致。'}`;
+    const text=q.mode==='name'||q.mode==='choice'?`名称提示：${r.name==='原文未命名'?'这条定理原文没有名称，请按编号选择。':r.name.slice(0,3)+'…'}；主题：${r.topic}。`:q.mode==='symbol'?`代码以 ${Object.keys(E.SHORTCUTS).find(k=>E.SHORTCUTS[k]===qState.symbolTarget)?.slice(0,3)}… 开头；输入后可用候选补齐。`:`此公式有 ${t.variables.length} 个不同变量；常用原字母为 ${t.variables.join('、')||'无'}。${q.mode==='formula'?'主要符号：'+[...new Set(E.tokenize(r.formula).filter(x=>!E.isVariable(x)&&!['(',')'].includes(x)))].slice(0,14).join(' '):'同一个变量在不同空的位置要保持一致。'}`;
     openModal('提示 · 本次将保留为待复练',`<p>${esc(text)}</p><p class="small muted">先尝试完成；下一次不看提示再答对，才能推进错题修复。</p><div class="btn-row"><button class="btn primary" data-action="close-modal">继续作答</button></div>`);saveSession();}
   function nextQuestion(){if(!qState?.checked)return;session.index++;session.state=null;qState=null;if(session.index>=session.queue.length){endSession();return;}saveSession();renderQuiz();window.scrollTo({top:0});}
   function endSession(){
@@ -215,11 +257,16 @@
     if(qState?.checked)return;const mode=session.queue[session.index].mode;
     if(mode==='blanks'){
       let el=activeInput?.isConnected&&activeInput.matches('.blank-slot')?activeInput:$('.blank-slot:not(.filled)')||$('.blank-slot');if(!el)return;
+      if(text==='CURSOR_LEFT'||text==='CURSOR_RIGHT'){const next=$(`#blank-${Number(el.dataset.slot)+(text==='CURSOR_LEFT'?-1:1)}`);if(next){next.focus();activeInput=next;}return;}
       if(text==='BACKSPACE')el.value='';else if(E.isVariable(text))el.value=text;else return;
       el.dispatchEvent(new Event('input',{bubbles:true}));el.focus();
       if(text!=='BACKSPACE'){const next=$(`#blank-${Number(el.dataset.slot)+1}`);if(next){next.focus();activeInput=next;}}return;
     }
     const el=$('#formula-answer');if(!el)return;let a=el.selectionStart??el.value.length,b=el.selectionEnd??a,value=el.value;
+    if(text==='CURSOR_LEFT'||text==='CURSOR_RIGHT'){
+      const caret=text==='CURSOR_LEFT'?(a===b&&a>0?a-Array.from(value.slice(0,a)).pop().length:a):(a===b&&b<value.length?b+Array.from(value.slice(b))[0].length:b);
+      el.focus();el.setSelectionRange(caret,caret);return;
+    }
     if(text==='CLEAR'){value='';a=0;}else if(text==='BACKSPACE'){if(a===b&&a>0)a-=Array.from(value.slice(0,a)).pop().length;value=value.slice(0,a)+value.slice(b);}
     else{const insert=text==='SPACE'?' ':text;const prefix=a>0&&!/\s$/.test(value.slice(0,a))&&text!=='SPACE'?' ':'';const content=prefix+insert+(text==='SPACE'?'':' ');value=value.slice(0,a)+content+value.slice(b);a+=content.length;}
     el.value=value;el.focus();el.setSelectionRange(a,a);el.dispatchEvent(new Event('input',{bubbles:true}));
@@ -234,13 +281,14 @@
   const auditInput=debounce((value,caret)=>{auditQuery=value;auditPage=1;render();const el=$('#audit-query');el.focus();el.setSelectionRange(caret,caret);},220);
   document.addEventListener('input',ev=>{const el=ev.target;
     if(el.matches('#name-answer')){qState.typed=el.value;qState.selected=null;qState.suggestionIndex=0;$('#name-selection').hidden=true;updateSuggestions();updateCheck();}
-    else if(el.matches('#formula-answer')){qState.typed=el.value;$('#formula-preview').textContent=E.normalizeInput(el.value);updateCheck();}
+    else if(el.matches('#formula-answer')){qState.typed=el.value;$('#formula-preview').textContent=E.normalizeInput(el.value);updateShortcutSuggestions();updateCheck();}
+    else if(el.matches('#symbol-answer')){qState.typed=el.value;updateShortcutSuggestions();updateCheck();}
     else if(el.matches('.blank-slot')){qState.values=qState.values||Array(qState.template.blanks.length).fill('');qState.values[Number(el.dataset.slot)]=el.value.trim();el.classList.toggle('filled',!!el.value.trim());updateCheck();}
     else if(el.matches('input[data-filter]:not([type=checkbox])'))filterInput(el.id,el.dataset.filter,el.value,el.selectionStart);
     else if(el.matches('[data-audit-search]'))auditInput(el.value,el.selectionStart);
   });
-  document.addEventListener('focusin',ev=>{if(ev.target.matches('#formula-answer,.blank-slot'))activeInput=ev.target;});
-  document.addEventListener('pointerdown',ev=>{if(ev.target.closest('[data-action="key"],[data-action="key-tab"]'))ev.preventDefault();});
+  document.addEventListener('focusin',ev=>{if(ev.target.matches('#formula-answer,#symbol-answer,.blank-slot'))activeInput=ev.target;});
+  document.addEventListener('pointerdown',ev=>{if(ev.target.closest('[data-action="key"],[data-action="key-tab"],[data-action="shortcut"]'))ev.preventDefault();});
   document.addEventListener('change',ev=>{const el=ev.target;
     if(el.matches('[data-setting-mode]')){const m=el.dataset.settingMode;settings.modes=el.checked?[...new Set([...settings.modes,m])]:settings.modes.filter(x=>x!==m);saveSettings();if(modalRoot.innerHTML){const b=$('[data-action="modal-start"]');if(b)b.disabled=!settings.modes.length||!scopeRecords().length;}else if(view==='settings')render();}
     else if(el.matches('[data-setting]')){const k=el.dataset.setting;settings[k]=el.type==='checkbox'?el.checked:Number(el.value);saveSettings();const b=$('[data-action="modal-start"]');if(b)b.textContent=`开始 ${settings.count} 题`;}
@@ -263,7 +311,10 @@
       case 'resume':session=cleanSession(resume);if(session){qState=session.state;view='quiz';render();}else toast('上次关卡已结束。');break;
       case 'exit-quiz':saveSession();navigate('home');break;
       case 'choose':choose(id);break;
+      case 'group-name':qState.groupSelected=true;qState.selected=null;saveSession();renderQuiz();break;
+      case 'group-ref':qState.groupSelected=true;qState.selected=id;saveSession();renderQuiz();break;
       case 'suggest':selectName(id);break;
+      case 'shortcut':selectShortcut(b.dataset.key);break;
       case 'check':check();break;
       case 'skip':check(true);break;
       case 'hint':hint();break;
@@ -301,7 +352,11 @@
     }
     if(view!=='quiz'||!session||!qState||ev.isComposing)return;
     const el=ev.target,mode=session.queue[session.index].mode;
-    if(qState.checked){if(ev.key==='Enter'&&!el.matches('button')){ev.preventDefault();nextQuestion();}return;}
+    if(qState.checked){if(ev.key==='Enter'&&!el.matches('button,summary')){ev.preventDefault();nextQuestion();}return;}
+    if(el.matches('#formula-answer,#symbol-answer')&&!$('#shortcut-suggestions')?.hidden&&qState.shortcutMatches?.length){
+      if(ev.key==='ArrowDown'||ev.key==='ArrowUp'){ev.preventDefault();qState.shortcutIndex=(qState.shortcutIndex+(ev.key==='ArrowDown'?1:-1)+qState.shortcutMatches.length)%qState.shortcutMatches.length;updateShortcutSuggestions();$('#shortcut-'+qState.shortcutIndex)?.scrollIntoView({block:'nearest'});return;}
+      if(ev.key==='Tab'||ev.key==='Enter'&&(mode==='formula'||!Object.hasOwn(E.SHORTCUTS,el.value.trim()))){ev.preventDefault();selectShortcut(qState.shortcutMatches[qState.shortcutIndex||0].key);return;}
+    }
     if(el.matches('#formula-answer')&&(ev.key==='Tab'||ev.key===' ')){if(convertShortcutAtCaret(el,ev.key)){ev.preventDefault();return;}}
     if(el.matches('#name-answer')&&!$('#name-suggestions').hidden&&qState.suggestions?.length){
       if(ev.key==='ArrowDown'||ev.key==='ArrowUp'){ev.preventDefault();qState.suggestionIndex=(qState.suggestionIndex+(ev.key==='ArrowDown'?1:-1)+qState.suggestions.length)%qState.suggestions.length;updateSuggestions();$('#suggestion-'+qState.suggestionIndex)?.scrollIntoView({block:'nearest'});return;}

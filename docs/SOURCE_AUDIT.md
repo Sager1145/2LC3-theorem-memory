@@ -1,6 +1,6 @@
 # 2LC3 预载定理来源审计
 
-核对日期：2026-09-29。题库白名单是 [2025 课程 CalcCheck 实例索引](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2025/2LC3-2025-instances_2025-11-07.html)所列的 **26 份 Homework notebook** 中，Cell Actions → **Display list of preloaded theorems** 弹窗内实际展开的声明。notebook 正文中要求证明的定理、课件中出现的公式、其他课程或学期的列表，都不能单独作为入库依据。
+核对日期：2026-09-30。题库白名单是课程 CalcCheck notebook 的 Cell Actions → **Display list of preloaded theorems** 弹窗内实际展开的声明。2025 基础库来自[课程实例索引](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2025/2LC3-2025-instances_2025-11-07.html)中的 26 份 Homework；2026 当前范围来自下述 28 份公开可访问实例。notebook 正文中要求证明的定理、课件中出现的公式、其他课程的列表，都不能单独作为入库依据。
 
 | 指标 | 结果 |
 |---|---:|
@@ -39,8 +39,8 @@ npm run build
 
 ## 2026 学期预载范围（2026-09-30）
 
-从用户指定的 16001 起顺序打开 CalcCheck 实例，16001–16029 可访问，16030 首次连接失败，扫描于此停止。已逐份复制 H1、H2、H3、H4、H5、A1.2、H6、H7.1、H7.2、H8.1、H8.2 的 **11 份预载列表**，原文保存在 `research/preloaded/raw2026/`；与 2025 题卡比对后新增 4 张独有卡，2026 已核对范围总计 248 张。A1.1 页面明确禁用预载列表，不从其证明任务补录。练习默认使用此 2026 范围，可按具体 notebook 选择。
+从用户指定的 16001 起顺序打开 CalcCheck 实例，16001–16029 可访问，16030 首次连接失败，扫描于此停止。除 A1.1 页面明确禁用预载列表外，已逐份复制 **28 份 Homework、Assignment 和 Exercise 预载弹窗**，原文保存在 `research/preloaded/raw2026/`；其中共有 1,932 次声明。与 2025 题卡比对后新增 4 张独有卡，2026 已核对范围总计 248 张。A1.1 的正文证明任务未补录。练习默认使用此 2026 范围，可按具体 notebook 选择。
 
-[2026 课程主页](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/)未公开列出 PPT 或 notebook 发布日期；[课程大纲](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/COMPSCI_2LC3_Fall-2026_Outline.pdf)说明资料主要位于 Avenue。因此“可访问”只证明当日实例存在，不证明学生实际已获开放，也不作为 Week 归属证据。网站的 Week 3/4/6/7/11 标签来自预载列表中的原模块名，仅用于资料分类；名称如 `Week6.Exercise-6-2_Sequences2_SOL` 显示为“Week 6 · 序列进阶”。
+[2026 课程主页](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/)未公开列出 PPT 或 notebook 发布日期；[课程大纲](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/COMPSCI_2LC3_Fall-2026_Outline.pdf)说明资料主要位于 Avenue。因此“可访问”只证明当日实例存在，不证明学生实际已获开放。2026 弹窗实际带 Week 标签的只有四个 Week 3 模块，覆盖 43 张卡；筛选器据此提供 2026 Week 3 范围。2025 归档另有 Week 3/4/6/7/11 模块。所有 Week 标签均为原模块名，不代表 2026 发布周次；名称如 `Week6.Exercise-6-2_Sequences2_SOL` 显示为“Week 6 · 序列进阶”。
 
 再现数据：先运行 `python3 tools/import_preloaded.py`，再运行 `python3 tools/enrich_2026.py`。后者保存 `research/preloaded/2026-match-audit.json`，并在题卡上标记 `preloaded2026` 所属端口。

@@ -28,6 +28,23 @@
     '\\alpha':'α','\\beta':'β','\\gamma':'γ','\\delta':'δ','\\theta':'θ',
     '\\ldquo':'“','\\rdquo':'”'
   });
+  const SHORTCUT_KEYS=Object.keys(SHORTCUTS).sort((a,b)=>a.localeCompare(b));
+  const SHORTCUT_SYMBOLS=new Set(Object.values(SHORTCUTS));
+  function shortcutSuggestions(prefix,limit=20) {
+    if(typeof prefix!=='string'||!prefix.startsWith('\\')||prefix.length<2)return [];
+    const query=prefix.toLocaleLowerCase();
+    return SHORTCUT_KEYS.filter(key=>key.toLocaleLowerCase().startsWith(query)).slice(0,limit)
+      .map(key=>({key,symbol:SHORTCUTS[key]}));
+  }
+  function shortcutPrefix(text,caret=text.length) {
+    const head=String(text).slice(0,caret),start=head.lastIndexOf('\\');
+    if(start<0)return null;
+    const prefix=head.slice(start);
+    return shortcutSuggestions(prefix,1).length?{start,prefix}:null;
+  }
+  function symbolsInFormula(formula) {
+    return [...new Set(tokenize(formula).filter(token=>SHORTCUT_SYMBOLS.has(token)))];
+  }
   const FIXED = new Set(('true false suc pred double even odd mod div max min abs gcd lcm sqrt sin cos ' +
     'is-knight is-knave says skip abort while do od if then else fi fst snd head tail length ' +
     'ℕ ℤ ℚ ℝ ℙ 𝔹 𝐔 𝜖 eps emptyseq nil Nat Bool Int Real set bag seq rel ' +
@@ -90,9 +107,10 @@
     return map;
   }
   const PRE = {'≡':10,'≢':10,'⇒':20,'⇐':20,'∨':30,'∧':40,'=':50,'≠':50,'<':50,'≤':50,'>':50,'≥':50,'∈':50,'∉':50,'⊆':50,'⊂':50,'⊇':50,'⊃':50,
-    '+':60,'-':60,'↑':60,'↓':60,'∪':60,'∩':65,'∖':60,'·':70,'*':70,'/':70,'÷':70,'mod':70,'div':70,'⨾':70,'∘':70,'^':90};
+    '+':60,'-':60,'↑':60,'↓':60,'∪':60,'∩':65,'∖':60,'⊕':60,'⌢':60,'·':70,'*':70,'/':70,'÷':70,'mod':70,'div':70,'⨾':70,'∘':70,'^':90};
   const RIGHT = new Set(['⇒','⇐','^']);
   const COMM = new Set(['≡','≢','∨','∧','+','·','∪','∩','↑','↓']);
+  const ASSOC = new Set([...COMM,'⨾','∘','⊕','⌢']);
   const SYM = new Set(['=','≠']);
   function parse(text) {
     const ts=Array.isArray(text)?text:tokenize(text); let i=0, depth=0;
@@ -128,12 +146,12 @@
     return tree;
   }
   function flatten(tree,op) {
-    return tree.op===op && COMM.has(op) ? tree.args.flatMap(n=>flatten(n,op)) : [tree];
+    return tree.op===op && ASSOC.has(op) ? tree.args.flatMap(n=>flatten(n,op)) : [tree];
   }
   function shape(n) {
     if(n.op==='var') return '$';
     if(n.op==='const') return '#'+n.value;
-    let a=COMM.has(n.op)?flatten(n,n.op):n.args;
+    let a=ASSOC.has(n.op)?flatten(n,n.op):n.args;
     let v=a.map(shape); if(COMM.has(n.op)||SYM.has(n.op)) v.sort();
     return n.op+'('+v.join(',')+')';
   }
@@ -149,10 +167,10 @@
         if((state.map.has(a.value)&&state.map.get(a.value)!==b.value)||(state.rev.has(b.value)&&state.rev.get(b.value)!==a.value))return;
         const n=cloneState(state);n.map.set(a.value,b.value);n.rev.set(b.value,a.value);yield n;return;
       }
-      const ac=COMM.has(a.op),sym=SYM.has(a.op);
-      const aa=ac?flatten(a,a.op):a.args,bb=ac?flatten(b,b.op):b.args;
+      const assoc=ASSOC.has(a.op),comm=COMM.has(a.op),sym=SYM.has(a.op);
+      const aa=assoc?flatten(a,a.op):a.args,bb=assoc?flatten(b,b.op):b.args;
       if(aa.length!==bb.length)return;
-      if(ac||sym){
+      if(comm||sym){
         const order=aa.map(n=>({n,s:shape(n)})).sort((x,y)=>y.s.length-x.s.length);
         function* visit(k,remaining,st){
           if(--budget<0)return;
@@ -246,9 +264,43 @@
     }return [...exact,...prefix,...rest];
   }
   function label(r) { return `${r.displayRef} · ${r.name}`; }
+  function nameGroup(records,record) {
+    if(!record.numbers?.length||!record.name||record.name==='原文未命名')return [record];
+    const name=normalizeName(record.name);
+    return records.filter(r=>r.numbers?.length&&normalizeName(r.name)===name);
+  }
+  function gradeName(records,target,{selectedId=null,groupSelected=false,typed=''}) {
+    if(selectedId){
+      const selected=records.find(r=>r.id===selectedId);
+      return {ok:!!selected&&(selected.id===target.id||!!target.numbers?.length&&selected.displayRef===target.displayRef&&normalizeName(selected.name)===normalizeName(target.name)),kind:'numbered'};
+    }
+    const group=nameGroup(records,target);
+    if(groupSelected)return {ok:group.length>1,kind:'group'};
+    const query=normalizeName(typed);
+    if(!query)return {ok:false,kind:'empty'};
+    // A bare shared name denotes the group. A reference always denotes one card.
+    if(group.length>1&&query===normalizeName(target.name))return {ok:true,kind:'group'};
+    const names=[target.name,...(target.aliases||[])];
+    if(names.some(n=>normalizeName(n)===query))return {ok:true,kind:'name'};
+    const refs=[target.displayRef,...(target.numbers||[]),...(target.numbers||[]).map(n=>`(${n})`)];
+    if(refs.some(n=>normalizeName(n)===query)) {
+      const matches=records.filter(r=>[r.displayRef,...(r.numbers||[]),...(r.numbers||[]).map(n=>`(${n})`)].some(v=>normalizeName(v)===query));
+      return {ok:matches.length>0&&matches.every(r=>compareFormula(r.formula,target.formula).ok),kind:'numbered'};
+    }
+    if(refs.some(ref=>names.some(name=>[
+      `${ref} · ${name}`,`${ref} ${name}`,`${name} ${ref}`
+    ].some(v=>normalizeName(v)===query))))return {ok:true,kind:'numbered'};
+    return {ok:false,kind:'mismatch'};
+  }
   function eligibleModes(r,modes) {
     const blanks=blankTemplate(r.formula).blanks.length;
-    return modes.filter(m=>m!=='blanks'||blanks>0);
+    const symbols=symbolsInFormula(r.formula).length;
+    return modes.filter(m=>(m!=='blanks'||blanks>0)&&(m!=='symbol'||symbols>0));
+  }
+  function modeWeight(r,mode) {
+    if(mode!=='formula')return 1;
+    const tokens=tokenize(r.formula);
+    return tokens.length>35||tokens.filter(isVariable).length>8?0.2:1;
   }
   function shuffle(a,rng=Math.random) {
     const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;
@@ -262,7 +314,10 @@
     for(let i=0;i<count;i++) {
       if(!bag.length)bag=shuffle(supported,rng);
       const r=bag.pop(), options=eligibleModes(r,modes);
-      queue.push({id:r.id,mode:options[Math.floor(rng()*options.length)],retry:0});
+      const total=options.reduce((n,m)=>n+modeWeight(r,m),0);
+      let choice=rng()*total,mode=options[options.length-1];
+      for(const candidate of options){choice-=modeWeight(r,candidate);if(choice<0){mode=candidate;break;}}
+      queue.push({id:r.id,mode,retry:0});
     }return queue;
   }
   function localDay(date=new Date()) {
@@ -289,7 +344,7 @@
   }
   function validateProgress(obj,validIds) {
     if(!obj||obj.schemaVersion!==1||!obj.records||typeof obj.records!=='object'||Array.isArray(obj.records))throw new Error('不是有效的 Theorem Quest 学习备份。');
-    const clean=freshProgress(), good=new Set(validIds), modes=new Set(['name','choice','blanks','formula']);
+    const clean=freshProgress(), good=new Set(validIds), modes=new Set(['name','choice','blanks','formula','symbol']);
     const num=(v,max=1e8)=>Number.isFinite(v)?Math.max(0,Math.min(max,Math.floor(v))):0;
     clean.xp=num(obj.xp);
     for(const [id,v] of Object.entries(obj.records)) {
@@ -306,5 +361,5 @@
     clean.history=(Array.isArray(obj.history)?obj.history:[]).slice(0,100).filter(x=>x&&Number.isFinite(x.at)).map(x=>({at:num(x.at,1e14),correct:num(x.correct),total:num(x.total),xp:num(x.xp)}));
     return clean;
   }
-  return {SHORTCUTS,FIXED,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,fillTemplate,compareRefs,referenceInRange,normalizeName,searchRecords,label,eligibleModes,shuffle,makeSession,localDay,freshProgress,applyAttempt,validateProgress};
+  return {SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,fillTemplate,compareRefs,referenceInRange,normalizeName,searchRecords,label,nameGroup,gradeName,eligibleModes,shuffle,makeSession,localDay,freshProgress,applyAttempt,validateProgress};
 });

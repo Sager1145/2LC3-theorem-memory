@@ -18,8 +18,17 @@ from import_preloaded import KINDS, NAME, NUMBER, SECTION, START, normalized
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'research/preloaded/raw2026'
 DATA = ROOT / 'data'
-HOMEWORK = {16001:'H1',16009:'H2',16010:'H3',16017:'H4',16018:'H5',16020:'A1.2',16021:'H6',16026:'H7.1',16027:'H7.2',16028:'H8.1',16029:'H8.2'}
-NAMES = {16001:'入门与 CalcCheck',16009:'表达式与计算',16010:'赋值命令正确性',16017:'命题演算入门',16018:'命题演算',16020:'布尔赋值命令',16021:'自然数与归纳',16026:'单调性与反单调性',16027:'自然数的序',16028:'Leibniz 与替换',16029:'结构化证明'}
+HOMEWORK = {16001:'H1',16002:'Ex1.1',16003:'Ex1.2',16004:'Ex1.3',16005:'Ex1.4',16006:'Ex1.5',16007:'Ex1.6',16008:'Ex1.7',
+            16009:'H2',16010:'H3',16011:'Ex2.1',16012:'Ex2.2',16013:'Ex2.3',16014:'Ex2.4',16015:'Ex2.5',16016:'Ex2.6',16017:'H4',16018:'H5',
+            16020:'A1.2',16021:'H6',16022:'Ex3.1',16023:'Ex3.2',16024:'Ex3.3',16025:'Ex3.4',16026:'H7.1',16027:'H7.2',16028:'H8.1',16029:'H8.2'}
+NAMES = {16001:'入门与 CalcCheck',16002:'简单计算',16003:'整数等式',16004:'替换',
+         16005:'严格匹配',16006:'不自动使用结合与对称',16007:'高难度练习',16008:'赋值命令正确性',
+         16009:'表达式与计算',16010:'赋值命令正确性',
+         16011:'命题演算入门',16012:'析取',16013:'合取',
+         16014:'命题演算：蕴含',16015:'骑士与骗子',16016:'布尔变量赋值命令',
+         16017:'命题演算入门',16018:'命题演算',16020:'布尔赋值命令',16021:'自然数与归纳',
+         16022:'自然数归纳：加法与乘法',16023:'自然数截断减法',16024:'自然数的相等与前驱',16025:'自然数分类证明',
+         16026:'单调性与反单调性',16027:'自然数的序',16028:'Leibniz 与替换',16029:'结构化证明'}
 WEEK_LABELS = {
  'Week3.Exercise-3-2_NatInd_SOL':'Week 3 · 自然数归纳',
  'Week3.Exercise-3-3_MonusSubtraction_SOL':'Week 3 · 自然数截断减法',
@@ -52,12 +61,15 @@ def fields(entry):
     return {'kind':START.match(raw).group(1),'numbers':numbers,'names':names,'formula':formula}
 
 def main():
+    assert set(HOMEWORK)=={int(p.stem.removeprefix('port')) for p in RAW.glob('port*.txt')},'每份已复制的 2026 弹窗都必须登记'
     bank=[card for card in json.loads((DATA/'theorems.json').read_text()) if not card['id'].startswith('y26-')]
     for card in bank:card['sources']=[src for src in card['sources'] if not src['sourceId'].startswith('calc-2026-')]
     sources=[src for src in json.loads((DATA/'sources.json').read_text()) if not src['id'].startswith('calc-2026-')]
     coverage=json.loads((DATA/'coverage.json').read_text())
     for card in bank:
         card['preloaded2026']=[]
+        card['preloaded2026Sections']=[]
+        card['preloaded2026Weeks']=[]
         card['archiveWeeks']=sorted({int(m.group(1)) for s in card.get('preloadedSections',[]) if (m:=re.match(r'Week(\d+)\.',s))})
         card['archiveWeekLabels']=[WEEK_LABELS[s] for s in card.get('preloadedSections',[]) if s in WEEK_LABELS]
     by_formula=defaultdict(list);by_ref=defaultdict(list)
@@ -69,7 +81,7 @@ def main():
         path=RAW/f'port{port}.txt'
         entries=parse(path)
         sid=f'calc-2026-{port}'
-        sources.append({'id':sid,'name':f'2026 {HOMEWORK[port]} · {NAMES[port]} · 预载列表',
+        sources.append({'id':sid,'name':f'2026 {HOMEWORK[port]} · {NAMES.get(port, "课程练习")} · 预载列表',
                         'format':'CalcCheck theorem-list popup','status':'complete-popup-copy',
                         'lineage':'2026 publicly reachable CalcCheck notebook; release week unverified',
                         'url':f'http://130.113.68.214:{port}/',
@@ -101,18 +113,22 @@ def main():
                           'preloadedHomework':[],'archiveWeeks':[],'archiveWeekLabels':[],
                           'sources':[],'occurrences':0,'documentCount':0,'repeated':False,
                           'displayRef':f'({f["numbers"][-1]})' if f['numbers'] else '未编号 · '+digest[:6],
-                          'preloaded2026':[]}
+                          'preloaded2026':[],'preloaded2026Sections':[],'preloaded2026Weeks':[]}
                     bank.append(card);by_formula[normalized(f['formula'])].append(card)
                     for n in f['numbers']:by_ref[n].append(card)
                     unmatched.append({'port':port,'id':card['id'],'raw':entry['raw']})
                     matches['new']+=1
             if port not in card['preloaded2026']:card['preloaded2026'].append(port)
+            if entry['section'] and entry['section'] not in card['preloaded2026Sections']:card['preloaded2026Sections'].append(entry['section'])
             card['sources'].append({'sourceId':sid,'locator':{'line':entry['line'],'section':entry['section']},'excerpt':entry['raw']})
-    for card in bank:card['preloaded2026'].sort()
+    for card in bank:
+        card['preloaded2026'].sort()
+        card['preloaded2026Sections'].sort()
+        card['preloaded2026Weeks']=sorted({int(m.group(1)) for section in card['preloaded2026Sections'] if (m:=re.match(r'Week(\d+)\.',section))})
     bank.sort(key=lambda r:(r['topic'],r['displayRef'],r['name'],r['formula']))
     coverage.update({'builtAt':str(date.today()),'theoremCount':len(bank),'current2026Count':sum(bool(r['preloaded2026']) for r in bank),
                      'current2026NotebookCount':len(HOMEWORK),'sourceFiles':len(sources),'readFiles':len(sources),
-                     'notice':'2026 当前范围只使用 11 份 Homework/Assignment 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。',
+                     'notice':f'2026 当前范围只使用 {len(HOMEWORK)} 份已复制 notebook 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。',
                      'unavailable':[{'name':'2026 A1.1 预载弹窗','reason':'课程页面明确禁用预载列表；未把正文证明题加入题库。'},
                                     {'name':'2026 PPT 发布周次','reason':'课程官网未公开列出；Avenue 材料尚未提供，故不推断发布周次。'}]})
     (DATA/'theorems.json').write_text(json.dumps(bank,ensure_ascii=False,indent=2)+'\n')

@@ -10,6 +10,18 @@ test('CalcCheck aliases, boundaries, command assignment ≠ substitution',()=>{
  assert.equal(E.normalizeInput(String.raw`\in \int \implies`),'∈ ℤ ⇒');
  wrong('(p ≡ q) = (p = q)','(p ≡ q) ≡ (p ≡ q)');
 });
+test('every backslash command is convertible and can be suggested for symbol practice',()=>{
+ for(const [code,symbol] of Object.entries(E.SHORTCUTS)){
+  assert.equal(E.normalizeInput(code),symbol,code);
+  assert(E.shortcutSuggestions(code).some(x=>x.key===code&&x.symbol===symbol),code);
+  assert.deepEqual(E.shortcutPrefix(`p ${code}`),{start:2,prefix:code});
+ }
+ assert(E.shortcutSuggestions('\\lan').some(x=>x.key==='\\land'));
+ assert(E.eligibleModes({formula:'p ∧ q'},['symbol']).includes('symbol'));
+ assert(!E.eligibleModes({formula:'true'},['symbol']).includes('symbol'));
+ const q=E.makeSession([{id:'s',formula:'p ∧ q'}],['symbol'],1,()=>0.5);
+ assert.equal(q[0].mode,'symbol');
+});
 test('consistent renaming, Greek, primes and subscripts',()=>{
  okay('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q','¬ (x ∧ y) ≡ ¬ x ∨ ¬ y');
  okay('p ∧ (p ⇒ q) ⇒ q',"α ∧ (α ⇒ β') ⇒ β'");
@@ -27,6 +39,14 @@ test('AC / parentheses / reversed relations accepted, wrong law rejected',()=>{
  wrong('p ⇒ (q ⇒ r)','(p ⇒ q) ⇒ r');
  wrong('A × B = B × A','B × A = A × B ≡ true');
 });
+test('valid reassociation and symmetry accept alternate brackets without reordering noncommutative operations',()=>{
+ okay('(Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)','Q ⨾ (R ⨾ S) = (Q ⨾ R) ⨾ S');
+ okay('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(A ⊕ B ⊕ C) = A ⊕ (B ⊕ C)');
+ okay('(xs ⌢ ys) ⌢ zs = xs ⌢ (ys ⌢ zs)','xs ⌢ ys ⌢ zs = xs ⌢ (ys ⌢ zs)');
+ okay('p ∧ (q ∧ r) ≡ (p ∧ q) ∧ r','(x ∧ y) ∧ z ≡ x ∧ (y ∧ z)');
+ wrong('Q ⨾ R ⨾ S = Q ⨾ (R ⨾ S)','Q ⨾ R ⨾ S = Q ⨾ (S ⨾ R)');
+ wrong('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(Q ⊕ S) ⊕ R = Q ⊕ (R ⊕ S)');
+});
 test('syntax and long-input errors are safe',()=>{
  assert.equal(E.compareFormula('p','((p)').ok,false);
  assert.equal(E.compareFormula('p','').kind,'empty');
@@ -41,6 +61,32 @@ test('numeric ranges do not lexically misorder numbers or parse regex',()=>{
  assert(!E.referenceInRange(['3.47'], '3.*'));
  assert(!E.referenceInRange(['3.47'],'[-['));
  assert(E.referenceInRange([],''));
+});
+test('shared theorem names accept the group, while numbered answers identify the exact result',()=>{
+ const a=bank.find(r=>r.numbers.includes('3.47a'));
+ const b=bank.find(r=>r.numbers.includes('3.47b'));
+ assert(E.nameGroup(bank,a).some(r=>r.id===b.id));
+ assert.equal(E.gradeName(bank,a,{typed:'De Morgan'}).ok,true);
+ assert.equal(E.gradeName(bank,a,{groupSelected:true}).ok,true);
+ assert.equal(E.gradeName(bank,a,{selectedId:b.id}).ok,false);
+ assert.equal(E.gradeName(bank,a,{typed:'(3.47b) De Morgan'}).ok,false);
+ assert.equal(E.gradeName(bank,a,{typed:'(3.47a) De Morgan'}).ok,true);
+ const alias=bank.find(r=>r.numbers.includes('11.42a'));
+ assert.equal(E.gradeName(bank,alias,{typed:'Complement of ∪'}).ok,true);
+ assert.equal(E.gradeName(bank,alias,{typed:'(11.42b) Complement of ∪'}).ok,false);
+ const replacements=bank.filter(r=>r.name==='Replacement'&&r.numbers.includes('3.84c'));
+ assert.equal(replacements.length,2);
+ assert.equal(E.gradeName(bank,replacements[0],{selectedId:replacements[1].id}).ok,true);
+ const negation=bank.find(r=>r.numbers.includes('15.20')&&r.name==='Negation as multiplication');
+ assert(negation);
+ assert.equal(E.gradeName(bank,negation,{typed:'15.20'}).ok,true);
+});
+test('complex formulas are less likely to use free spelling when other modes are enabled',()=>{
+ const long={id:'long',formula:'(∀ x ❙ R • (∀ y ❙ Q • P )) ≡ (∀ x ❙ R • (∀ y ❙ Q • P ))'};
+ const short={id:'short',formula:'p ∧ q ≡ q ∧ p'};
+ assert.equal(E.makeSession([long],['formula','choice'],1,()=>0.3)[0].mode,'choice');
+ assert.equal(E.makeSession([short],['formula','choice'],1,()=>0.3)[0].mode,'formula');
+ assert.equal(E.makeSession([long],['formula'],1,()=>0.3)[0].mode,'formula');
 });
 test('queue only draws checked modes and current scope',()=>{
  const small=bank.slice(0,12),q=E.makeSession(small,['choice','formula'],12,()=>0.4);

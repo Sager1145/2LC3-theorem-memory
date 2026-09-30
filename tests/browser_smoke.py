@@ -41,21 +41,35 @@ with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=binary,headless=True,args=['--no-sandbox'])
  # Each mode is independently rendered and exercised through DOM events.
  p=page_new(browser,'choice');launch(p);p.locator(f'[data-action="choose"][data-id="{target["id"]}"]').click();check(p);ok(p)
+ assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
  p.locator('[data-action="continue"]').click();assert p.evaluate('TQDiagnostics().view')=='result';logs.append('choice: correct selection and results screen');p.close()
- p=page_new(browser,'name');launch(p);p.locator('#name-answer').fill('De M');assert p.locator('#name-suggestions').is_visible()
- p.locator(f'[data-action="suggest"][data-id="{target["id"]}"]').click();check(p);ok(p);logs.append('name: three-character search, explicit completion, submit');p.close()
+ p=page_new(browser,'name');launch(p);assert p.locator('#name-answer').count()==0
+ p.locator('[data-action="group-name"]').click();check(p);ok(p)
+ assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
+ assert '同组名称' in p.locator('#quiz-bottom').inner_text()
+ logs.append('name: shared theorem group uses a name blank and accepts the group name');p.close()
+ p=page_new(browser,'name');launch(p)
+ other=next(r for r in bank if r['numbers'] and r['numbers'][-1]=='3.47b')
+ p.locator(f'[data-action="group-ref"][data-id="{other["id"]}"]').click();check(p)
+ assert p.locator('#quiz-bottom.incorrect').count()==1
+ logs.append('name: a selected number must match the shown formula');p.close()
  p=page_new(browser,'blanks');launch(p)
  template=p.evaluate('TQEngine.blankTemplate('+json.dumps(target['formula'])+')')
  mp={v:'x'+str(i) for i,v in enumerate(template['variables'])}
  for i,b in enumerate(template['blanks']):p.locator(f'#blank-{i}').fill(mp[b['variable']])
+ assert p.locator('#check-answer').is_enabled(),p.evaluate('TQDiagnostics()')
  check(p);ok(p);logs.append('blanks: every occurrence accepts fresh consistent variable names')
+ assert p.locator('#correct-answer').inner_text()==target['formula']
  if shots:p.screenshot(path=str(shots/'blanks-desktop.png'),full_page=True)
  p.close()
- p=page_new(browser,'formula');launch(p);p.locator('#formula-answer').fill('¬ (x ∧ y) ≡ ¬ x ∨ ¬ y');check(p);ok(p);logs.append('formula: renamed De Morgan accepted');p.close()
+ p=page_new(browser,'formula');launch(p);p.locator('#formula-answer').fill('¬ (x ∧ y) ≡ ¬ x ∨ ¬ y');check(p);ok(p)
+ assert p.locator('#correct-answer').inner_text()==target['formula']
+ logs.append('formula: renamed De Morgan accepted');p.close()
  p=page_new(browser,'formula');launch(p)
  p.locator('#formula-answer').fill('p \\land');p.locator('#formula-answer').press('Tab');assert p.locator('#formula-answer').input_value()=='p ∧'
  p.locator('[data-action="key"][data-key="q"]').first.click();assert 'q' in p.locator('#formula-answer').input_value()
  p.locator('#formula-answer').fill('true');check(p);assert p.locator('#quiz-bottom.incorrect').count()==1
+ assert p.locator('#correct-answer').inner_text()==target['formula']
  p.locator('[data-action="continue"]').click();go(p,'home');go(p,'mistakes');assert p.locator('[data-action="review-one"]').count()==1
  logs.append('shortcuts and button keyboard; arbitrary tautology rejected and wrong bank populated')
  # Two correct mode-specific attempts clear the active bank across simulated reloads.
@@ -79,9 +93,18 @@ with sync_playwright() as pw:
  go(p,'audit');assert '2026 已核对卡片' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, Important cards and source audit');p.close()
  # Current-year notebook and archive Week selectors are real intersections.
  p=page_new(browser,seed={});assert p.evaluate('TQDiagnostics().scopeCount')==248
+ assert p.locator('[data-filter="archiveWeek"]').first.locator('option').count()==2
+ p.locator('[data-filter="archiveWeek"]').first.select_option('3')
+ assert p.evaluate('TQDiagnostics().scopeCount')==43
+ p.locator('[data-filter="archiveWeek"]').first.select_option('')
  p.locator('[data-filter="notebook"]').first.select_option('16018')
  h5_count=p.evaluate('TQDiagnostics().scopeCount');assert 0<h5_count<248
- go(p,'library');assert p.locator('[data-filter="notebook"]').first.input_value()=='16018'
+ expected_ports={str(port) for r in bank for port in r.get('preloaded2026',[])}
+ actual_ports=set(p.locator('[data-filter="notebook"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))
+ assert actual_ports==expected_ports,(actual_ports^expected_ports)
+ p.locator('[data-filter="notebook"]').first.select_option('16025')
+ assert 0<p.evaluate('TQDiagnostics().scopeCount')<248
+ go(p,'library');assert p.locator('[data-filter="notebook"]').first.input_value()=='16025'
  p.locator('[data-filter="era"]').first.select_option('2025')
  assert p.locator('[data-filter="notebook"]').first.input_value()==''
  p.locator('[data-filter="archiveWeek"]').first.select_option('6')
@@ -98,6 +121,21 @@ with sync_playwright() as pw:
  p=page_new(browser,seed={});go(p,'settings');backup={'schemaVersion':1,'records':{},'xp':70,'days':{},'stars':[target['id']],'history':[]}
  p.locator('#backup-file').set_input_files({'name':'backup.json','mimeType':'application/json','buffer':json.dumps(backup).encode()})
  p.locator('#confirm-import').click();assert '70 XP' in p.locator('#app').inner_text();logs.append('backup import validates and requires explicit confirmation');p.close()
+ # Shared backslash autocomplete in formulas and a dedicated code recall mode.
+ p=page_new(browser,'formula');launch(p);p.locator('#formula-answer').fill('\\lan')
+ assert p.locator('#shortcut-suggestions').is_visible()
+ p.locator('#formula-answer').press('Tab');assert p.locator('#formula-answer').input_value()=='∧'
+ logs.append('formula: partial backslash command completes to a symbol');p.close()
+ p=page_new(browser,'symbol');launch(p)
+ symbol=p.locator('.symbol-challenge').inner_text()
+ code=p.evaluate('(symbol)=>Object.entries(TQEngine.SHORTCUTS).find(([key,value])=>value===symbol)[0]',symbol)
+ p.locator('#symbol-answer').fill(code[:max(2,len(code)-1)])
+ assert p.locator('#shortcut-suggestions').is_visible()
+ options=p.locator('[data-action="shortcut"]')
+ chosen=next(i for i in range(options.count()) if options.nth(i).get_attribute('data-key')==code)
+ options.nth(chosen).click()
+ assert p.locator('#symbol-answer').input_value()==code
+ check(p);ok(p);logs.append('symbol: command completion and answer validation');p.close()
  # Responsive layout at both narrow and common phone widths.
  for w in [320,390]:
   p=page_new(browser,'formula',width=w)

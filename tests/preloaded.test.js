@@ -9,8 +9,9 @@ const sources=require('../data/sources.json');
 const coverage=require('../data/coverage.json');
 
 test('all published cards come from copied 2025 or 2026 preloaded popups',()=>{
-  assert.equal(sources.length,37);
-  assert.equal(sources.filter(s=>s.id.startsWith('calc-2026-')).length,11);
+  const captured2026=fs.readdirSync(path.join(root,'research/preloaded/raw2026')).filter(name=>/^port\d+\.txt$/.test(name));
+  assert.equal(sources.filter(s=>s.id.startsWith('calc-2026-')).length,captured2026.length);
+  assert.equal(coverage.current2026NotebookCount,captured2026.length);
   assert.equal(coverage.preloadedNotebookCount,26);
   assert.equal(coverage.preloadedUniqueCount,1052);
   assert.equal(coverage.current2026Count,bank.filter(card=>card.preloaded2026.length).length);
