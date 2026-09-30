@@ -41,6 +41,6 @@ npm run build
 
 从用户指定的 16001 起顺序打开 CalcCheck 实例，16001–16029 可访问，16030 首次连接失败，扫描于此停止。已逐份复制 H1、H2、H3、H4、H5、A1.2、H6、H7.1、H7.2、H8.1、H8.2 的 **11 份预载列表**，原文保存在 `research/preloaded/raw2026/`；与 2025 题卡比对后新增 4 张独有卡，2026 已核对范围总计 248 张。A1.1 页面明确禁用预载列表，不从其证明任务补录。练习默认使用此 2026 范围，可按具体 notebook 选择。
 
-[2026 课程主页](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/)未公开列出 PPT 或 notebook 发布日期；[课程大纲](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/COMPSCI_2LC3_Fall-2026_Outline.pdf)说明资料主要位于 Avenue。因此“可访问”只证明当日实例存在，不证明学生实际已获开放，也不作为 Week 归属证据。网站的 Week 3/4/6/7/11 标签来自 **2025** 预载列表模块名，仅用于归档资料分类；名称如 `Week6.Exercise-6-2_Sequences2_SOL` 显示为“Week 6 · 序列进阶”。
+[2026 课程主页](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/)未公开列出 PPT 或 notebook 发布日期；[课程大纲](https://www.cas.mcmaster.ca/~kahl/CS2LC3/2026/COMPSCI_2LC3_Fall-2026_Outline.pdf)说明资料主要位于 Avenue。因此“可访问”只证明当日实例存在，不证明学生实际已获开放，也不作为 Week 归属证据。网站的 Week 3/4/6/7/11 标签来自预载列表中的原模块名，仅用于资料分类；名称如 `Week6.Exercise-6-2_Sequences2_SOL` 显示为“Week 6 · 序列进阶”。
 
 再现数据：先运行 `python3 tools/import_preloaded.py`，再运行 `python3 tools/enrich_2026.py`。后者保存 `research/preloaded/2026-match-audit.json`，并在题卡上标记 `preloaded2026` 所属端口。
