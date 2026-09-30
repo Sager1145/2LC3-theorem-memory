@@ -1,0 +1,91 @@
+{
+  "stage": "declarationGrading",
+  "card": 350,
+  "total": 1330,
+  "id": "p-6d7a430e9e64",
+  "checks": 43110,
+  "failures": [
+    {
+      "section": "name-positive",
+      "id": "p-314595beeaf1",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  ODD IS NOT EVEN  ",
+      "canonicalName": "Odd is not even"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-9f6eb0421341",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  EVEN IS NOT ODD  ",
+      "canonicalName": "Even is not odd"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-0f9cbac918e9",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF < IN TERMS OF `SUC` AND ≤  ",
+      "canonicalName": "Definition of < in terms of `suc` and ≤"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-4881c660340e",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF < IN TERM OF ≤ AND `PRED`  ",
+      "canonicalName": "Definition of < in term of ≤ and `pred`"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-d18f469e2087",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF ≤ IN TERMS OF `SUC` AND <  ",
+      "canonicalName": "Definition of ≤ in terms of `suc` and <"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-231c873eb23e",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF < VIA SUCCESSOR AND ≤  ",
+      "canonicalName": "Definition of < via successor and ≤"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-2b77ed2d8927",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF ≥ VIA SUCCESSOR AND >  ",
+      "canonicalName": "Definition of ≥ via successor and >"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-bb17de74e45f",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF ≤ VIA < AND SUCCESSOR  ",
+      "canonicalName": "Definition of ≤ via < and successor"
+    },
+    {
+      "section": "name-positive",
+      "id": "p-d808184dcd8c",
+      "description": "case and spacing normalization",
+      "expected": true,
+      "actual": false,
+      "input": "  DEFINITION OF > VIA ≥ AND SUCCESSOR  ",
+      "canonicalName": "Definition of > via ≥ and successor"
+    }
+  ],
+  "scope": "Partial pre-fix declaration audit; preserved exact uppercase-input reproductions, not a completed run."
+}

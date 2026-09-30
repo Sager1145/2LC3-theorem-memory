@@ -1,0 +1,884 @@
+# 2025i 非 Homework 弹窗新增声明（相对已存的 26 份 Homework）
+
+共 284 条，按空白归一后的完整声明去重；同名但公式或侧条件不同者保留。每条均来自 Cell Actions → Display list of preloaded theorems；此文件不收录 notebook 正文的待证明任务。
+
+1. http://130.113.68.214:15041/ · Data.Tuple
+   Theorem (14.2) “Pair equality”:   ⟨b, c⟩ = ⟨b', c'⟩ ≡ b = b' ∧ c = c'
+
+2. http://130.113.68.214:15041/ · Data.Tuple
+   Lemma “Pair equality”:   p = ⟨x, y⟩ ≡ fst  p = x ∧ snd  p = y
+
+3. http://130.113.68.214:15048/ · Week5.Exercise-5-2_NatPred_SOL
+   Corollary “Identity of +”:   0 + a = a
+
+4. http://130.113.68.214:15048/ · Week5.Exercise-5-2_NatPred_SOL
+   Corollary “Identity of ·”:   1 · a = a
+
+5. http://130.113.68.214:15048/ · Week5.Exercise-5-2_NatPred_SOL
+   Corollary “Zero of ·”:   0 · a = 0
+
+6. http://130.113.68.214:15048/ · Week5.Exercise-5-2_NatPred_SOL
+   Theorem “Predecessor of non-zero”:   n ≠ 0 ≡ suc pred  n = n
+
+7. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off ≤-<-suc range at bottom”:   m ≤ n ⇒ (m ≤ i < n + 1 ≡ m + 1 ≤ i < n + 1 ∨ i = m)
+
+8. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off ≤-< range at bottom”:   m < n ⇒ (m ≤ i < n ≡ m + 1 ≤ i < n ∨ i = m)
+
+9. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off <-≤ range at top”:   m < n ⇒ (m < i ≤ n ≡ m < i < n ∨ i = n)
+
+10. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off ≤-≤ range at bottom”:   m ≤ n ⇒ (m ≤ i ≤ n ≡ i = m ∨ m + 1 ≤ i ≤ n)
+
+11. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off ≤-≤ range at bottom”:   m ≤ n ⇒ (m ≤ i ≤ n ≡ i = m ∨ m < i ≤ n)
+
+12. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off ≤-≤ range at top”:   m ≤ n ⇒ (m ≤ i ≤ n ≡ m ≤ i < n ∨ i = n)
+
+13. http://130.113.68.214:15050/ · Week5.Exercise-5-4_IntRanges_SOL
+   Theorem “Split off <-≤ range at bottom”:   m < n ⇒ (m < i ≤ n ≡ m + 1 < i ≤ n ∨ i = m + 1)
+
+14. http://130.113.68.214:15054/ · Integer.Order.ActivateMon
+   Theorem “Flipped transitivity of ≤”:   b ≤ c ⇒ (a ≤ b ⇒ a ≤ c)
+
+15. http://130.113.68.214:15054/ · Integer.Order.ActivateMon
+   Theorem “Flipped transitivity of <”:   b < c ⇒ (a < b ⇒ a < c)
+
+16. http://130.113.68.214:15057/ · DynLogic2.StraightLine.AssignmentRuleEquiv
+   Derived inference rule “Assignment”:
+                   /\ x
+                   • `Φ ≡ Ψ[x ≔ E]`
+                   ⊦ `Φ ⇒⁅ (x := E) ⁆ Ψ`
+
+17. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Leibniz for ∑ range”:   (∀ x • R₁ ≡ R₂ ) ⇒ (∑ x ❙ R₁ • E ) = (∑ x ❙ R₂ • E )
+
+18. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Leibniz for ∑ body”:   (∀ x • R ⇒ E₁ = E₂ ) ⇒ (∑ x ❙ R • E₁ ) = (∑ x ❙ R • E₂ )
+
+19. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Empty range for ∑”:   (∑ x ❙ false • E ) = 0
+
+20. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “One-point rule for ∑”:   (∑ x ❙ x = D • E ) = E[x ≔ D]    
+        — CalcCheck: Proviso: ¬occurs(`x`, `D`)
+
+21. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Distributivity of ∑ over +”:   (∑ x ❙ R • E₁ + E₂ ) = (∑ x ❙ R • E₁ ) + (∑ x ❙ R • E₂ )
+
+22. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Range split for ∑”:   (∑ x ❙ Q ∨ R • E ) + (∑ x ❙ Q ∧ R • E ) = (∑ x ❙ Q • E ) + (∑ x ❙ R • E )
+
+23. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Disjoint range split for ∑”:   (∀ x • Q ∧ R ≡ false ) ⇒ (∑ x ❙ Q ∨ R • E ) = (∑ x ❙ Q • E ) + (∑ x ❙ R • E )
+
+24. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Nesting for ∑”:   (∑ x ❙ Q • (∑ y ❙ R • E ) ) = (∑ x, y ❙ Q ∧ R • E )    
+        — CalcCheck: Proviso: ¬occurs(`y`, `Q`)
+
+25. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Replacement in ∑”:   (∑ x ❙ R ∧ e = f • E[y ≔ e] ) = (∑ x ❙ R ∧ e = f • E[y ≔ f] )
+
+26. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Dummy list permutation for ∑”:   (∑ x, y ❙ R • E ) = (∑ y, x ❙ R • E )
+
+27. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Interchange of dummies for ∑”:   (∑ x ❙ Q • (∑ y ❙ R • P ) ) = (∑ y ❙ R • (∑ x ❙ Q • P ) )    
+        — CalcCheck: Proviso: ¬occurs(`x`, `R`), ¬occurs(`y`, `Q`)
+
+28. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Dummy renaming for ∑” “α-conversion for ∑”:   (∑ x ❙ R • E ) = (∑ y ❙ R[x ≔ y] • E[x ≔ y] )    
+        — CalcCheck: Proviso: ¬occurs(`y`, `E, R`)
+
+29. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Axiom “Distributivity of · over ∑”:   a · (∑ x ❙ R • E ) = (∑ x ❙ R • a · E )
+
+30. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Zero ∑ body”:   (∑ x ❙ R • 0 ) = 0
+
+31. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Split off ∑-term from top of ≤-<-suc range”:   m ≤ n ⇒ (∑ i ❙ m ≤ i < n + 1 • E ) = (∑ i ❙ m ≤ i < n • E ) + E[i ≔ n]
+
+32. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Split off ∑-term from bottom of ≤-<-suc range”:   m ≤ n ⇒ (∑ i ❙ m ≤ i < n + 1 • E ) = E[i ≔ m] + (∑ i ❙ m + 1 ≤ i < n + 1 • E )
+
+33. http://130.113.68.214:15057/ · Week5.Exercise-5-5_SumQuantificationInt_SOL
+   Theorem “Split off ∑-term from bottom of ≤-< range”:   m < n ⇒ (∑ i ❙ m ≤ i < n • E ) = E[i ≔ m] + (∑ i ❙ m + 1 ≤ i < n • E )
+
+34. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Multiplying by 2”:   2 · x = x + x
+
+35. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Multiplying by 3”:   3 · x = (x + x) + x
+
+36. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Left-antitonicity of <”:   p ≤ q ⇒ (q < r ⇒ p < r)
+
+37. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Right-monotonicity of <”:   p ≤ q ⇒ (r < p ⇒ r < q)
+
+38. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Left-antitonicity of ≤”:   p ≤ q ⇒ (q ≤ r ⇒ p ≤ r)
+
+39. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Right-monotonicity of ≤”:   p ≤ q ⇒ (r ≤ p ⇒ r ≤ q)
+
+40. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Weak left-antitonicity of <”:   p < q ⇒ (q < r ⇒ p < r)
+
+41. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem “Weak right-monotonicity of <”:   p < q ⇒ (r < p ⇒ r < q)
+
+42. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem (Ex6.5.1):   x < 2 ∧ 5 < y ⇒ x < 3 < y
+
+43. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem (Ex6.5.2):   (x < 2 ⇒ 5 ≤ y) ⇒ (x < 1 ⇒ 4 ≤ y)
+
+44. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem (Ex6.5.3):   x ≤ y ⇒ 2 · x ≤ 2 · y
+
+45. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem (Ex6.5.4):   x ≤ y ≤ z ⇒ (¬ (y ≤ 2 · y) ⇒ ¬ (z ≤ 2 · x))
+
+46. http://130.113.68.214:15057/ · Week6.Exercise-6-5_MixedMonotonicity_SOL
+   Theorem (Ex6.5.5):   x ≤ 5 ∧ (∀ y ❙ 3 ≤ y • x < y ) ⇒ x ≤ 7 ∧ (∀ y ❙ 9 ≤ y • x < y )
+
+47. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Axiom “Union”:   e ∈ S ∪ T ≡ e ∈ S ∨ e ∈ T
+
+48. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Axiom “Intersection”:   e ∈ S ∩ T ≡ e ∈ S ∧ e ∈ T
+
+49. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Axiom (11.13) “Set inclusion” “Subset” “Definition of ⊆”:   S ⊆ T ≡ (∀ e • e ∈ S ⇒ e ∈ T )    
+        — CalcCheck: Proviso: ¬occurs(`e`, `S, T`)
+
+50. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Theorem “Weakening of ∩ within ∪”:   Q ∪ (S ∩ T) ⊆ Q ∪ S
+
+51. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Theorem “Subset membership” “Casting”:   X ⊆ Y ⇒ (x ∈ X ⇒ x ∈ Y)
+
+52. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Theorem (11.59) “Transitivity of ⊆”:   X ⊆ Y ⇒ (Y ⊆ Z ⇒ X ⊆ Z)
+
+53. http://130.113.68.214:15060/ · Week7.Homework-14_Sets1_SOL
+   Theorem “Golden rule for ∩ and ∪”:   S ∩ T = S ≡ T = S ∪ T
+
+54. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.19a) “Domain of converse”:   Dom  (R ˘) = Ran  R
+
+55. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.19b) “Range of converse”:   Ran  (R ˘) = Dom  R
+
+56. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.101) “Domain of union”:   Dom  (R ∪ S) = Dom  R ∪ Dom  S
+
+57. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.102) “Range of union”:   Ran  (R ∪ S) = Ran  R ∪ Ran  S
+
+58. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.103) “Domain of intersection”:   Dom  (R ∩ S) ⊆ Dom  R ∩ Dom  S
+
+59. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.104) “Range of intersection”:   Ran  (R ∩ S) ⊆ Ran  R ∩ Ran  S
+
+60. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.201) “Definition of ◁”:   A ◁ R = R ∩ (A × 𝐔)
+
+61. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.202) “Definition of ▷”:   R ▷ B = R ∩ (𝐔 × B)
+
+62. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.203) “Definition of ⩤”:   A ⩤ R = R ∩ (~ A × 𝐔)
+
+63. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.204) “Definition of ⩥”:   R ⩥ B = R ∩ (𝐔 × ~ B)
+
+64. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Lemma (14.205) “Definition of ⩤ via ◁”:   A ⩤ R = ~ A ◁ R
+
+65. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Lemma (14.206) “Definition of ⩥ via ▷”:   R ⩥ B = R ▷ ~ B
+
+66. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.207) “Distributivity of ◁ over relation intersection”:   A ◁ (R ∩ S) = (A ◁ R) ∩ (A ◁ S)
+
+67. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.208) “Distributivity of ◁ over set intersection”:   (A ∩ B) ◁ R = (A ◁ R) ∩ (B ◁ R)
+
+68. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.209) “Distributivity of ◁ over relation union”:   A ◁ (R ∪ S) = (A ◁ R) ∪ (A ◁ S)
+
+69. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.210) “Distributivity of ◁ over set union”:   (A ∪ B) ◁ R = (A ◁ R) ∪ (B ◁ R)
+
+70. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.211) “Definition of ▷ via ◁”:   R ▷ B = (B ◁ R ˘) ˘
+
+71. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.212) “Definition of ◁ via ▷”:   A ◁ R = (R ˘ ▷ A) ˘
+
+72. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.213) “Distributivity of ▷ over relation intersection”:   (R ∩ S) ▷ B = (R ▷ B) ∩ (S ▷ B)
+
+73. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.214) “Distributivity of ▷ over set intersection”:   R ▷ (B ∩ C) = (R ▷ B) ∩ (R ▷ C)
+
+74. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.215) “Distributivity of ▷ over relation union”:   (R ∪ S) ▷ B = (R ▷ B) ∪ (S ▷ B)
+
+75. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.216) “Distributivity of ▷ over set union”:   R ▷ (B ∪ C) = (R ▷ B) ∪ (R ▷ C)
+
+76. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.217) “Definition of ⩥ via ⩤”:   R ⩥ B = (B ⩤ R ˘) ˘
+
+77. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.218) “Definition of ⩤ via ⩥”:   A ⩤ R = (R ˘ ⩥ A) ˘
+
+78. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.219) “Distributivity of ⩤ over relation intersection”:   A ⩤ (R ∩ S) = (A ⩤ R) ∩ (A ⩤ S)
+
+79. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.220) “Distributivity of ⩤ over relation union”:   A ⩤ (R ∪ S) = (A ⩤ R) ∪ (A ⩤ S)
+
+80. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.221) “Distributivity of ⩥ over relation intersection”:   (R ∩ S) ⩥ B = (R ⩥ B) ∩ (S ⩥ B)
+
+81. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.222) “Distributivity of ⩥ over relation union”:   (R ∪ S) ⩥ B = (R ⩥ B) ∪ (S ⩥ B)
+
+82. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.223) “Co-distributivity of ⩤ over set intersection”:   (A ∩ B) ⩤ R = (A ⩤ R) ∪ (B ⩤ R)
+
+83. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.224) “Co-distributivity of ⩤ over set union”:   (A ∪ B) ⩤ R = (A ⩤ R) ∩ (B ⩤ R)
+
+84. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.225) “Co-distributivity of ⩥ over set intersection”:   R ⩥ (B ∩ C) = (R ⩥ B) ∪ (R ⩥ C)
+
+85. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.226) “Co-distributivity of ⩥ over set union”:   R ⩥ (B ∪ C) = (R ⩥ B) ∩ (R ⩥ C)
+
+86. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.227) “Relationship via ◁” “Domain restriction”:   x ⦗ A ◁ R ⦘ y ≡ x ∈ A ∧ x ⦗ R ⦘ y
+
+87. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.228) “Relationship via ▷” “Range restriction”:   x ⦗ R ▷ B ⦘ y ≡ x ⦗ R ⦘ y ∈ B
+
+88. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.229) “Relationship via ⩤” “Domain antirestriction”:   x ⦗ A ⩤ R ⦘ y ≡ ¬ (x ∈ A) ∧ x ⦗ R ⦘ y
+
+89. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.230) “Relationship via ⩥” “Range antirestriction”:   x ⦗ R ⩥ B ⦘ y ≡ x ⦗ R ⦘ y ∧ ¬ (y ∈ B)
+
+90. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.231) “Domain of ◁”:   Dom  (A ◁ R) = A ∩ Dom  R
+
+91. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.232) “Range of ▷”:   Ran  (R ▷ B) = Ran  R ∩ B
+
+92. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.233) “Domain of ⩤”:   Dom  (A ⩤ R) = Dom  R - A
+
+93. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.234) “Range of ⩥”:   Ran  (R ⩥ B) = Ran  R - B
+
+94. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.235) “Domain restriction by `Dom`”:   Dom  S ◁ S = S
+
+95. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.236) “Range restriction by `Ran`”:   S ▷ Ran  S = S
+
+96. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.237) “Domain restriction via ⨾”:   A ◁ R = id A ⨾ R
+
+97. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.238) “Domain antirestriction via ⨾”:   A ⩤ R = id (~ A) ⨾ R
+
+98. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.239) “Range restriction via ⨾”:   R ▷ B = R ⨾ id B
+
+99. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.240) “Range antirestriction via ⨾”:   R ⩥ B = R ⨾ id (~ B)
+
+100. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.241) “Switching ▷ and ◁ in ⨾”:   (R ▷ B) ⨾ S = R ⨾ (B ◁ S)
+
+101. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.242) “Switching ⩥ and ⩤ in ⨾”:   (R ⩥ B) ⨾ S = R ⨾ (B ⩤ S)
+
+102. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.243) “Mutual associativity of ◁ with ⨾”:   (A ◁ R) ⨾ S = A ◁ R ⨾ S
+
+103. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.244) “Mutual associativity of ⩤ with ⨾”:   (A ⩤ R) ⨾ S = A ⩤ R ⨾ S
+
+104. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.245) “Mutual associativity of ⨾ with ▷”:   R ⨾ S ▷ C = R ⨾ (S ▷ C)
+
+105. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.246) “Mutual associativity of ⨾ with ⩥”:   R ⨾ S ⩥ C = R ⨾ (S ⩥ C)
+
+106. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.247) “Nested ◁”:   A ◁ (B ◁ R) = (A ∩ B) ◁ R
+
+107. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.248) “Nested ⩤”:   A ⩤ (B ⩤ R) = (A ∪ B) ⩤ R
+
+108. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.249) “Nested ▷”:   (R ▷ A) ▷ B = R ▷ (A ∩ B)
+
+109. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.250) “Nested ⩥”:   (R ⩥ A) ⩥ B = R ⩥ (A ∪ B)
+
+110. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.251) “Monotonicity of ◁”:   A ⊆ B ⇒ A ◁ R ⊆ B ◁ R
+
+111. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.252) “Monotonicity of ◁”:   R ⊆ S ⇒ A ◁ R ⊆ A ◁ S
+
+112. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.253) “Monotonicity of ◁”:   A ⊆ B ∧ R ⊆ S ⇒ A ◁ R ⊆ B ◁ S
+
+113. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.254) “Monotonicity of ▷”:   A ⊆ B ⇒ R ▷ A ⊆ R ▷ B
+
+114. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.255) “Monotonicity of ▷”:   R ⊆ S ⇒ R ▷ A ⊆ S ▷ A
+
+115. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.256) “Monotonicity of ▷”:   R ⊆ S ∧ A ⊆ B ⇒ R ▷ A ⊆ S ▷ B
+
+116. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.257) “Antitonicity of ⩤”:   A ⊆ B ⇒ B ⩤ R ⊆ A ⩤ R
+
+117. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.258) “Monotonicity of ⩤”:   R ⊆ S ⇒ A ⩤ R ⊆ A ⩤ S
+
+118. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.259) “Antitonicity of ⩥”:   A ⊆ B ⇒ R ⩥ B ⊆ R ⩥ A
+
+119. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.260) “Monotonicity of ⩥”:   R ⊆ S ⇒ R ⩥ A ⊆ S ⩥ A
+
+120. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.301) “Definition of ⦇_⦈” “Range of ◁”:   R ⦇ A ⦈ = Ran  (A ◁ R)
+
+121. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.302) “Relational image”:   y ∈ R ⦇ A ⦈ ≡ (∃ x ❙ x ∈ A • x ⦗ R ⦘ y )    
+        — CalcCheck: Proviso: ¬occurs(`x`, `A, R`)
+
+122. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.303) “Relational image under ⨾” “Relational image of ⨾”:   (R ⨾ S) ⦇ A ⦈ = S ⦇ (R ⦇ A ⦈) ⦈
+
+123. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.304) “Relational image under converse” “Domain of ▷”:   Dom  (R ▷ B) = (R ˘) ⦇ B ⦈
+
+124. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.305) “Range of ⩤”:   Ran  (A ⩤ R) = R ⦇ (~ A) ⦈
+
+125. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.306) “Domain of ⩥”:   Dom  (R ⩥ B) = (R ˘) ⦇ (~ B) ⦈
+
+126. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Axiom (14.401) “Definition of ⊕”:   R ⊕ S = (Dom  S ⩤ R) ∪ S
+
+127. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.402) “Relation override”:   x ⦗ R ⊕ S ⦘ y ≡ (¬ (x ∈ Dom  S) ∧ x ⦗ R ⦘ y) ∨ x ⦗ S ⦘ y
+
+128. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.403) “Left-distributivity of ⊕ over ∪”:   (Q ∪ R) ⊕ S = (Q ⊕ S) ∪ (R ⊕ S)
+
+129. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.404) “Domain of ⊕”:   Dom  (R ⊕ S) = Dom  R ∪ Dom  S
+
+130. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.405) “Associativity of ⊕”:   (Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)
+
+131. http://130.113.68.214:15071/ · Reference.ReferenceNotebook_SetRelOps_SOL
+   Theorem (14.406) “Range of ⊕”:   Ran  (R ⊕ S) = R ⦇ (~ Dom  S) ⦈ ∪ Ran  S
+
+132. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Zero is not successor”:   0 = n + 1 ≡ false
+
+133. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Zero is not successor”:   0 ≠ n + 1
+
+134. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Definition of +”:   0 + n = n
+
+135. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Definition of +”:   (m + 1) + n = (m + n) + 1
+
+136. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Induction over ℕ”:   P[n ≔ 0] ⇒ ((∀ n : ℕ ❙ P • P[n ≔ n + 1] ) ⇒ (∀ n : ℕ • P ))
+
+137. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Right-identity of + (v0)”:   (∀ m : ℕ • m + 0 = m )
+
+138. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Right-identity of + (v1)”:   (∀ m : ℕ • m + 0 = m )
+
+139. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Right-identity of + (v2)”:   (∀ m : ℕ • m + 0 = m )
+
+140. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Shifting successor over +”:   (∀ m • (∀ n • (m + 1) + n = m + (n + 1) ) )
+
+141. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Symmetry of +”:   (∀ m • (∀ n • m + n = n + m ) )
+
+142. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Snoc is not empty”:   (∀ xs • (∀ x • xs ▹ x = 𝜖 ≡ false ) )
+
+143. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Equality of ▹” “Injectivity of ▹” “Cancellation of ▹”:   xs ▹ x = ys ▹ y ≡ xs = ys ∧ x = y
+
+144. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Snoc-induction over sequences”:   P[xs ≔ 𝜖] ⇒ ((∀ xs : Seq  A ❙ P • (∀ x : A • P[xs ≔ xs ▹ x] ) ) ⇒ (∀ xs : Seq  A • P ))    
+        — CalcCheck: Proviso: ¬occurs(`x`, `P`), ¬occurs(`xs`, `A`)
+
+145. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Definition of ◃”:   x ◃ 𝜖 = 𝜖 ▹ x
+
+146. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Axiom “Definition of ◃”:   x ◃ (xs ▹ y) = (x ◃ xs) ▹ y
+
+147. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem “Cons is not empty”:   (∀ xs • (∀ x • x ◃ xs = 𝜖 ≡ false ) )
+
+148. http://130.113.68.214:15075/ · Week9.Homework-18_InductionPrinciples_SOL
+   Theorem (13.7) “Tail is different”:   (∀ xs : Seq  A • (∀ x : A • x ◃ xs = xs ≡ false ) )    
+        — CalcCheck: Proviso: ¬occurs(`xs`, `A`)
+
+149. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Definition of `t1`”:   t1 = ((◬ ◿ 2 ◺ ◬) ◿ 3 ◺ (◬ ◿ 5 ◺ ◬)) ◿ 7 ◺ (◬ ◿ 10 ◺ (◬ ◿ 11 ◺ ◬))
+
+150. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Singleton tree”:   ｢ x ｣ = ◬ ◿ x ◺ ◬
+
+151. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Fact “Alternative definition of `t1`”:   t1 = (｢ 2 ｣ ◿ 3 ◺ ｢ 5 ｣) ◿ 7 ◺ (◬ ◿ 10 ◺ ｢ 11 ｣)
+
+152. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Mirror”:   ◬ ˘ = ◬
+
+153. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Mirror”:   (l ◿ x ◺ r) ˘ = r ˘ ◿ x ◺ l ˘
+
+154. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Theorem “Mirroring singleton trees”:   ｢ x ｣ ˘ = ｢ x ｣
+
+155. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Tree induction”:   P[t ≔ ◬] ∧ (∀ l : Tree  A; r : Tree  A; x : A • P[t ≔ l] ∧ P[t ≔ r] ⇒ P[t ≔ l ◿ x ◺ r] ) ⇒ (∀ t : Tree  A • P )    
+        — CalcCheck: Proviso: ¬occurs(`l, r, x`, `P`)
+
+156. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Theorem “Self-inverse of tree mirror”:   (∀ t : Tree  A • (t ˘) ˘ = t )
+
+157. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Empty tree height”:   height  ◬ = 0
+
+158. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Axiom “Branch height”:   height  (l ◿ x ◺ r) = suc (height  l ↑ height  r)
+
+159. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Lemma “Singleton tree height”:   height  ｢ x ｣ = 1
+
+160. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Fact “Height of `t1`”:   height  t1 = 3
+
+161. http://130.113.68.214:15076/ · Week9.Homework-19_BinTree_SOL
+   Theorem “Height of mirrored tree”:   (∀ t : Tree  A • height  (t ˘) = height  t )
+
+162. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Definition of `t1`”:   t1 = ((Branch  (((Branch  (((Branch  EmptyT)  2)  EmptyT))  3)  (((Branch  EmptyT)  5)  EmptyT)))  7)  (((Branch  EmptyT)  10)  (((Branch  EmptyT)  11)  EmptyT))
+
+163. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Singleton tree”:   singleton  x = ((Branch  EmptyT)  x)  EmptyT
+
+164. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Fact “Alternative definition of `t1`”:   t1 = ((Branch  (((Branch  (singleton  2))  3)  (singleton  5)))  7)  (((Branch  EmptyT)  10)  (singleton  11))
+
+165. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Mirror”:   EmptyT ˘ = EmptyT
+
+166. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Mirror”:   ((Branch  l)  x)  r ˘ = ((Branch  (r ˘))  x)  (l ˘)
+
+167. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Theorem “Mirroring singleton trees”:   singleton  x ˘ = singleton  x
+
+168. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Tree induction”:   P[t ≔ EmptyT] ∧ (∀ l : Tree  A; r : Tree  A; x : A • P[t ≔ l] ∧ P[t ≔ r] ⇒ P[t ≔ ((Branch  l)  x)  r] ) ⇒ (∀ t : Tree  A • P )    
+        — CalcCheck: Proviso: ¬occurs(`l, r, x`, `P`)
+
+169. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Empty tree height”:   height  EmptyT = 0
+
+170. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Axiom “Branch height”:   height  (((Branch  l)  x)  r) = suc (height  l ↑ height  r)
+
+171. http://130.113.68.214:15077/ · Week9.Homework-19v_BinTree_SOL
+   Lemma “Singleton tree height”:   height  (singleton  x) = 1
+
+172. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Axiom “Zero is even”:   even  0
+
+173. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Axiom “Even successor”:   even  (suc n) ≡ ¬ even  n
+
+174. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Axiom “Zero is not odd”:   ¬ odd  0
+
+175. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Axiom “Odd successor”:   odd  (suc n) ≡ ¬ odd  n
+
+176. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Theorem “Even is not odd”:   even  n ≡ ¬ odd  n
+
+177. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Theorem “Odd is not even”:   odd  n ≡ ¬ even  n
+
+178. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Theorem “Even addition”:   even  (m + n) ≡ (even  m ≡ even  n)
+
+179. http://130.113.68.214:15078/ · Midterm1.Oddities
+   Theorem “Even double”:   even  (n + n)
+
+180. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Induction over ℕ”:   P[n ≔ 0] ⇒ ((∀ n : ℕ • P ⇒ P[n ≔ suc n] ) ⇒ (∀ n : ℕ • P ))
+
+181. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Complete induction over ℕ — attempt”:   (∀ n : ℕ • (∀ m : ℕ ❙ m < n • P[n ≔ m] ) ⇒ P ) ⇒ (∀ n : ℕ • P[n ≔ n] )    
+        — CalcCheck: Proviso: ¬occurs(`m`, `P`)
+
+182. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Complete induction over ℕ”:   (∀ n : ℕ • (∀ m : ℕ ❙ m < n • P[n ≔ m] ) ⇒ P ) ⇒ (∀ n : ℕ • P )    
+        — CalcCheck: Proviso: ¬occurs(`m`, `P`)
+
+183. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Predecessor less than successor”:   pred  n < suc n
+
+184. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Only successors have even successor”:   even  (suc n) ⇒ n = suc pred  n
+
+185. http://130.113.68.214:15079/ · Reference.Ref_InductionPrinciples_Nat_SOL
+   Theorem “Even induction”:   P[n ≔ 0] ⇒ ((∀ n : ℕ ❙ P • P[n ≔ suc (suc n)] ) ⇒ (∀ n ❙ even  n • P ))
+
+186. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Univalence of composition”:   univalent  R ⇒ (univalent  S ⇒ univalent  (R ⨾ S))
+
+187. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Univalence”:   univalent  R ≡ (∀ b₁ • (∀ b₂ • (∀ a • a ⦗ R ⦘ b₁ ∧ a ⦗ R ⦘ b₂ ⇒ b₁ = b₂ ) ) )    
+        — CalcCheck: Proviso: ¬occurs(`a, b₁, b₂`, `R`)
+
+188. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Totality of union”:   total  R ⇒ (total  S ⇒ total  (R ∪ S))
+
+189. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Totality”:   total  R ≡ (∀ a • (∃ b • a ⦗ R ⦘ b ) )    
+        — CalcCheck: Proviso: ¬occurs(`a, b`, `R`)
+
+190. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Domain of total relations”:   total  R ≡ 𝐔 ⊆ Dom  R
+
+191. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Domain of total relations”:   total  R ≡ Dom  R = 𝐔
+
+192. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Injectivity of converse”:   injective  (R ˘) ≡ univalent  R
+
+193. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Univalence of converse”:   univalent  (R ˘) ≡ injective  R
+
+194. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Injectivity”:   injective  R ≡ (∀ a₁ • (∀ a₂ • (∀ b • a₁ ⦗ R ⦘ b ∧ a₂ ⦗ R ⦘ b ⇒ a₁ = a₂ ) ) )    
+        — CalcCheck: Proviso: ¬occurs(`a₁, a₂, b`, `R`)
+
+195. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Totality of converse”:   total  (R ˘) ≡ surjective  R
+
+196. http://130.113.68.214:15080/ · Week8.Homework-17_HetRelProps_SOL
+   Theorem “Surjectivity”:   surjective  R ≡ (∀ b • (∃ a • a ⦗ R ⦘ b ) )    
+        — CalcCheck: Proviso: ¬occurs(`a, b`, `R`)
+
+197. http://130.113.68.214:15082/ · DynLogic2.Conditional
+   Primitive inference rule “Conditional”:
+                   `B ∧ P ⇒⁅ C₁ ⁆ Q`
+                   , `¬ B ∧ P ⇒⁅ C₂ ⁆ Q`
+                   ⊦ `P ⇒⁅ if B then C₁ else C₂ fi ⁆ Q`
+
+198. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.500) “Subidentity `id`”:   id A ⊆ 𝕀
+
+199. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.501) “Symmetry of `id`” “Converse of `id`”:   (id A) ˘ = id A
+
+200. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.502) “Monotonicity of `id`”:   A ⊆ B ⇒ id A ⊆ id B
+
+201. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.503) “Composition of `id`”:   id A ⨾ id B = id (A ∩ B)
+
+202. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.504) “Commuting `id-⨾-id`”:   id A ⨾ id B = id B ⨾ id A
+
+203. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.505) “Distributivity of `id` over ∩”:   id (A ∩ B) = id A ∩ id B
+
+204. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.506) “Univalence of `id`”:   univalent  (id A)
+
+205. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.507) “Injectivity of `id`”:   injective  (id A)
+
+206. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.510) “Symmetry of subidentity”:   q ⊆ 𝕀 ⇒ q ˘ = q
+
+207. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.520) “Converse of ◁”:   (A ◁ R) ˘ = R ˘ ▷ A
+
+208. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.521) “Converse of ▷”:   (R ▷ B) ˘ = B ◁ R ˘
+
+209. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.530) “Locality of `Dom`”:   Dom  (R ⨾ S) = Dom  (R ▷ Dom  S)
+
+210. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.531) “Locality of `Ran`”:   Ran  (R ⨾ S) = Ran  (Ran  R ◁ S)
+
+211. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.532) “Monotonicity of `Dom`”:   R ⊆ S ⇒ Dom  R ⊆ Dom  S
+
+212. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.533) “Monotonicity of `Ran`”:   R ⊆ S ⇒ Ran  R ⊆ Ran  S
+
+213. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Axiom (14.600) “Definition of `dom`”:   dom  R = id Dom  R
+
+214. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Axiom (14.601) “Definition of `ran`”:   ran  R = id Ran  R
+
+215. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.602) “`dom` of converse” “`ran` via `dom`”:   dom  (R ˘) = ran  R
+
+216. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.603) “`ran` of converse” “`dom` via `ran`”:   ran  (R ˘) = dom  R
+
+217. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.604) “Subidentity `dom`”:   dom  R ⊆ 𝕀
+
+218. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.605) “Subidentity `ran`”:   ran  R ⊆ 𝕀
+
+219. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.606) “Symmetry of `dom`” “Converse of `dom`”:   dom  R ˘ = dom  R
+
+220. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.607) “Symmetry of `ran`” “Converse of `ran`”:   ran  R ˘ = ran  R
+
+221. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.608) “Univalence of `dom`”:   univalent  (dom  R)
+
+222. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.609) “Univalence of `ran`”:   univalent  (ran  R)
+
+223. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.610) “Injectivity of `dom`”:   injective  (dom  R)
+
+224. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.611) “Injectivity of `ran`”:   injective  (ran  R)
+
+225. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.612) “Absorption of `dom`”:   dom  R ⨾ R = R
+
+226. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.613) “Absorption of `ran`”:   R ⨾ ran  R = R
+
+227. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.614) “Idempotency wrt. ⨾ of `dom`”:   dom  R ⨾ dom  R = dom  R
+
+228. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.615) “Idempotency wrt. ⨾ of `ran`”:   ran  R ⨾ ran  R = ran  R
+
+229. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.616) “Monotonicity of `dom`”:   Q ⊆ R ⇒ dom  Q ⊆ dom  R
+
+230. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.617) “Monotonicity of `ran`”:   Q ⊆ R ⇒ ran  Q ⊆ ran  R
+
+231. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.618) “Absorption of `dom` of greater”:   Q ⊆ R ⇒ Q = dom  R ⨾ Q
+
+232. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.619) “Absorption of `ran` of greater”:   Q ⊆ R ⇒ Q = Q ⨾ ran  R
+
+233. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.620) “Least left-preserver is `dom`”:   d ⊆ 𝕀 ∧ R ⊆ d ⨾ R ⇒ dom  R ⊆ d
+
+234. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.621) “Least right-preserver is `ran`”:   d ⊆ 𝕀 ∧ R ⊆ R ⨾ d ⇒ ran  R ⊆ d
+
+235. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.622) “Locality of `dom`”:   dom  (R ⨾ S) = dom  (R ⨾ dom  S)
+
+236. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.623) “Locality of `ran`”:   ran  (R ⨾ S) = ran  (ran  R ⨾ S)
+
+237. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.624) “Commuting `dom-⨾` with `dom`”:   dom  (dom  R ⨾ S) = dom  R ⨾ dom  S
+
+238. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.625) “Commuting `⨾-ran` with `ran`”:   ran  (R ⨾ ran  S) = ran  S ⨾ ran  R
+
+239. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.626) “Commuting `dom-⨾-dom`”:   dom  R ⨾ dom  S = dom  S ⨾ dom  R
+
+240. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.627) “Commuting `ran-⨾-ran`”:   ran  R ⨾ ran  S = ran  S ⨾ ran  R
+
+241. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.628) “`dom-⨾-dom` to ∩”:   dom  R ⨾ dom  S = dom  R ∩ dom  S
+
+242. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.629) “`ran-⨾-ran` to ∩”:   ran  R ⨾ ran  S = ran  R ∩ ran  S
+
+243. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.698) “`dom` via ∩” “Relation-algebraic definition of `dom`”:   dom  R = R ⨾ R ˘ ∩ 𝕀
+
+244. http://130.113.68.214:15084/ · Reference.Ref_SetSubidRel_SOL
+   Theorem (14.699) “`ran` via ∩” “Relation-algebraic definition of `ran`”:   ran  R = R ˘ ⨾ R ∩ 𝕀
+
+245. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from top of ≤-<-suc range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m ≤ i < n + 1 • E ) = (∑ i : ℤ ❙ m ≤ i < n • E ) + E[i ≔ n]
+
+246. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from top of <-≤-suc range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m < i ≤ n + 1 • E ) = (∑ i : ℤ ❙ m < i ≤ n • E ) + E[i ≔ n + 1]
+
+247. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from top of <-≤ range”:   m < n ⇒ (∑ i : ℤ ❙ m < i ≤ n • E ) = (∑ i : ℤ ❙ m < i < n • E ) + E[i ≔ n]
+
+248. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from top of ≤-≤ range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m ≤ i ≤ n • E ) = (∑ i : ℤ ❙ m ≤ i < n • E ) + E[i ≔ n]
+
+249. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from bottom of ≤-<-suc range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m ≤ i < n + 1 • E ) = (∑ i : ℤ ❙ m + 1 ≤ i < n + 1 • E ) + E[i ≔ m]
+
+250. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from bottom of <-≤-suc range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m < i ≤ n + 1 • E ) = (∑ i : ℤ ❙ m + 1 < i ≤ n + 1 • E ) + E[i ≔ m + 1]
+
+251. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from bottom of ≤-< range”:   m < n ⇒ (∑ i : ℤ ❙ m ≤ i < n • E ) = (∑ i : ℤ ❙ m + 1 ≤ i < n • E ) + E[i ≔ m]
+
+252. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from bottom of ≤-≤ range”:   m ≤ n ⇒ (∑ i : ℤ ❙ m ≤ i ≤ n • E ) = (∑ i : ℤ ❙ m + 1 ≤ i ≤ n • E ) + E[i ≔ m]
+
+253. http://130.113.68.214:15086/ · Quantification.IntIndexedSplitOffTermSumInt
+   Theorem “Split off ∑-term from bottom of <-≤ range”:   m < n ⇒ (∑ i : ℤ ❙ m < i ≤ n • E ) = (∑ i : ℤ ❙ m + 1 < i ≤ n • E ) + E[i ≔ m + 1]
+
+254. http://130.113.68.214:15088/ · Natural.Exp
+   Axiom “Definition of ** for 0”:   n ** 0 = 1
+
+255. http://130.113.68.214:15088/ · Natural.Exp
+   Axiom “Definition of ** for `suc`”:   n ** suc k = n · n ** k
+
+256. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “Squaring”:   n ** 2 = n · n
+
+257. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “Powers of 1”:   1 ** k = 1
+
+258. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “Distributivity of ** over base multiplication”:   (m · n) ** k = m ** k · n ** k
+
+259. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “Adding exponents”:   n ** (k + m) = n ** k · n ** m
+
+260. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “Multiplying exponents”:   n ** (k · m) = (n ** k) ** m
+
+261. http://130.113.68.214:15088/ · Natural.Exp
+   Theorem “** via ∏”:   n ** k = (∏ i ❙ i < k • n )
+
+262. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag abbreviation”:   ⟅ x ❙ P ⟆ = ⟅ x ❙ P • x ⟆
+
+263. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag abbreviation”:   ⟅ x, y ❙ P ⟆ = ⟅ x, y ❙ P • ⟨x, y⟩ ⟆
+
+264. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.79) “Bag membership”:   F ⋿ ⟅ x ❙ R • E ⟆ ≡ (∃ x ❙ R • F = E )    
+        — CalcCheck: Proviso: ¬occurs(`x`, `F`)
+
+265. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.79) “Bag membership”:   F ⋿ ⟅ x, y ❙ R • E ⟆ ≡ (∃ x, y ❙ R • F = E )    
+        — CalcCheck: Proviso: ¬occurs(`x, y`, `F`)
+
+266. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Simple bag membership”:   e ⋿ ⟅ x ❙ P ⟆ ≡ P[x ≔ e]
+
+267. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Direct bag comprehension membership”:   (∀ x • x ⋿ ⟅ x ❙ P ⟆ ≡ P )
+
+268. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.81) “Bag occurrences”:   a # ⟅ x : t ❙ R • E ⟆ = (∑ x : t ❙ R ∧ a = E • 1 )
+
+269. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.81) “Bag occurrences”:   a # ⟅ x : t; y : u ❙ R • E ⟆ = (∑ x : t; y : u ❙ R ∧ a = E • 1 )
+
+270. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Occurrences in simple bag comprehension”:   a # ⟅ x : t ❙ P ⟆ ≤ 1
+
+271. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.4) “Bag extensionality”:   B = C ≡ (∀ e • e # B = e # C )    
+        — CalcCheck: Proviso: ¬occurs(`e`, `B, C`)
+
+272. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag reconstruction”:   B = ⟅ x, i ❙ i < x # B • x ⟆    
+        — CalcCheck: Proviso: ¬occurs(`i, x`, `B`)
+
+273. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.80) “Bag comprehension size”:   # ⟅ x ❙ R • E ⟆ = (∑ x ❙ R • 1 )
+
+274. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.80) “Bag comprehension size”:   # ⟅ x, y ❙ R • E ⟆ = (∑ x, y ❙ R • 1 )
+
+275. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag size”:   # B = (∑ x, i ❙ i < x # B • 1 )    
+        — CalcCheck: Proviso: ¬occurs(`i, x`, `B`)
+
+276. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom (11.83) “Subbag” “Definition of ⊆” “Bag inclusion”:   B ⊆ C ≡ (∀ e • e # B ≤ e # C )    
+        — CalcCheck: Proviso: ¬occurs(`e`, `B, C`)
+
+277. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Monotonicity of #”:   B ⊆ C ⇒ e # B ≤ e # C
+
+278. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom “Bag union”:   e # S ∪ T = (e # S) + (e # T)
+
+279. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom “Bag intersection”:   e # S ∩ T = (e # S) ↓ (e # T)
+
+280. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Symmetry of bag union”:   S ∪ T = T ∪ S
+
+281. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Associativity of bag union”:   S ∪ (T ∪ W) = (S ∪ T) ∪ W
+
+282. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Axiom “Bag difference”:   v # S - T = (v # S) - (v # T)
+
+283. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag difference with union”:   S - (T ∪ U) = (S - T) - U
+
+284. http://130.113.68.214:15088/ · Week9.Homework-20_Bags_SOL
+   Theorem “Bag inclusion via ∪”:   S ⊆ T ≡ S ∪ (T - S) = T
+

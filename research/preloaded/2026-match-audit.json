@@ -1,8 +1,8 @@
 {
   "matches": {
-    "formula": 1907,
+    "formula": 1930,
     "reference": 0,
-    "new": 4
+    "new": 2
   },
   "newCards": [
     {
@@ -14,16 +14,6 @@
       "port": 16001,
       "id": "y26-9f0ebffccf36",
       "raw": "Theorem “Replace variable by `false`”:   ¬ p ⇒ E ≡ ¬ p ⇒ E[p ≔ false]"
-    },
-    {
-      "port": 16025,
-      "id": "y26-ae4b0b730247",
-      "raw": "Corollary “Zero of ·”:   0 · a = 0"
-    },
-    {
-      "port": 16025,
-      "id": "y26-8ee7c4234f61",
-      "raw": "Theorem “Predecessor of non-zero”:   n ≠ 0 ≡ suc pred n = n"
     }
   ]
 }

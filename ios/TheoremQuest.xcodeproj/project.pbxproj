@@ -1,0 +1,589 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B36D7A364A2678E31E6D9EF /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FBFAD0C8E81FABD3F08563 /* LibraryView.swift */; };
+		35929811953A3DAC246B8692 /* LibraryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740D823EF444543FCAC2F52A /* LibraryStoreTests.swift */; };
+		5D752E7CD4DB7F0CD19D30D4 /* FillKeyboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8ECCB913047767EE7565F5 /* FillKeyboardUITests.swift */; };
+		66C8CD2985864F0C4AE73A36 /* sources.json in Resources */ = {isa = PBXBuildFile; fileRef = B3BDFFF959C34D8E2D835DEA /* sources.json */; };
+		68E304B9E6440A8472E09821 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7212AF6D2DD54EA7D13710E8 /* Assets.xcassets */; };
+		75F2EDEA9BB88AA20643C662 /* TheoremQuestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8060CF74FA999F066C8A22 /* TheoremQuestApp.swift */; };
+		8A1D15F72572D302325E1ED0 /* TheoremQuestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CC031801DA29F1C49AF2DD /* TheoremQuestUITests.swift */; };
+		8BCC6B69C5FA6430DF1CE783 /* SyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6262BAEAB6629D95405F1E /* SyncView.swift */; };
+		AEE0C01A7E9C633FADF7B52D /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B75A3DC75A9E78E598FCD3 /* LibraryStore.swift */; };
+		B2F6CF2EFC6C82C348F25DF7 /* PracticeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BC931027976DCFE88376AB /* PracticeEngine.swift */; };
+		C5FA82CBF9FAA896A134543B /* StudyScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D55071481CA85787370968 /* StudyScope.swift */; };
+		D17E459402FAECAE9873DA5B /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258EAC5BAF80577FF0D9694B /* PracticeView.swift */; };
+		D7E33AF6B7B97213CD8A8E44 /* theorems.json in Resources */ = {isa = PBXBuildFile; fileRef = 9FAC87F8F6C97E4B46EB3DB7 /* theorems.json */; };
+		EE7E58FC1982A6BD73F26509 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5182B3CBB5DEC5CB9A03C2E /* Models.swift */; };
+		F8A320B6ED18684EDC8DE68A /* CompleteQuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80026DBC0F2443786B24142E /* CompleteQuestView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		86BEDCFCA3B08631AF870D27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 378E64E01FAC8EB2E67F74F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BA0057D45AC5484515951B7A;
+			remoteInfo = TheoremQuest;
+		};
+		E8B3DA7AE91F676EEDDE901B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 378E64E01FAC8EB2E67F74F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BA0057D45AC5484515951B7A;
+			remoteInfo = TheoremQuest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02D55071481CA85787370968 /* StudyScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScope.swift; sourceTree = "<group>"; };
+		20108A17F15D7296EDA0A450 /* TheoremQuestTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TheoremQuestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		258EAC5BAF80577FF0D9694B /* PracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeView.swift; sourceTree = "<group>"; };
+		48BC931027976DCFE88376AB /* PracticeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeEngine.swift; sourceTree = "<group>"; };
+		4D6262BAEAB6629D95405F1E /* SyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncView.swift; sourceTree = "<group>"; };
+		542D822FF3FF0A5A94C9EDBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7212AF6D2DD54EA7D13710E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		740D823EF444543FCAC2F52A /* LibraryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStoreTests.swift; sourceTree = "<group>"; };
+		80026DBC0F2443786B24142E /* CompleteQuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteQuestView.swift; sourceTree = "<group>"; };
+		8C8060CF74FA999F066C8A22 /* TheoremQuestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoremQuestApp.swift; sourceTree = "<group>"; };
+		93C8655581AE43B7FA0498EF /* TheoremQuest.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TheoremQuest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99CC031801DA29F1C49AF2DD /* TheoremQuestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoremQuestUITests.swift; sourceTree = "<group>"; };
+		9FAC87F8F6C97E4B46EB3DB7 /* theorems.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = theorems.json; sourceTree = "<group>"; };
+		A5B75A3DC75A9E78E598FCD3 /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStore.swift; sourceTree = "<group>"; };
+		A8FBFAD0C8E81FABD3F08563 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		B3BDFFF959C34D8E2D835DEA /* sources.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sources.json; sourceTree = "<group>"; };
+		C5182B3CBB5DEC5CB9A03C2E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		DC8ECCB913047767EE7565F5 /* FillKeyboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillKeyboardUITests.swift; sourceTree = "<group>"; };
+		E15F42138AACD79656C6AA8D /* TheoremQuestUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TheoremQuestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1422EE6E0420D0F59C9FFB1D /* data */ = {
+			isa = PBXGroup;
+			children = (
+				B3BDFFF959C34D8E2D835DEA /* sources.json */,
+				9FAC87F8F6C97E4B46EB3DB7 /* theorems.json */,
+			);
+			name = data;
+			path = ../data;
+			sourceTree = "<group>";
+		};
+		16EEE9B81D5A6A0FF16063A8 = {
+			isa = PBXGroup;
+			children = (
+				1422EE6E0420D0F59C9FFB1D /* data */,
+				77045D2DDFA07142DAFA7C4D /* TheoremQuest */,
+				226F454EF87F8802B0FF4FA7 /* TheoremQuestTests */,
+				EB836039273F4134C1A41331 /* TheoremQuestUITests */,
+				2289BA6D55D424BE245311EE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		226F454EF87F8802B0FF4FA7 /* TheoremQuestTests */ = {
+			isa = PBXGroup;
+			children = (
+				740D823EF444543FCAC2F52A /* LibraryStoreTests.swift */,
+			);
+			path = TheoremQuestTests;
+			sourceTree = "<group>";
+		};
+		2289BA6D55D424BE245311EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93C8655581AE43B7FA0498EF /* TheoremQuest.app */,
+				20108A17F15D7296EDA0A450 /* TheoremQuestTests.xctest */,
+				E15F42138AACD79656C6AA8D /* TheoremQuestUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		77045D2DDFA07142DAFA7C4D /* TheoremQuest */ = {
+			isa = PBXGroup;
+			children = (
+				7212AF6D2DD54EA7D13710E8 /* Assets.xcassets */,
+				80026DBC0F2443786B24142E /* CompleteQuestView.swift */,
+				542D822FF3FF0A5A94C9EDBA /* Info.plist */,
+				A5B75A3DC75A9E78E598FCD3 /* LibraryStore.swift */,
+				A8FBFAD0C8E81FABD3F08563 /* LibraryView.swift */,
+				C5182B3CBB5DEC5CB9A03C2E /* Models.swift */,
+				48BC931027976DCFE88376AB /* PracticeEngine.swift */,
+				258EAC5BAF80577FF0D9694B /* PracticeView.swift */,
+				02D55071481CA85787370968 /* StudyScope.swift */,
+				4D6262BAEAB6629D95405F1E /* SyncView.swift */,
+				8C8060CF74FA999F066C8A22 /* TheoremQuestApp.swift */,
+			);
+			path = TheoremQuest;
+			sourceTree = "<group>";
+		};
+		EB836039273F4134C1A41331 /* TheoremQuestUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DC8ECCB913047767EE7565F5 /* FillKeyboardUITests.swift */,
+				99CC031801DA29F1C49AF2DD /* TheoremQuestUITests.swift */,
+			);
+			path = TheoremQuestUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4EEF024594414195F14336CE /* TheoremQuestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16A8D1C35A8D4069C3DA88AE /* Build configuration list for PBXNativeTarget "TheoremQuestTests" */;
+			buildPhases = (
+				495171BFDF7ED24330B3E3E9 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5A94D06309D27D04AE13DADC /* PBXTargetDependency */,
+			);
+			name = TheoremQuestTests;
+			packageProductDependencies = (
+			);
+			productName = TheoremQuestTests;
+			productReference = 20108A17F15D7296EDA0A450 /* TheoremQuestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		882C3C8DBEC8D04204307B8A /* TheoremQuestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8CD59BF04DA6BD8F4165A4A /* Build configuration list for PBXNativeTarget "TheoremQuestUITests" */;
+			buildPhases = (
+				2C8504DF3723F3E5B9BECEB3 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C59DA961C08918C1CD5DD196 /* PBXTargetDependency */,
+			);
+			name = TheoremQuestUITests;
+			packageProductDependencies = (
+			);
+			productName = TheoremQuestUITests;
+			productReference = E15F42138AACD79656C6AA8D /* TheoremQuestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		BA0057D45AC5484515951B7A /* TheoremQuest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C62B593CDF123ECC6667CE1 /* Build configuration list for PBXNativeTarget "TheoremQuest" */;
+			buildPhases = (
+				71CC509175FAD9C0C52BE19C /* Sources */,
+				B49E3F5A547A6F70418B334A /* Resources */,
+				DB79786B504C7F9E9DB0DBAB /* Bundle complete offline learning game */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TheoremQuest;
+			packageProductDependencies = (
+			);
+			productName = TheoremQuest;
+			productReference = 93C8655581AE43B7FA0498EF /* TheoremQuest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		378E64E01FAC8EB2E67F74F4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					882C3C8DBEC8D04204307B8A = {
+						TestTargetID = BA0057D45AC5484515951B7A;
+					};
+				};
+			};
+			buildConfigurationList = 8C1B04649F225E8D437E05BD /* Build configuration list for PBXProject "TheoremQuest" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 16EEE9B81D5A6A0FF16063A8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2289BA6D55D424BE245311EE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BA0057D45AC5484515951B7A /* TheoremQuest */,
+				4EEF024594414195F14336CE /* TheoremQuestTests */,
+				882C3C8DBEC8D04204307B8A /* TheoremQuestUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B49E3F5A547A6F70418B334A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E304B9E6440A8472E09821 /* Assets.xcassets in Resources */,
+				66C8CD2985864F0C4AE73A36 /* sources.json in Resources */,
+				D7E33AF6B7B97213CD8A8E44 /* theorems.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DB79786B504C7F9E9DB0DBAB /* Bundle complete offline learning game */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../tools/build_ios_web.py",
+				"$(SRCROOT)/../tools/build_site.py",
+				"$(SRCROOT)/../index.html",
+				"$(SRCROOT)/../assets/style.css",
+				"$(SRCROOT)/../assets/engine.js",
+				"$(SRCROOT)/../assets/proofs.js",
+				"$(SRCROOT)/../assets/notebook-hints.js",
+				"$(SRCROOT)/../assets/data.js",
+				"$(SRCROOT)/../assets/app.js",
+			);
+			name = "Bundle complete offline learning game";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/TheoremQuest.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/bin/python3 \"$SRCROOT/../tools/build_ios_web.py\" --output \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/TheoremQuest.html\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2C8504DF3723F3E5B9BECEB3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D752E7CD4DB7F0CD19D30D4 /* FillKeyboardUITests.swift in Sources */,
+				8A1D15F72572D302325E1ED0 /* TheoremQuestUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		495171BFDF7ED24330B3E3E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35929811953A3DAC246B8692 /* LibraryStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71CC509175FAD9C0C52BE19C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8A320B6ED18684EDC8DE68A /* CompleteQuestView.swift in Sources */,
+				AEE0C01A7E9C633FADF7B52D /* LibraryStore.swift in Sources */,
+				2B36D7A364A2678E31E6D9EF /* LibraryView.swift in Sources */,
+				EE7E58FC1982A6BD73F26509 /* Models.swift in Sources */,
+				B2F6CF2EFC6C82C348F25DF7 /* PracticeEngine.swift in Sources */,
+				D17E459402FAECAE9873DA5B /* PracticeView.swift in Sources */,
+				C5FA82CBF9FAA896A134543B /* StudyScope.swift in Sources */,
+				8BCC6B69C5FA6430DF1CE783 /* SyncView.swift in Sources */,
+				75F2EDEA9BB88AA20643C662 /* TheoremQuestApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5A94D06309D27D04AE13DADC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BA0057D45AC5484515951B7A /* TheoremQuest */;
+			targetProxy = 86BEDCFCA3B08631AF870D27 /* PBXContainerItemProxy */;
+		};
+		C59DA961C08918C1CD5DD196 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BA0057D45AC5484515951B7A /* TheoremQuest */;
+			targetProxy = E8B3DA7AE91F676EEDDE901B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		19FE0ADE6143BD7FE352CE0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuestUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = TheoremQuest;
+			};
+			name = Debug;
+		};
+		1CD4D95C48FF989B8D099C93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TheoremQuest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3F46C2426B99E7E33A2E17D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		4E093C4D57DE8DD6DD347B99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuestUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = TheoremQuest;
+			};
+			name = Release;
+		};
+		51E77845D6D8DBE6102099D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuestTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TheoremQuest.app/TheoremQuest";
+			};
+			name = Release;
+		};
+		668350B9E48E29FF0EC448A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TheoremQuest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A62D2FED88934CEFFBC08FB3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.sager1145.TheoremQuestTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TheoremQuest.app/TheoremQuest";
+			};
+			name = Debug;
+		};
+		A8D29D00617EA64F94B2F809 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		16A8D1C35A8D4069C3DA88AE /* Build configuration list for PBXNativeTarget "TheoremQuestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A62D2FED88934CEFFBC08FB3 /* Debug */,
+				51E77845D6D8DBE6102099D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7C62B593CDF123ECC6667CE1 /* Build configuration list for PBXNativeTarget "TheoremQuest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CD4D95C48FF989B8D099C93 /* Debug */,
+				668350B9E48E29FF0EC448A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8C1B04649F225E8D437E05BD /* Build configuration list for PBXProject "TheoremQuest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8D29D00617EA64F94B2F809 /* Debug */,
+				3F46C2426B99E7E33A2E17D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A8CD59BF04DA6BD8F4165A4A /* Build configuration list for PBXNativeTarget "TheoremQuestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19FE0ADE6143BD7FE352CE0D /* Debug */,
+				4E093C4D57DE8DD6DD347B99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 378E64E01FAC8EB2E67F74F4 /* Project object */;
+}

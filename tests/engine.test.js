@@ -3,6 +3,26 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const E=require('../assets/engine.js'),bank=require('../data/theorems.json'),sources=require('../data/sources.json'),coverage=require('../data/coverage.json');
 const okay=(a,b)=>assert.equal(E.compareFormula(a,b).ok,true,JSON.stringify({a,b,result:E.compareFormula(a,b)}));
 const wrong=(a,b)=>assert.equal(E.compareFormula(a,b).ok,false,`${a} must not match ${b}`);
+test('hint locations pair each notebook with its own weeks and deduplicate occurrences',()=>{
+ const r={sources:[
+  {sourceId:'a',locator:{line:12,section:'Week9.Module'}},
+  {sourceId:'a',locator:{line:12,section:'Week9.Module'}},
+  {sourceId:'a',locator:{line:4,section:'Equality'}},
+  {sourceId:'b',locator:{line:8}}, {sourceId:'c'}, {sourceId:'missing'}
+ ]};
+ const locations=E.hintLocations(r,[
+  {id:'a',name:'Exercise 2.4',year:2026,weeks:[2],url:'http://example.test:16014/'},
+  {id:'b',name:'Homework',year:2025,weeks:[1,3]},
+  {id:'c',name:'Unassigned',year:2026,weeks:[]}
+ ],{a:[2,2]});
+ assert.equal(locations.length,3);
+ assert.deepEqual(locations.find(s=>s.sourceId==='a').weeks,[2]);
+ assert.deepEqual(locations.find(s=>s.sourceId==='a').lines,[4,12]);
+ assert.deepEqual(locations.find(s=>s.sourceId==='a').sections,['Week9.Module','Equality']);
+ assert.deepEqual(locations.find(s=>s.sourceId==='b').weeks,[1,3]);
+ assert.deepEqual(locations.find(s=>s.sourceId==='c').weeks,[]);
+ assert.deepEqual(E.hintLocations({},[]),[]);
+});
 test('CalcCheck aliases, boundaries, command assignment ≠ substitution',()=>{
  assert.equal(E.normalizeInput(String.raw`p \land q \implies p \lor q`),'p ∧ q ⇒ p ∨ q');
  assert.equal(E.normalizeInput(String.raw`x := 1`),'x := 1');
@@ -36,6 +56,9 @@ test('AC / parentheses / reversed relations accepted, wrong law rejected',()=>{
  wrong('p ∧ true ≡ p','p ∨ false ≡ p');
  wrong('p ∧ q ≡ q ∧ p','true');
  wrong('p ∧ q ≡ q ∧ p','p ≡ p');
+ wrong('p ∧ q ≡ q ∧ p','p ∧ q ≡ p ∧ q');
+ wrong('(a + b) + c = a + (b + c)','(a + b) + c = (a + b) + c');
+ wrong('a ≥ b ≡ b ≤ a','b ≤ a ≡ b ≤ a');
  wrong('p ⇒ (q ⇒ r)','(p ⇒ q) ⇒ r');
  wrong('A × B = B × A','B × A = A × B ≡ true');
 });
@@ -80,6 +103,12 @@ test('shared theorem names accept the group, while numbered answers identify the
  const negation=bank.find(r=>r.numbers.includes('15.20')&&r.name==='Negation as multiplication');
  assert(negation);
  assert.equal(E.gradeName(bank,negation,{typed:'15.20'}).ok,true);
+ const reused=bank.find(r=>r.id==='p-a335d3c954a2');
+ assert.equal(E.gradeName(bank,reused,{typed:reused.displayRef}).ok,true);
+ const unnamed=bank.find(r=>r.numbers.includes('11.47'));
+ assert.equal(unnamed.name,'原文未命名');
+ assert.equal(E.gradeName(bank,unnamed,{typed:'原文未命名'}).ok,false);
+ assert.equal(E.gradeName(bank,unnamed,{typed:'11.47'}).ok,true);
 });
 test('complex formulas are less likely to use free spelling when other modes are enabled',()=>{
  const long={id:'long',formula:'(∀ x ❙ R • (∀ y ❙ Q • P )) ≡ (∀ x ❙ R • (∀ y ❙ Q • P ))'};
@@ -87,6 +116,30 @@ test('complex formulas are less likely to use free spelling when other modes are
  assert.equal(E.makeSession([long],['formula','choice'],1,()=>0.3)[0].mode,'choice');
  assert.equal(E.makeSession([short],['formula','choice'],1,()=>0.3)[0].mode,'formula');
  assert.equal(E.makeSession([long],['formula'],1,()=>0.3)[0].mode,'formula');
+});
+test('answer feedback includes every name, reference and formula with the current variant first',()=>{
+ const a={id:'a',name:'Law',aliases:['Other name','Law'],numbers:['1a','1'],displayRef:'(1a)',formula:'p ∧ q',formulaVariants:['p ∧ q','q ∧ p'],sideCondition:'p is Boolean'};
+ const b={id:'b',name:'law',aliases:['Second name'],numbers:['1b'],displayRef:'(1b)',formula:'p ∨ q',variantLabel:'disjunction'};
+ const unrelated={...b,id:'c',name:'Different law'};
+ assert.deepEqual(E.answerVariants([b,unrelated,a],a),[
+  {id:'a',names:['Law','Other name'],references:['(1a)','(1)'],formulas:['p ∧ q','q ∧ p'],variantLabel:'',sideCondition:'p is Boolean'},
+  {id:'b',names:['law','Second name'],references:['(1b)'],formulas:['p ∨ q'],variantLabel:'disjunction',sideCondition:''}
+ ]);
+ assert.deepEqual(E.answerVariants([],{id:'legacy',name:'Single',formula:'p'}),[
+  {id:'legacy',names:['Single'],references:[],formulas:['p'],variantLabel:'',sideCondition:''}
+ ]);
+ const unnamed={...a,id:'unnamed',name:'原文未命名'};
+ assert.equal(E.answerVariants([unnamed,{...unnamed,id:'other'}],unnamed).length,1);
+});
+test('symbol cloze hides a real formula token and offers a built-in choice set',()=>{
+ const t=E.clozeTemplate('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q',()=>0);
+ assert(t&&t.options.includes(t.correct));
+ assert.equal(t.tokens[t.index],t.correct);
+ assert(!E.isVariable(t.correct));
+ assert.equal(E.clozeTemplate('true'),null);
+ assert(E.eligibleModes({formula:'p ∧ q'},['cloze']).includes('cloze'));
+ assert(!E.eligibleModes({formula:'true'},['cloze']).includes('cloze'));
+ assert.equal(E.makeSession([{id:'x',formula:'p ∧ q'}],['cloze'],1,()=>0.5)[0].mode,'cloze');
 });
 test('queue only draws checked modes and current scope',()=>{
  const small=bank.filter(E.isQuestionCard).slice(0,12),q=E.makeSession(small,['choice','formula'],12,()=>0.4);
@@ -97,7 +150,7 @@ test('queue only draws checked modes and current scope',()=>{
 });
 test('inference rules never become questions',()=>{
  const rules=bank.filter(r=>/inference rule/i.test(r.kind));
- assert.equal(rules.length,9);
+ assert(rules.length>=9);
  assert(rules.every(r=>!E.isQuestionCard(r)));
  assert.equal(bank.filter(E.isQuestionCard).length,bank.length-rules.length);
  assert(E.makeSession(bank,['name','choice','blanks','formula','symbol'],100,()=>0.4).every(q=>E.isQuestionCard(bank.find(r=>r.id===q.id))));
@@ -118,6 +171,15 @@ test('backup validation and round-trip preserve mistakes, discard unknown IDs',(
  const restored=E.validateProgress(JSON.parse(JSON.stringify(p)),bank.map(r=>r.id));
  assert.equal(restored.records[id].active,true);assert.deepEqual(restored.stars,[id]);assert(!restored.records.unknown);
  assert.throws(()=>E.validateProgress({schemaVersion:99},[]));
+});
+test('merged unnamed card IDs retain saved progress and stars',()=>{
+ const oldId='p-b1df9f7082d5',newId='t-d212aba8ab10';
+ const p=E.freshProgress();
+ E.applyAttempt(p,oldId,'name',false,'15.20');p.stars=[oldId];
+ const restored=E.validateProgress(p,bank.map(r=>r.id));
+ assert(restored.records[newId]?.active);
+ assert.deepEqual(restored.stars,[newId]);
+ assert.equal(restored.records[oldId],undefined);
 });
 test('every published card is source-traceable and self-matchable',()=>{
  const ids=new Set(),ss=new Set(sources.map(s=>s.id));
@@ -151,4 +213,66 @@ test('pure propositional entries are true on every Boolean valuation',()=>{
   for(let m=0;m<2**vars.length;m++){const v=Object.fromEntries(vars.map((x,i)=>[x,!!(m&(1<<i))]));assert(evalTree(tree,v),r.displayRef+' '+r.name+' '+r.formula+' '+JSON.stringify(v));}
  }
  assert(count>100);console.log('Pure propositional cards checked:',count);
+});
+
+test('choice difficulty increases distractor similarity and keeps answer positions shuffled',()=>{
+ const card=(id,name,formula,topic='logic')=>({id,name,formula,topic,displayRef:`(${id})`});
+ const target=card('target','Distributivity of conjunction over disjunction','p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)');
+ const pool=[target,
+  card('a','Distributivity of conjunction over disjunction','p ∧ (q ∨ r) ⇒ p'),
+  card('b','Distributivity of disjunction over conjunction','p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)'),
+  card('c','Distributivity of implication over conjunction','p ⇒ (q ∧ r) ≡ (p ⇒ q) ∧ (p ⇒ r)'),
+  card('d','Associativity of conjunction','p ∧ (q ∧ r) ≡ (p ∧ q) ∧ r'),
+  card('e','Commutativity of disjunction','p ∨ q ≡ q ∨ p'),
+  card('f','Absorption','p ∧ (p ∨ q) ≡ p'),
+  card('g','Successor','suc n = n + 1','natural'),
+  card('h','Zero','n + 0 = n','natural'),
+  card('i','Predecessor','pred (suc n) = n','natural')];
+ const scores=[1,2,3].map(level=>{
+  const options=E.choiceOptions(pool,target,level,()=>0.3);
+  assert.equal(options.length,4);assert.equal(options.filter(r=>r.id===target.id).length,1);
+  assert.equal(new Set(options.map(E.label)).size,4);
+  return options.filter(r=>r.id!==target.id).reduce((sum,r)=>sum+E.choiceSimilarity(target,r),0);
+ });
+ assert(scores[0]<scores[1]&&scores[1]<scores[2],scores.join(','));
+ assert(E.choiceOptions(pool,target,3,()=>0.3).some(r=>r.id==='a'));
+ const positions=new Set([0.1,0.4,0.7,0.99].map(seed=>E.choiceOptions(pool,target,3,()=>seed).findIndex(r=>r.id===target.id)));
+ assert(positions.size>1);
+});
+test('choice distractors exclude equivalent formulas, variants, duplicate labels and inference rules',()=>{
+ const target={id:'target',name:'Law',displayRef:'(1)',formula:'p ∧ q ≡ q ∧ p',formulaVariants:['p ∨ q ≡ q ∨ p']};
+ const other={id:'other',name:'Other',displayRef:'(2)',formula:'p ⇒ q'};
+ const pool=[target,{id:'alpha',name:'Renamed',displayRef:'(3)',formula:'x ∧ y ≡ y ∧ x'},
+  {id:'variant',name:'Variant',displayRef:'(4)',formula:'x ∨ y ≡ y ∨ x'},
+  {id:'rule',name:'Rule',displayRef:'(5)',formula:'p ∧ q ⇒ p',kind:'inference rule'},other,{...other,id:'duplicate'}];
+ for(const level of [1,2,3]){
+  assert.deepEqual(new Set(E.choiceOptions(pool,target,level,()=>0.4).map(E.label)),new Set([E.label(target),E.label(other)]));
+ }
+ assert.deepEqual(E.choiceOptions([target],target,3),[target]);
+ assert.deepEqual(E.choiceOptions(pool,target,999,()=>0.4),E.choiceOptions(pool,target,2,()=>0.4));
+});
+
+test('hard choice excludes foundational questions and distractors without affecting other modes',()=>{
+ const basics=['Associativity of conjunction','Symmetry of equality','Reflexivity of implication','结合律','自反性','对称性'];
+ const simple=basics.map((name,i)=>({id:'basic'+i,name,displayRef:`(${i})`,formula:'p ∧ q ≡ q ∧ p'}));
+ const target={id:'advanced',name:'Golden rule',displayRef:'(9)',formula:'p ∧ q ≡ p ≡ q ≡ p ∨ q'};
+ const pool=[...simple,target];
+ assert(simple.every(E.isFoundationalTheorem));
+ assert(E.isFoundationalTheorem({...target,aliases:['Reflexivity']}));
+ assert.equal(E.isFoundationalTheorem(target),false);
+ assert(E.makeSession(pool,['choice'],20,()=>0.4,3).every(q=>q.id===target.id));
+ assert.deepEqual(E.choiceOptions(pool,target,3),[target]);
+ assert(E.choiceOptions(pool,target,1,()=>0.4).length>1);
+ assert(E.makeSession(simple,['choice'],2,()=>0.4,2).length===2);
+ assert.throws(()=>E.makeSession(simple,['choice'],2,()=>0.4,3),/没有适合/);
+ assert(E.makeSession(simple,['choice','formula'],5,()=>0.4,3).every(q=>q.mode==='formula'));
+});
+
+test('letter blanks preserve each occurrence even when a swapped formula is equivalent',()=>{
+ const template=E.blankTemplate('(p ∨ q) ∨ r ≡ p ∨ (q ∨ r)');
+ assert(E.gradeBlanks(template,['x','y','z','x','y','z']).ok);
+ assert(!E.gradeBlanks(template,['x','y','z','y','x','z']).ok);
+ assert(!E.gradeBlanks(template,['x','x','z','x','x','z']).ok);
+ assert(!E.gradeBlanks(template,['x','y','z','x','y','true']).ok);
+ assert(!E.gradeBlanks(template,['x']).ok);
 });

@@ -1,0 +1,175 @@
+{
+  "answers": 1000,
+  "correct": 500,
+  "incorrect": 500,
+  "ordinarySessions": 20,
+  "reloadsDuringAnswers": 0,
+  "browserRestarts": 0,
+  "modes": {
+    "name": 100,
+    "choice": 110,
+    "blanks": 96,
+    "cloze": 273,
+    "formula": 88,
+    "symbol": 98,
+    "proof": 235
+  },
+  "duplicateSubmissionChecks": 1000,
+  "nativeStorageReload": true,
+  "invalidOrUnavailableWrongInputSkipped": 2,
+  "seconds": 34.63,
+  "browser": "148.0.7778.96",
+  "engineSHA256": "618c94065599f05d3e406e68dc2733487a5d042f17cfa4e6cb508f25590d285b",
+  "answerMedianMs": 4.9,
+  "answerP95Ms": 16.3,
+  "answerMaxMs": 25.7,
+  "javascriptErrors": [],
+  "memorySnapshots": [
+    {
+      "answers": 50,
+      "heapMiB": 16.35,
+      "documents": 1,
+      "nodes": 10929,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 100,
+      "heapMiB": 12.21,
+      "documents": 1,
+      "nodes": 2242,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 150,
+      "heapMiB": 16.84,
+      "documents": 1,
+      "nodes": 14173,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 200,
+      "heapMiB": 13.31,
+      "documents": 1,
+      "nodes": 26444,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 250,
+      "heapMiB": 17.89,
+      "documents": 1,
+      "nodes": 9729,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 300,
+      "heapMiB": 18.71,
+      "documents": 1,
+      "nodes": 22579,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 350,
+      "heapMiB": 12.69,
+      "documents": 1,
+      "nodes": 8497,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 400,
+      "heapMiB": 20.84,
+      "documents": 1,
+      "nodes": 22099,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 450,
+      "heapMiB": 18.51,
+      "documents": 1,
+      "nodes": 8179,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 500,
+      "heapMiB": 20.41,
+      "documents": 1,
+      "nodes": 4764,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 550,
+      "heapMiB": 16.39,
+      "documents": 1,
+      "nodes": 6211,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 600,
+      "heapMiB": 21.65,
+      "documents": 1,
+      "nodes": 6450,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 650,
+      "heapMiB": 9.1,
+      "documents": 1,
+      "nodes": 4435,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 700,
+      "heapMiB": 18.07,
+      "documents": 1,
+      "nodes": 6154,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 750,
+      "heapMiB": 12.17,
+      "documents": 1,
+      "nodes": 6554,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 800,
+      "heapMiB": 14.66,
+      "documents": 1,
+      "nodes": 10655,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 850,
+      "heapMiB": 9.35,
+      "documents": 1,
+      "nodes": 13265,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 900,
+      "heapMiB": 9.06,
+      "documents": 1,
+      "nodes": 2135,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 950,
+      "heapMiB": 9.09,
+      "documents": 1,
+      "nodes": 2135,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 1000,
+      "heapMiB": 9.12,
+      "documents": 1,
+      "nodes": 2200,
+      "jsEventListeners": 34
+    }
+  ],
+  "afterGarbageCollection": {
+    "heapMiB": 8.83,
+    "documents": 1,
+    "nodes": 2250,
+    "jsEventListeners": 34
+  }
+}

@@ -18,7 +18,9 @@ jobs:
         run: |
           node --version
           python3 --version
-          node --test tests/engine.test.js
+          npm test
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/preloaded_ledger.py --fail-on-audit
       - name: Build public static files only
         run: python3 tools/build_site.py --out _site --portable _site/Theorem-Quest-Standalone.html
       - name: Configure Pages

@@ -9,3 +9,6 @@ source-library/
 test-results/
 playwright-report/
 *-progress-*.json
+xcuserdata/
+*.xcuserstate
+ios/TheoremQuest [0-9]*.xcodeproj/

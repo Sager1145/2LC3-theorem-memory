@@ -1,0 +1,13 @@
+Bank update status: 已安装题库更新：1710 条。学习记录已保留；未完成关卡的当前题目将重新生成。
+Bank update status: 已核验：当前题库已是最新版本。
+Bank update status: 更新失败，保留原题库与学习记录。Failed to fetch
+Bank update status: 更新失败，保留原题库与学习记录。下载内容未通过完整性校验，未安装。
+Bank update status: 更新失败，保留原题库与学习记录。题库条目数量与版本清单不一致。
+Bank update status: 更新失败，保留原题库与学习记录。题库文件路径或校验值无效。
+Bank update status: 更新失败，保留原题库与学习记录。题库版本清单无效或暂不支持。
+Bank update status: 更新失败，保留原题库与学习记录。当前网站尚未发布题库更新清单，请部署新版网站后再检查。
+Bank update status: 已安装题库更新：1710 条。学习记录已保留；未完成关卡的当前题目将重新生成。
+Bank update status: 已安装题库更新：1710 条。学习记录已保留；未完成关卡的当前题目将重新生成。
+Bank update status: 更新失败，保留原题库与学习记录。storage denied
+Bank update status: 更新失败，保留原题库与学习记录。定理格式无效、来源缺失或 ID 重复。
+PASS: install + restore + unchanged + history preservation; network/hash/count/path/schema failures; legacy guidance; portable and native entrances

@@ -1,0 +1,6 @@
+Bank update status: 已安装题库更新：1710 条。学习记录已保留；未完成关卡的当前题目将重新生成。
+Bank update status: 更新失败，保留原题库与学习记录。网络请求超时，请重试。
+Traceback (most recent call last):
+  File "tests/browser_bank_updates.py", line 112, in <module>
+    assert '已是最新版本' in check(page)
+AssertionError

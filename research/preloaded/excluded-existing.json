@@ -300,13 +300,6 @@
     "reason": "not an exact declaration in copied preloaded lists"
   },
   {
-    "id": "t-82b334be8997",
-    "name": "Flipped transitivity of ≤",
-    "numbers": [],
-    "formula": "b ≤ c ⇒ (a ≤ b ⇒ a ≤ c)",
-    "reason": "not an exact declaration in copied preloaded lists"
-  },
-  {
     "id": "t-b223a4e11cb0",
     "name": "M1.2.1",
     "numbers": [],
@@ -430,20 +423,6 @@
     "name": "Odd xor even",
     "numbers": [],
     "formula": "odd a ≢ even a",
-    "reason": "not an exact declaration in copied preloaded lists"
-  },
-  {
-    "id": "t-857ba4314689",
-    "name": "Predecessor of non-zero",
-    "numbers": [],
-    "formula": "n ≠ 0 ≡ suc pred n = n",
-    "reason": "not an exact declaration in copied preloaded lists"
-  },
-  {
-    "id": "t-a51e69c85352",
-    "name": "Zero is not odd",
-    "numbers": [],
-    "formula": "¬ odd 0",
     "reason": "not an exact declaration in copied preloaded lists"
   },
   {

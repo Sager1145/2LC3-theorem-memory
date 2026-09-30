@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 1,
+  "method": "Completed enclosing theorem when present, proven calculation header and hint brackets, All steps OK, plus Calculation matches goal for expected-goal calculations; consecutive expression/hint/expression with one explicit named theorem. Numbered hints require a unique named bank declaration. No popup declarations or invented proofs.",
+  "sourceCount": 24,
+  "sourcesWithCompletedCalculations": 9,
+  "summary": {
+    "completeProofCells": 78,
+    "completedCalculations": 120,
+    "completedSteps": 436,
+    "eligibleSteps": 369,
+    "unresolvedNumberedSteps": 9,
+    "notebookCells": 587,
+    "unnamedSteps": 52,
+    "multipleNameSteps": 6
+  },
+  "sources": [
+    {
+      "id": "calc-2026-16019",
+      "name": "2026 A1.1 · completed proof",
+      "url": "http://130.113.68.214:16019/",
+      "year": 2026,
+      "weeks": [],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+      "sha256": "8234692e97fe8fcceca24b113ce7da50f03e437b491010222ab1c03eef4d42db",
+      "port": 16019,
+      "completeProofCells": 25,
+      "completedCalculations": 25,
+      "completedSteps": 116,
+      "eligibleSteps": 110,
+      "unresolvedNumberedSteps": 6,
+      "notebookCells": 32
+    },
+    {
+      "id": "calc-2026-16020",
+      "name": "2026 A1.2 · completed proof",
+      "url": "http://130.113.68.214:16020/",
+      "year": 2026,
+      "weeks": [],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "sha256": "7a033683ff2d2a8ae5de6722a569f133031973d11248c628bf65ae12f0a58d95",
+      "port": 16020,
+      "completeProofCells": 3,
+      "completedCalculations": 3,
+      "completedSteps": 22,
+      "eligibleSteps": 13,
+      "unnamedSteps": 7,
+      "unresolvedNumberedSteps": 2,
+      "notebookCells": 7
+    },
+    {
+      "id": "calc-2026-16002",
+      "name": "2026 Ex1.1 · completed proof",
+      "url": "http://130.113.68.214:16002/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/Ex1.1 — Exercise 1.1_ Simple Calculations in CalcCheck — CalcCheckWeb.html",
+      "sha256": "d9e6139c53ba982ab14e3d364a7812328d39a138cf48a77cf9031859893b55fb",
+      "port": 16002,
+      "completeProofCells": 0,
+      "notebookCells": 10
+    },
+    {
+      "id": "calc-2026-16003",
+      "name": "2026 Ex1.2 · completed proof",
+      "url": "http://130.113.68.214:16003/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/Ex1.2 — Exercise 1.2_ An Equational Theory of Integers — CalcCheckWeb.html",
+      "sha256": "07f5e21ea98a55115f4f938465e81bfa6192249229fadd1398cbe2a12e9fd71c",
+      "port": 16003,
+      "completeProofCells": 0,
+      "notebookCells": 25
+    },
+    {
+      "id": "calc-2026-16004",
+      "name": "2026 Ex1.3 · completed proof",
+      "url": "http://130.113.68.214:16004/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/Ex1.3 — Exercise 1.3_ Substitution — CalcCheckWeb.html",
+      "sha256": "a964a5979e1f8a9ad799974eabe2bf2ead502af26e640298c1937b4afff493f6",
+      "port": 16004,
+      "completeProofCells": 0,
+      "notebookCells": 13
+    },
+    {
+      "id": "calc-2026-16008",
+      "name": "2026 Ex1.7 · completed proof",
+      "url": "http://130.113.68.214:16008/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/Ex1.7 — Exercise 1.7_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "sha256": "a0e3100240165e8ef953e39bf56b0c495c238552c83fb2d2f22d68be9e223a37",
+      "port": 16008,
+      "completeProofCells": 0,
+      "notebookCells": 23
+    },
+    {
+      "id": "calc-2026-16001",
+      "name": "2026 H1 · completed proof",
+      "url": "http://130.113.68.214:16001/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/H1 — Homework 1_ Getting Started with CalcCheck — CalcCheckWeb.html",
+      "sha256": "de77d58f1016310a5c5d75c3e03376df17dbc110f098931f81828f92d3358ce3",
+      "port": 16001,
+      "completeProofCells": 0,
+      "notebookCells": 32
+    },
+    {
+      "id": "calc-2026-16009",
+      "name": "2026 H2 · completed proof",
+      "url": "http://130.113.68.214:16009/",
+      "year": 2026,
+      "weeks": [
+        1
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week1/H2 — Homework 2_ Expressions and Calculations — CalcCheckWeb.html",
+      "sha256": "023cc7c49d11392f7fbfb882188e6e329f35d7a9504cd3f14731e9e127f4a556",
+      "port": 16009,
+      "completeProofCells": 0,
+      "notebookCells": 29
+    },
+    {
+      "id": "calc-2026-16011",
+      "name": "2026 Ex2.1 · completed proof",
+      "url": "http://130.113.68.214:16011/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.1 — Exercise 2.1_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "sha256": "4292bb9d5a65d43fabc92a357c33ebb43f816d1eeef860a2595062bc3560b4d3",
+      "port": 16011,
+      "completeProofCells": 0,
+      "notebookCells": 47
+    },
+    {
+      "id": "calc-2026-16012",
+      "name": "2026 Ex2.2 · completed proof",
+      "url": "http://130.113.68.214:16012/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.2 — Exercise 2.2_ Propositional Calculus_ Disjunction — CalcCheckWeb.html",
+      "sha256": "f7be8852fa8ed13d22512a206cd9e30273f3a3142da54913dfd3a6af10db20b2",
+      "port": 16012,
+      "completeProofCells": 0,
+      "notebookCells": 14
+    },
+    {
+      "id": "calc-2026-16013",
+      "name": "2026 Ex2.3 · completed proof",
+      "url": "http://130.113.68.214:16013/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.3 — Exercise 2.3_ Propositional Calculus_ Conjunction — CalcCheckWeb.html",
+      "sha256": "db06ef82ad753f21ac12b47aa7be45482dfe8fbe0ac248a1b29caf7a7b7aaa70",
+      "port": 16013,
+      "completeProofCells": 0,
+      "notebookCells": 38
+    },
+    {
+      "id": "calc-2026-16014",
+      "name": "2026 Ex2.4 · completed proof",
+      "url": "http://130.113.68.214:16014/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.4 — Exercise 2.4_ Propositional Calculus_ Implication — CalcCheckWeb.html",
+      "sha256": "ea6704481fe9cecc45b186e6b1a65557e155ce2a72cac46691c06e4b9024d25a",
+      "port": 16014,
+      "completeProofCells": 0,
+      "notebookCells": 43
+    },
+    {
+      "id": "calc-2026-16015",
+      "name": "2026 Ex2.5 · completed proof",
+      "url": "http://130.113.68.214:16015/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.5 — Extra Exercise 2.5_ Knights and Knaves — CalcCheckWeb.html",
+      "sha256": "883049b8da6634fdbe7390ad1da1e0b161761b766466d4868fa84b8a3873a8e9",
+      "port": 16015,
+      "completeProofCells": 0,
+      "notebookCells": 73
+    },
+    {
+      "id": "calc-2026-16016",
+      "name": "2026 Ex2.6 · completed proof",
+      "url": "http://130.113.68.214:16016/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/Ex2.6 — Exercise 2.6_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "sha256": "b1989722b55c6a44b2f826c3ad7a26120ab876dc57beaeddaa6770440e233e6b",
+      "port": 16016,
+      "completeProofCells": 0,
+      "notebookCells": 9
+    },
+    {
+      "id": "calc-2026-16010",
+      "name": "2026 H3 · completed proof",
+      "url": "http://130.113.68.214:16010/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/H3 — Homework 3_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "sha256": "d11885610f3ac6274d34dade1850fb980a1c0992704eaa21c9e1872fefab54ce",
+      "port": 16010,
+      "completeProofCells": 0,
+      "notebookCells": 7
+    },
+    {
+      "id": "calc-2026-16017",
+      "name": "2026 H4 · completed proof",
+      "url": "http://130.113.68.214:16017/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/H4 — Homework 4_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "sha256": "ceab36b71c80427e7d3531bee47111c8694501246d62a85063851e1a857d6bc7",
+      "port": 16017,
+      "completeProofCells": 0,
+      "notebookCells": 32
+    },
+    {
+      "id": "calc-2026-16018",
+      "name": "2026 H5 · completed proof",
+      "url": "http://130.113.68.214:16018/",
+      "year": 2026,
+      "weeks": [
+        2
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week2/H5 — Homework 5_ Propositional Calculus — CalcCheckWeb.html",
+      "sha256": "0686527b39ed37e717d8fb784ab221e1116ddb3ba4db2dffafb71013658278a0",
+      "port": 16018,
+      "completeProofCells": 0,
+      "notebookCells": 33
+    },
+    {
+      "id": "calc-2026-16022",
+      "name": "2026 Ex3.1 · completed proof",
+      "url": "http://130.113.68.214:16022/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+      "sha256": "de285e82760bdd157d34df3819b24aa85d07ec3763960cac10a0f86468f2677a",
+      "port": 16022,
+      "completeProofCells": 8,
+      "completedCalculations": 14,
+      "completedSteps": 46,
+      "eligibleSteps": 37,
+      "unnamedSteps": 8,
+      "multipleNameSteps": 1,
+      "notebookCells": 14
+    },
+    {
+      "id": "calc-2026-16023",
+      "name": "2026 Ex3.2 · completed proof",
+      "url": "http://130.113.68.214:16023/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+      "sha256": "f7137b9ceaecd57ec1cd942f0ea141a175dd75cb15ba22e11a33c63da936670d",
+      "port": 16023,
+      "completeProofCells": 8,
+      "completedCalculations": 18,
+      "completedSteps": 58,
+      "unnamedSteps": 9,
+      "eligibleSteps": 49,
+      "notebookCells": 18
+    },
+    {
+      "id": "calc-2026-16024",
+      "name": "2026 Ex3.3 · completed proof",
+      "url": "http://130.113.68.214:16024/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+      "sha256": "3aee97e06c7c0a433167bf4ff3e0be4a99e271f861fc86fef1cbb93d93650c2d",
+      "port": 16024,
+      "completeProofCells": 8,
+      "completedCalculations": 13,
+      "completedSteps": 43,
+      "eligibleSteps": 39,
+      "unnamedSteps": 4,
+      "notebookCells": 26
+    },
+    {
+      "id": "calc-2026-16025",
+      "name": "2026 Ex3.4 · completed proof",
+      "url": "http://130.113.68.214:16025/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+      "sha256": "133c88b45d60f9fadfe2cd4e562d400d7845595e0b0b5c5f4b748728613dbd86",
+      "port": 16025,
+      "completeProofCells": 8,
+      "completedCalculations": 14,
+      "completedSteps": 51,
+      "eligibleSteps": 38,
+      "unresolvedNumberedSteps": 1,
+      "unnamedSteps": 12,
+      "notebookCells": 13
+    },
+    {
+      "id": "calc-2026-16021",
+      "name": "2026 H6 · completed proof",
+      "url": "http://130.113.68.214:16021/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+      "sha256": "a51d5ce750ea690035f98041462b4eca8baf4c7005f371ee855c2ff150e2ce43",
+      "port": 16021,
+      "completeProofCells": 5,
+      "completedCalculations": 10,
+      "completedSteps": 29,
+      "eligibleSteps": 22,
+      "unnamedSteps": 7,
+      "notebookCells": 23
+    },
+    {
+      "id": "calc-2026-16026",
+      "name": "2026 H7.1 · completed proof",
+      "url": "http://130.113.68.214:16026/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/H7.1 — Homework 7 Notebook 1_ Calculations with Monotonicity and Antitonicity — CalcCheckWeb.html",
+      "sha256": "f67a71abb9281d9c54970c3c8775561fa0ef10a8cb7db929f65ca47d9f95949d",
+      "port": 16026,
+      "completeProofCells": 4,
+      "completedCalculations": 4,
+      "completedSteps": 17,
+      "eligibleSteps": 11,
+      "multipleNameSteps": 5,
+      "unnamedSteps": 1,
+      "notebookCells": 6
+    },
+    {
+      "id": "calc-2026-16027",
+      "name": "2026 H7.2 · completed proof",
+      "url": "http://130.113.68.214:16027/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "format": "CalcCheckWeb saved notebook HTML",
+      "status": "checked-rendered-proof-extraction",
+      "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+      "sha256": "fbb81f70599326b40b441ad9da069ddf94e5a915600610ce09813fada0aac559",
+      "port": 16027,
+      "completeProofCells": 9,
+      "completedCalculations": 19,
+      "completedSteps": 54,
+      "eligibleSteps": 50,
+      "unnamedSteps": 4,
+      "notebookCells": 20
+    }
+  ]
+}

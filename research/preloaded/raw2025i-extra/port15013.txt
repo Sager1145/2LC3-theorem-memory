@@ -1,0 +1,14 @@
+Ex2.1 Theorem List
+Symbol Entry Codes
+Operator Precedences
+Equality
+Axiom (1.2) “Reflexivity of =”:   x = x
+Axiom (1.3) “Symmetry of =”:   (x = y) = (y = x)
+Derived inference rule “Transitivity of =” (1.4):
+                `X = Y`
+                , `Y = Z`
+                ⊦ `X = Z`
+Derived inference rule “Leibniz” (1.5):
+                `X = Y`
+                ⊦ `E[z ≔ X] = E[z ≔ Y]`
+OK

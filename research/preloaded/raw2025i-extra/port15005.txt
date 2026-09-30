@@ -1,0 +1,41 @@
+Ex1.1 Theorem List
+Symbol Entry Codes
+Operator Precedences
+Equality
+Axiom (1.2) “Reflexivity of =”:   x = x
+Axiom (1.3) “Symmetry of =”:   (x = y) = (y = x)
+Derived inference rule “Transitivity of =” (1.4):
+                `X = Y`
+                , `Y = Z`
+                ⊦ `X = Z`
+Derived inference rule “Leibniz” (1.5):
+                `X = Y`
+                ⊦ `E[z ≔ X] = E[z ≔ Y]`
+Integer.Equational.Full
+Axiom (15.1) (15.1a) “Associativity of +”:   (a + b) + c = a + (b + c)
+Axiom (15.1) (15.1b) “Associativity of ·”:   (a · b) · c = a · (b · c)
+Axiom (15.2) (15.2a) “Symmetry of +”:   a + b = b + a
+Axiom (15.2) (15.2b) “Symmetry of ·”:   a · b = b · a
+Axiom (15.3) “Additive identity” “Identity of +”:   0 + a = a
+Axiom (15.4) “Multiplicative identity” “Identity of ·”:   1 · a = a
+Axiom (15.5) “Distributivity of · over +”:   a · (b + c) = a · b + a · c
+Axiom (15.9) “Zero of ·”:   a · 0 = 0
+Axiom (15.13) “Unary minus”:   a + - a = 0
+Axiom (15.14) “Subtraction”:   a - b = a + - b
+Theorem (15.17) “Self-inverse of unary minus”:   - (- a) = a
+Theorem (15.18) “Fixpoint of unary minus”:   - 0 = 0
+Theorem (15.20) “Negation as multiplication”:   - a = - 1 · a
+Theorem (15.19) “Distributivity of unary minus over +”:   - (a + b) = - a + - b
+Theorem (15.21):   - a · b = a · - b
+Theorem (15.22) “Commutativity of unary minus with ·”:   a · - b = - (a · b)
+Theorem (15.23):   - a · - b = a · b
+Theorem (15.24) “Right-identity of -”:   a - 0 = a
+Theorem (15.24a) “Subtraction of subtraction”:   a - (b - c) = (a - b) + c
+Theorem (15.25):   (a - b) + (c - d) = (a + c) - (b + d)
+Theorem (15.25a) “Mutual associativity of + and -”:   a + (b - c) = (a + b) - c
+Theorem (15.25b) “Subtraction of addition”:   a - (b + c) = (a - b) - c
+Theorem (15.25c) “Cancellation across added subtractions”:   (a - b) + (b - c) = a - c
+Theorem (15.26):   (a - b) - (c - d) = (a + d) - (b + c)
+Theorem (15.27):   (a - b) · (c - d) = (a · c + b · d) - (a · d + b · c)
+Theorem (15.29) “Distributivity of · over -”:   (a - b) · c = a · c - b · c
+OK

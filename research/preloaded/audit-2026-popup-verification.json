@@ -1,0 +1,667 @@
+{
+  "checkedAt": "2026-09-30",
+  "method": "Live CalcCheck code-cell menu; expand every collapsed disclosure including utility sections until zero remain; count visible declaration lines; compare with local capture",
+  "results": [
+    {
+      "port": 16001,
+      "status": "verified",
+      "beforeCollapsed": 8,
+      "afterExpanded": 9,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Inequality",
+        "Integer.Axioms",
+        "Integer.CancellationOfAddition",
+        "Integer.CancellationOfMultiplication",
+        "PropLogic.All",
+        "PropLogic.All"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 180
+    },
+    {
+      "port": 16002,
+      "status": "verified",
+      "beforeCollapsed": 4,
+      "afterExpanded": 5,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Integer.Equational.Full",
+        "Integer.Equational.Full"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 30
+    },
+    {
+      "port": 16003,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16004,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Integer.Equational.Full",
+        "Integer.Equational.Full"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 34
+    },
+    {
+      "port": 16005,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16006,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16007,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16008,
+      "status": "verified",
+      "beforeCollapsed": 8,
+      "afterExpanded": 9,
+      "remainingCollapsed": 0,
+      "modules": [
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Inequality",
+        "Integer.Propositional",
+        "PropLogic.Conjunction.AC",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-Equiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 49
+    },
+    {
+      "port": 16009,
+      "status": "verified",
+      "beforeCollapsed": 4,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Integer.Equational.Full"
+      ],
+      "afterExpanded": 5,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Integer.Equational.Full",
+        "Integer.Equational.Full"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 30
+    },
+    {
+      "port": 16010,
+      "status": "verified",
+      "beforeCollapsed": 10,
+      "afterExpanded": 11,
+      "remainingCollapsed": 0,
+      "modules": [
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Inequality",
+        "Integer.CancellationOfAddition",
+        "Integer.CancellationOfMultiplication",
+        "Integer.Equational.Full",
+        "PropLogic.Conjunction.AC",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-Equiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 49
+    },
+    {
+      "port": 16011,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality"
+      ],
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16012,
+      "status": "verified",
+      "beforeCollapsed": 4,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "afterExpanded": 5,
+      "remainingCollapsed": 0,
+      "modules": [
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 24
+    },
+    {
+      "port": 16013,
+      "status": "verified",
+      "beforeCollapsed": 5,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "afterExpanded": 6,
+      "remainingCollapsed": 0,
+      "modules": [
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 33
+    },
+    {
+      "port": 16014,
+      "status": "verified",
+      "beforeCollapsed": 7,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "afterExpanded": 8,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 63
+    },
+    {
+      "port": 16015,
+      "status": "verified",
+      "beforeCollapsed": 5,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "PropLogic.LADM-Basic",
+        "PropLogic.Replacement"
+      ],
+      "afterExpanded": 6,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "PropLogic.LADM-Basic",
+        "PropLogic.Replacement",
+        "PropLogic.Replacement"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 130
+    },
+    {
+      "port": 16016,
+      "status": "verified",
+      "beforeCollapsed": 9,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "afterExpanded": 10,
+      "remainingCollapsed": 0,
+      "modules": [
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 94
+    },
+    {
+      "port": 16017,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality"
+      ],
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16018,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "PropLogic/LADM-Basic"
+      ],
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "PropLogic/LADM-Basic",
+        "PropLogic/LADM-Basic"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 106
+    },
+    {
+      "port": 16020,
+      "status": "verified",
+      "beforeCollapsed": 9,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "afterExpanded": 10,
+      "remainingCollapsed": 0,
+      "modules": [
+        "DynLogic2.StraightLine",
+        "Equality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "PropLogic.LADM-InEquiv"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 94
+    },
+    {
+      "port": 16021,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality"
+      ],
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Equality"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 4
+    },
+    {
+      "port": 16022,
+      "status": "verified",
+      "beforeCollapsed": 4,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "afterExpanded": 5,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Week3.Homework-6_Nat-sucInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 12
+    },
+    {
+      "port": 16023,
+      "status": "verified",
+      "beforeCollapsed": 5,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "afterExpanded": 6,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 22
+    },
+    {
+      "port": 16024,
+      "status": "verified",
+      "beforeCollapsed": 11,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Inequality",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "afterExpanded": 12,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Inequality",
+        "PropLogic.LADM-Conjunction",
+        "PropLogic.LADM-Disjunction",
+        "PropLogic.LADM-Equiv",
+        "PropLogic.LADM-InEquiv",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 98
+    },
+    {
+      "port": 16025,
+      "status": "verified",
+      "beforeCollapsed": 9,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Inequality",
+        "PropLogic.All",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Exercise-3-3_NatPred_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "afterExpanded": 10,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Inequality",
+        "PropLogic.All",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Exercise-3-3_NatPred_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 211
+    },
+    {
+      "port": 16026,
+      "status": "verified",
+      "beforeCollapsed": 5,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Integer.Equational.NonAC",
+        "PropLogic.All"
+      ],
+      "afterExpanded": 6,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Integer.Equational.NonAC",
+        "PropLogic.All",
+        "PropLogic.All"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 192
+    },
+    {
+      "port": 16027,
+      "status": "verified",
+      "beforeCollapsed": 9,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Inequality",
+        "PropLogic.All",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Exercise-3-3_NatPred_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "afterExpanded": 10,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Inequality",
+        "PropLogic.All",
+        "Week3.Exercise-3-1_NatInd_SOL",
+        "Week3.Exercise-3-2_MonusSubtraction_SOL",
+        "Week3.Exercise-3-3_NatPred_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL",
+        "Week3.Homework-6_Nat-sucInd_SOL"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 211
+    },
+    {
+      "port": 16028,
+      "status": "verified",
+      "beforeCollapsed": 6,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "Equality",
+        "Inequality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Basic"
+      ],
+      "afterExpanded": 7,
+      "remainingCollapsed": 0,
+      "modules": [
+        "Equality",
+        "Inequality",
+        "Integer.Propositional",
+        "PropLogic.LADM-Basic",
+        "PropLogic.LADM-Basic"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 136
+    },
+    {
+      "port": 16029,
+      "status": "verified",
+      "beforeCollapsed": 3,
+      "beforeTitles": [
+        "Symbol Entry Codes",
+        "Operator Precedences",
+        "PropLogic.LADM-Basic"
+      ],
+      "afterExpanded": 4,
+      "remainingCollapsed": 0,
+      "modules": [
+        "PropLogic.LADM-Basic",
+        "PropLogic.LADM-Basic"
+      ],
+      "utility": [
+        "Symbol Entry Codes",
+        "Operator Precedences"
+      ],
+      "declarationCount": 106
+    }
+  ]
+}

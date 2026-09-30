@@ -1,0 +1,79 @@
+name: TheoremQuest
+options:
+  bundleIdPrefix: io.github.sager1145
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    IPHONEOS_DEPLOYMENT_TARGET: '17.0'
+    TARGETED_DEVICE_FAMILY: '1'
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+targets:
+  TheoremQuest:
+    type: application
+    platform: iOS
+    postBuildScripts:
+      - name: Bundle complete offline learning game
+        script: |
+          /usr/bin/python3 "$SRCROOT/../tools/build_ios_web.py" --output "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/TheoremQuest.html"
+        inputFiles:
+          - $(SRCROOT)/../tools/build_ios_web.py
+          - $(SRCROOT)/../tools/build_site.py
+          - $(SRCROOT)/../index.html
+          - $(SRCROOT)/../assets/style.css
+          - $(SRCROOT)/../assets/engine.js
+          - $(SRCROOT)/../assets/proofs.js
+          - $(SRCROOT)/../assets/notebook-hints.js
+          - $(SRCROOT)/../assets/data.js
+          - $(SRCROOT)/../assets/app.js
+        outputFiles:
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/TheoremQuest.html
+    sources:
+      - path: TheoremQuest
+        excludes: [Assets.xcassets]
+      - path: TheoremQuest/Assets.xcassets
+        buildPhase: resources
+      - path: ../data/theorems.json
+        buildPhase: resources
+      - path: ../data/sources.json
+        buildPhase: resources
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: TheoremQuest/Info.plist
+        TARGETED_DEVICE_FAMILY: '1'
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.sager1145.TheoremQuest
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  TheoremQuestTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [TheoremQuestTests]
+    dependencies:
+      - target: TheoremQuest
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: '1'
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.sager1145.TheoremQuestTests
+  TheoremQuestUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [TheoremQuestUITests]
+    dependencies:
+      - target: TheoremQuest
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: '1'
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.sager1145.TheoremQuestUITests
+schemes:
+  TheoremQuest:
+    build:
+      targets:
+        TheoremQuest: all
+        TheoremQuestTests: [test]
+        TheoremQuestUITests: [test]
+    test:
+      targets:
+        - TheoremQuestTests
+        - TheoremQuestUITests

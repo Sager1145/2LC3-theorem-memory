@@ -1,8 +1,15 @@
 {
-  "method": "Only the copied preloaded theorem popups form the quiz bank.",
+  "method": "Captured preloaded popup declarations plus independently verified proved notebook declarations.",
   "homework": 26,
-  "declarations": 7156,
-  "uniqueDeclarations": 1052,
-  "excludedPriorCards": 59,
-  "excludedArchive": "research/preloaded/excluded-existing.json"
+  "notebooks": 87,
+  "declarations": 23530,
+  "uniqueDeclarations": 1336,
+  "excludedPriorCards": 56,
+  "excludedArchive": "research/preloaded/excluded-existing.json",
+  "notebookProofs": {
+    "capture": "research/notebooks/proved-declarations.json",
+    "provedDeclarations": 76,
+    "notebooks": 8,
+    "newCards": 6
+  }
 }

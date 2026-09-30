@@ -1,0 +1,1563 @@
+{
+  "sources": [
+    {
+      "id": "notebook-2026-16019",
+      "name": "2026 A1.1 · proved notebook theorems",
+      "url": "http://130.113.68.214:16019/",
+      "year": 2026,
+      "weeks": [],
+      "weekEvidence": {
+        "method": "unassigned"
+      },
+      "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+      "sha256": "8234692e97fe8fcceca24b113ce7da50f03e437b491010222ab1c03eef4d42db",
+      "port": 16019,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 25,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 25,
+      "calculationProofDeclarations": 25,
+      "eligibleDeclarations": 25,
+      "notebookCells": 32
+    },
+    {
+      "id": "notebook-2026-16020",
+      "name": "2026 A1.2 · proved notebook theorems",
+      "url": "http://130.113.68.214:16020/",
+      "year": 2026,
+      "weeks": [],
+      "weekEvidence": {
+        "method": "unassigned"
+      },
+      "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "sha256": "7a033683ff2d2a8ae5de6722a569f133031973d11248c628bf65ae12f0a58d95",
+      "port": 16020,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 3,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 3,
+      "calculationProofDeclarations": 3,
+      "eligibleDeclarations": 3,
+      "notebookCells": 7
+    },
+    {
+      "id": "notebook-2026-16022",
+      "name": "2026 Ex3.1 · proved notebook theorems",
+      "url": "http://130.113.68.214:16022/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "weekEvidence": {
+        "method": "Exercise N.x"
+      },
+      "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+      "sha256": "de285e82760bdd157d34df3819b24aa85d07ec3763960cac10a0f86468f2677a",
+      "port": 16022,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 8,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 8,
+      "calculationProofDeclarations": 8,
+      "eligibleDeclarations": 8,
+      "notebookCells": 14
+    },
+    {
+      "id": "notebook-2026-16023",
+      "name": "2026 Ex3.2 · proved notebook theorems",
+      "url": "http://130.113.68.214:16023/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "weekEvidence": {
+        "method": "Exercise N.x"
+      },
+      "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+      "sha256": "f7137b9ceaecd57ec1cd942f0ea141a175dd75cb15ba22e11a33c63da936670d",
+      "port": 16023,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 7,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 7,
+      "calculationProofDeclarations": 7,
+      "eligibleDeclarations": 7,
+      "notebookCells": 18
+    },
+    {
+      "id": "notebook-2026-16024",
+      "name": "2026 Ex3.3 · proved notebook theorems",
+      "url": "http://130.113.68.214:16024/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "weekEvidence": {
+        "method": "Exercise N.x"
+      },
+      "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+      "sha256": "3aee97e06c7c0a433167bf4ff3e0be4a99e271f861fc86fef1cbb93d93650c2d",
+      "port": 16024,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 11,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 11,
+      "directProofDeclarations": 3,
+      "eligibleDeclarations": 11,
+      "calculationProofDeclarations": 8,
+      "notebookCells": 26
+    },
+    {
+      "id": "notebook-2026-16025",
+      "name": "2026 Ex3.4 · proved notebook theorems",
+      "url": "http://130.113.68.214:16025/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "weekEvidence": {
+        "method": "Exercise N.x"
+      },
+      "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+      "sha256": "133c88b45d60f9fadfe2cd4e562d400d7845595e0b0b5c5f4b748728613dbd86",
+      "port": 16025,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 8,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 8,
+      "calculationProofDeclarations": 8,
+      "eligibleDeclarations": 8,
+      "notebookCells": 13
+    },
+    {
+      "id": "notebook-2026-16021",
+      "name": "2026 H6 · proved notebook theorems",
+      "url": "http://130.113.68.214:16021/",
+      "year": 2026,
+      "weeks": [
+        3
+      ],
+      "weekEvidence": {
+        "method": "reviewed homework correspondence",
+        "sourceId": "calc-2026-16021",
+        "weeks": [
+          3
+        ],
+        "confidence": "very-high",
+        "evidence": [
+          "正文证明自然数加法右单位、suc 移位、交换律；随后以 Week3.Homework-6_Nat-sucInd_SOL 被 Ex3.1–Ex3.4 预载。",
+          "自身预载仅 4 条 Equality，归类依据是正文产出的定理。"
+        ]
+      },
+      "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+      "sha256": "a51d5ce750ea690035f98041462b4eca8baf4c7005f371ee855c2ff150e2ce43",
+      "port": 16021,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 5,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 5,
+      "calculationProofDeclarations": 5,
+      "eligibleDeclarations": 5,
+      "notebookCells": 23
+    },
+    {
+      "id": "notebook-2026-16027",
+      "name": "2026 H7.2 · proved notebook theorems",
+      "url": "http://130.113.68.214:16027/",
+      "year": 2026,
+      "weeks": [
+        4
+      ],
+      "weekEvidence": {
+        "method": "reviewed homework correspondence",
+        "sourceId": "calc-2026-16027",
+        "weeks": [
+          4
+        ],
+        "confidence": "medium-high-cross-year",
+        "evidence": [
+          "正文新证明 ℕ 上 ≤ 的反对称、传递，以及加法与 pred 单调性；2025i Ex4.4 正文也证明 Transitivity of ≤ 和 ≤-Monotonicity of +。",
+          "正文说明预载 H6、Ex3.1–Ex3.3，因此与 Ex3.4 的完整预载重合属于先修累积；2026 Ex4 尚未开放。"
+        ]
+      },
+      "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+      "sha256": "fbb81f70599326b40b441ad9da069ddf94e5a915600610ce09813fada0aac559",
+      "port": 16027,
+      "format": "CalcCheck proved notebook declarations",
+      "sourceType": "notebook-proved",
+      "declarations": 9,
+      "localCapture": "research/notebooks/proved-declarations.json",
+      "status": "checked-rendered-declaration-extraction",
+      "renderedDeclarations": 9,
+      "calculationProofDeclarations": 9,
+      "eligibleDeclarations": 9,
+      "notebookCells": 20
+    }
+  ],
+  "declarations": [
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 3,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.19) “Mutual interchangeability of ≡ with ≢”: (p ≢ (q ≡ r)) ≡ (p ≡ (q ≢ r))",
+      "kind": "Theorem",
+      "numbers": [
+        "3.19"
+      ],
+      "names": [
+        "Mutual interchangeability of ≡ with ≢"
+      ],
+      "formula": "(p ≢ (q ≡ r)) ≡ (p ≡ (q ≢ r))",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 4,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.30) “Identity of ∨”: p ∨ false ≡ p",
+      "kind": "Theorem",
+      "numbers": [
+        "3.30"
+      ],
+      "names": [
+        "Identity of ∨"
+      ],
+      "formula": "p ∨ false ≡ p",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 6,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.32): p ∨ q ≡ (p ∨ ¬ q ≡ p)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.32"
+      ],
+      "names": [],
+      "formula": "p ∨ q ≡ (p ∨ ¬ q ≡ p)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 7,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.38) “Idempotency of ∧”: p ∧ p ≡ p",
+      "kind": "Theorem",
+      "numbers": [
+        "3.38"
+      ],
+      "names": [
+        "Idempotency of ∧"
+      ],
+      "formula": "p ∧ p ≡ p",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 8,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.40) “Zero of ∧”: p ∧ false ≡ false",
+      "kind": "Theorem",
+      "numbers": [
+        "3.40"
+      ],
+      "names": [
+        "Zero of ∧"
+      ],
+      "formula": "p ∧ false ≡ false",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 9,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.42) “Contradiction”: p ∧ ¬ p ≡ false",
+      "kind": "Theorem",
+      "numbers": [
+        "3.42"
+      ],
+      "names": [
+        "Contradiction"
+      ],
+      "formula": "p ∧ ¬ p ≡ false",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 11,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.43) (3.43a) “Absorption”: p ∧ (p ∨ q) ≡ p",
+      "kind": "Theorem",
+      "numbers": [
+        "3.43",
+        "3.43a"
+      ],
+      "names": [
+        "Absorption"
+      ],
+      "formula": "p ∧ (p ∨ q) ≡ p",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 12,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.44) (3.44a) “Absorption”: p ∧ (¬ p ∨ q) ≡ p ∧ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.44",
+        "3.44a"
+      ],
+      "names": [
+        "Absorption"
+      ],
+      "formula": "p ∧ (¬ p ∨ q) ≡ p ∧ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 13,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.44) (3.44b) “Absorption”: p ∨ (¬ p ∧ q) ≡ p ∨ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.44",
+        "3.44b"
+      ],
+      "names": [
+        "Absorption"
+      ],
+      "formula": "p ∨ (¬ p ∧ q) ≡ p ∨ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 14,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.45) “Distributivity of ∨ over ∧”: p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.45"
+      ],
+      "names": [
+        "Distributivity of ∨ over ∧"
+      ],
+      "formula": "p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 15,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.46) “Distributivity of ∧ over ∨”: p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.46"
+      ],
+      "names": [
+        "Distributivity of ∧ over ∨"
+      ],
+      "formula": "p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 16,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.47) (3.47a) “De Morgan”: ¬ (p ∧ q) ≡ ¬ p ∨ ¬ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.47",
+        "3.47a"
+      ],
+      "names": [
+        "De Morgan"
+      ],
+      "formula": "¬ (p ∧ q) ≡ ¬ p ∨ ¬ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 19,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.48): p ∧ q ≡ (p ∧ ¬ q ≡ ¬ p)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.48"
+      ],
+      "names": [],
+      "formula": "p ∧ q ≡ (p ∧ ¬ q ≡ ¬ p)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 20,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.49) “Semi-distributivity of ∧ over ≡”: p ∧ (q ≡ r) ≡ (p ∧ q ≡ (p ∧ r ≡ p))",
+      "kind": "Theorem",
+      "numbers": [
+        "3.49"
+      ],
+      "names": [
+        "Semi-distributivity of ∧ over ≡"
+      ],
+      "formula": "p ∧ (q ≡ r) ≡ (p ∧ q ≡ (p ∧ r ≡ p))",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 21,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.50) “Strong modus ponens for ≡”: p ∧ (q ≡ p) ≡ p ∧ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.50"
+      ],
+      "names": [
+        "Strong modus ponens for ≡"
+      ],
+      "formula": "p ∧ (q ≡ p) ≡ p ∧ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 23,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.59) “Material implication” “Definition of ⇒” “Definition of implication”: p ⇒ q ≡ ¬ p ∨ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.59"
+      ],
+      "names": [
+        "Material implication",
+        "Definition of ⇒",
+        "Definition of implication"
+      ],
+      "formula": "p ⇒ q ≡ ¬ p ∨ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 24,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.62): p ⇒ (q ≡ r) ≡ (p ∧ q ≡ p ∧ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.62"
+      ],
+      "names": [],
+      "formula": "p ⇒ (q ≡ r) ≡ (p ∧ q ≡ p ∧ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 25,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.63) “Distributivity of ⇒ over ≡”: p ⇒ (q ≡ r) ≡ (p ⇒ q ≡ p ⇒ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.63"
+      ],
+      "names": [
+        "Distributivity of ⇒ over ≡"
+      ],
+      "formula": "p ⇒ (q ≡ r) ≡ (p ⇒ q ≡ p ⇒ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 26,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.65) “Shunting”: p ∧ q ⇒ r ≡ p ⇒ (q ⇒ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.65"
+      ],
+      "names": [
+        "Shunting"
+      ],
+      "formula": "p ∧ q ⇒ r ≡ p ⇒ (q ⇒ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 27,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.66) “Strong modus ponens”: p ∧ (p ⇒ q) ≡ p ∧ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.66"
+      ],
+      "names": [
+        "Strong modus ponens"
+      ],
+      "formula": "p ∧ (p ⇒ q) ≡ p ∧ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 28,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.70): p ∨ q ⇒ p ∧ q ≡ (p ≡ q)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.70"
+      ],
+      "names": [],
+      "formula": "p ∨ q ⇒ p ∧ q ≡ (p ≡ q)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 29,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.76) (3.76e) “Weakening” “Strengthening”: p ∧ q ⇒ p ∧ (q ∨ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.76",
+        "3.76e"
+      ],
+      "names": [
+        "Weakening",
+        "Strengthening"
+      ],
+      "formula": "p ∧ q ⇒ p ∧ (q ∨ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 30,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.77) “Modus ponens”: p ∧ (p ⇒ q) ⇒ q",
+      "kind": "Theorem",
+      "numbers": [
+        "3.77"
+      ],
+      "names": [
+        "Modus ponens"
+      ],
+      "formula": "p ∧ (p ⇒ q) ⇒ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 31,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.80) “Mutual implication”: (p ⇒ q) ∧ (q ⇒ p) ≡ (p ≡ q)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.80"
+      ],
+      "names": [
+        "Mutual implication"
+      ],
+      "formula": "(p ⇒ q) ∧ (q ⇒ p) ≡ (p ≡ q)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16019",
+      "locator": {
+        "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+        "cell": 32,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem (3.82) (3.82a) “Transitivity of ⇒”: (p ⇒ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)",
+      "kind": "Theorem",
+      "numbers": [
+        "3.82",
+        "3.82a"
+      ],
+      "names": [
+        "Transitivity of ⇒"
+      ],
+      "formula": "(p ⇒ q) ∧ (q ⇒ r) ⇒ (p ⇒ r)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16020",
+      "locator": {
+        "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+        "cell": 3,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Lemma (A1.2a): false ⇒⁅ (q := ¬ p ∧ q) ⁆ p ∧ q",
+      "kind": "Lemma",
+      "numbers": [
+        "A1.2a"
+      ],
+      "names": [],
+      "formula": "false ⇒⁅ (q := ¬ p ∧ q) ⁆ p ∧ q",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16020",
+      "locator": {
+        "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+        "cell": 5,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Lemma (A1.2b): (p ∧ q ≡ p₀ ∧ q₀) ∧ (p ∨ q ≡ p₀ ∨ q₀) ⇒⁅ (p := p ≡ q ⍮ (q := (p ≡ q) ∨ q ⍮ p := p ≡ q)) ⁆ (p ≡ p₀ ∧ q₀) ∧ (q ≡ p₀ ∨ q₀)",
+      "kind": "Lemma",
+      "numbers": [
+        "A1.2b"
+      ],
+      "names": [],
+      "formula": "(p ∧ q ≡ p₀ ∧ q₀) ∧ (p ∨ q ≡ p₀ ∨ q₀) ⇒⁅ (p := p ≡ q ⍮ (q := (p ≡ q) ∨ q ⍮ p := p ≡ q)) ⁆ (p ≡ p₀ ∧ q₀) ∧ (q ≡ p₀ ∨ q₀)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16020",
+      "locator": {
+        "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+        "cell": 7,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Lemma (A1.2c): (p ≡ p₀) ∧ (q ≡ q₀) ⇒⁅ (p := p ≢ q ⍮ (q := p ≢ q ⍮ p := p ≢ q)) ⁆ (p ≡ q₀) ∧ (q ≡ p₀)",
+      "kind": "Lemma",
+      "numbers": [
+        "A1.2c"
+      ],
+      "names": [],
+      "formula": "(p ≡ p₀) ∧ (q ≡ q₀) ⇒⁅ (p := p ≢ q ⍮ (q := p ≢ q ⍮ p := p ≢ q)) ⁆ (p ≡ q₀) ∧ (q ≡ p₀)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 4,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Successor”: suc n = n + 1",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Successor"
+      ],
+      "formula": "suc n = n + 1",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 5,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Associativity of +”: (a + b) + c = a + (b + c)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Associativity of +"
+      ],
+      "formula": "(a + b) + c = a + (b + c)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 9,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Left-identity of ·”: 1 · n = n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Left-identity of ·"
+      ],
+      "formula": "1 · n = n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Right-zero of ·”: m · 0 = 0",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Right-zero of ·"
+      ],
+      "formula": "m · 0 = 0",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 11,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Multiplying the successor”: m · suc n = m + m · n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Multiplying the successor"
+      ],
+      "formula": "m · suc n = m + m · n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 12,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Symmetry of ·”: m · n = n · m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Symmetry of ·"
+      ],
+      "formula": "m · n = n · m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 13,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Distributivity of · over +”: (k + m) · n = k · n + m · n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Distributivity of · over +"
+      ],
+      "formula": "(k + m) · n = k · n + m · n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16022",
+      "locator": {
+        "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+        "cell": 14,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Associativity of ·”: (k · m) · n = k · (m · n)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Associativity of ·"
+      ],
+      "formula": "(k · m) · n = k · (m · n)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Right-identity of subtraction”: m - 0 = m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Right-identity of subtraction"
+      ],
+      "formula": "m - 0 = m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 11,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Self-cancellation of subtraction”: m - m = 0",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Self-cancellation of subtraction"
+      ],
+      "formula": "m - m = 0",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 13,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Subtraction after addition”: (m + n) - n = m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Subtraction after addition"
+      ],
+      "formula": "(m + n) - n = m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 15,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Subtraction from multiplication with successor”: m · suc n - m = m · n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Subtraction from multiplication with successor"
+      ],
+      "formula": "m · suc n - m = m · n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 16,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Subtraction of sum”: k - (m + n) = (k - m) - n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Subtraction of sum"
+      ],
+      "formula": "k - (m + n) = (k - m) - n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 17,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Distributivity of · over subtraction”: k · (m - n) = k · m - k · n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Distributivity of · over subtraction"
+      ],
+      "formula": "k · (m - n) = k · m - k · n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16023",
+      "locator": {
+        "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+        "cell": 18,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Monus exchange”: m + (n - m) = n + (m - n)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Monus exchange"
+      ],
+      "formula": "m + (n - m) = n + (m - n)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 2,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Corollary “Identity of +”: 0 + a = a",
+      "kind": "Corollary",
+      "numbers": [],
+      "names": [
+        "Identity of +"
+      ],
+      "formula": "0 + a = a",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 3,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Corollary “Identity of ·”: 1 · a = a",
+      "kind": "Corollary",
+      "numbers": [],
+      "names": [
+        "Identity of ·"
+      ],
+      "formula": "1 · a = a",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 4,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Corollary “Zero of ·”: 0 · a = 0",
+      "kind": "Corollary",
+      "numbers": [],
+      "names": [
+        "Zero of ·"
+      ],
+      "formula": "0 · a = 0",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 9,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero is not successor”: 0 ≠ suc n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero is not successor"
+      ],
+      "formula": "0 ≠ suc n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero is not one”: 0 ≠ 1",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero is not one"
+      ],
+      "formula": "0 ≠ 1",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 11,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero is not one”: 0 = 1 ≡ false",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero is not one"
+      ],
+      "formula": "0 = 1 ≡ false",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 15,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Cancellation of +”: k + m = k + n ≡ m = n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Cancellation of +"
+      ],
+      "formula": "k + m = k + n ≡ m = n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 17,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero sum”: 0 = a + b ≡ 0 = a ∧ 0 = b",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero sum"
+      ],
+      "formula": "0 = a + b ≡ 0 = a ∧ 0 = b",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 19,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero product”: 0 = a · b ≡ 0 = a ∨ 0 = b",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero product"
+      ],
+      "formula": "0 = a · b ≡ 0 = a ∨ 0 = b",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 24,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Predecessor”: pred n = n - 1",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Predecessor"
+      ],
+      "formula": "pred n = n - 1",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16024",
+      "locator": {
+        "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+        "cell": 26,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Predecessor of non-zero”: n ≠ 0 ≡ suc pred n = n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Predecessor of non-zero"
+      ],
+      "formula": "n ≠ 0 ≡ suc pred n = n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 2,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero or successor of predecessor”: n = 0 ∨ n = suc pred n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero or successor of predecessor"
+      ],
+      "formula": "n = 0 ∨ n = suc pred n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 4,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Right-identity of subtraction”: m - 0 = m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Right-identity of subtraction"
+      ],
+      "formula": "m - 0 = m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 5,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Subtraction from multiplication with successor”: m · suc n - m = m · n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Subtraction from multiplication with successor"
+      ],
+      "formula": "m · suc n - m = m · n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 6,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero sum”: 0 = a + b ≡ 0 = a ∧ 0 = b",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero sum"
+      ],
+      "formula": "0 = a + b ≡ 0 = a ∧ 0 = b",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 8,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Lemma “Zero is not product of successors”: suc a · suc b = 0 ≡ false",
+      "kind": "Lemma",
+      "numbers": [],
+      "names": [
+        "Zero is not product of successors"
+      ],
+      "formula": "suc a · suc b = 0 ≡ false",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Lemma “Cancellation of multiplication with successor”: suc c · a = suc c · b ≡ a = b",
+      "kind": "Lemma",
+      "numbers": [],
+      "names": [
+        "Cancellation of multiplication with successor"
+      ],
+      "formula": "suc c · a = suc c · b ≡ a = b",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 12,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Cancellation of ·”: c ≠ 0 ⇒ (c · a = c · b ≡ a = b)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Cancellation of ·"
+      ],
+      "formula": "c ≠ 0 ⇒ (c · a = c · b ≡ a = b)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16025",
+      "locator": {
+        "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+        "cell": 13,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Cancellation of ·”: c ≠ 0 ⇒ (c · a = c · b ≡ a = b)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Cancellation of ·"
+      ],
+      "formula": "c ≠ 0 ⇒ (c · a = c · b ≡ a = b)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16021",
+      "locator": {
+        "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+        "cell": 8,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Right-identity of +”: m + 0 = m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Right-identity of +"
+      ],
+      "formula": "m + 0 = m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16021",
+      "locator": {
+        "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Successor”: suc n = n + 1",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Successor"
+      ],
+      "formula": "suc n = n + 1",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16021",
+      "locator": {
+        "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+        "cell": 12,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Shifting `suc` over +”: suc m + n = m + suc n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Shifting `suc` over +"
+      ],
+      "formula": "suc m + n = m + suc n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16021",
+      "locator": {
+        "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+        "cell": 14,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Symmetry of +”: m + n = n + m",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Symmetry of +"
+      ],
+      "formula": "m + n = n + m",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16021",
+      "locator": {
+        "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+        "cell": 20,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Doubling”: double n = n + n",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Doubling"
+      ],
+      "formula": "double n = n + n",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 6,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Zero is unique least element”: a ≤ 0 ≡ a = 0",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Zero is unique least element"
+      ],
+      "formula": "a ≤ 0 ≡ a = 0",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 8,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Reflexivity of ≤”: a ≤ a",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Reflexivity of ≤"
+      ],
+      "formula": "a ≤ a",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 10,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Antisymmetry of ≤”: a ≤ b ⇒ (b ≤ a ⇒ a = b)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Antisymmetry of ≤"
+      ],
+      "formula": "a ≤ b ⇒ (b ≤ a ⇒ a = b)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 11,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “Transitivity of ≤”: a ≤ b ⇒ (b ≤ c ⇒ a ≤ c)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "Transitivity of ≤"
+      ],
+      "formula": "a ≤ b ⇒ (b ≤ c ⇒ a ≤ c)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 13,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Corollary “Flipped transitivity of ≤”: b ≤ c ⇒ (a ≤ b ⇒ a ≤ c)",
+      "kind": "Corollary",
+      "numbers": [],
+      "names": [
+        "Flipped transitivity of ≤"
+      ],
+      "formula": "b ≤ c ⇒ (a ≤ b ⇒ a ≤ c)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 15,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “≤-Isotonicity of +”: a + b ≤ a + c ≡ b ≤ c",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "≤-Isotonicity of +"
+      ],
+      "formula": "a + b ≤ a + c ≡ b ≤ c",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 17,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “≤-Monotonicity of +”: a ≤ b ⇒ (c ≤ d ⇒ a + c ≤ b + d)",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "≤-Monotonicity of +"
+      ],
+      "formula": "a ≤ b ⇒ (c ≤ d ⇒ a + c ≤ b + d)",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 18,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Corollary “≤-Monotonicity of +”: a ≤ b ∧ c ≤ d ⇒ a + c ≤ b + d",
+      "kind": "Corollary",
+      "numbers": [],
+      "names": [
+        "≤-Monotonicity of +"
+      ],
+      "formula": "a ≤ b ∧ c ≤ d ⇒ a + c ≤ b + d",
+      "sideCondition": null
+    },
+    {
+      "sourceId": "notebook-2026-16027",
+      "locator": {
+        "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+        "cell": 20,
+        "declaration": 1,
+        "section": "Notebook proved theorems"
+      },
+      "excerpt": "Theorem “≤-Monotonicity of `pred`”: a ≤ b ⇒ pred a ≤ pred b",
+      "kind": "Theorem",
+      "numbers": [],
+      "names": [
+        "≤-Monotonicity of `pred`"
+      ],
+      "formula": "a ≤ b ⇒ pred a ≤ pred b",
+      "sideCondition": null
+    }
+  ],
+  "audit": {
+    "renderedDeclarations": 76,
+    "calculationProofDeclarations": 73,
+    "eligibleDeclarations": 76,
+    "notebookCells": 587,
+    "directProofDeclarations": 3
+  }
+}

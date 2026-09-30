@@ -5,13 +5,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15001/",
     "localCapture": "research/preloaded/raw/hw01.txt",
     "declarations": 178,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 14540,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-preloaded-hw02",
@@ -19,13 +23,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15004/",
     "localCapture": "research/preloaded/raw/hw02.txt",
     "declarations": 30,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2248,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-preloaded-hw03",
@@ -33,13 +41,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15011/",
     "localCapture": "research/preloaded/raw/hw03.txt",
     "declarations": 49,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 3620,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-preloaded-hw04",
@@ -47,13 +59,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15012/",
     "localCapture": "research/preloaded/raw/hw04.txt",
     "declarations": 4,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 457,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-preloaded-hw05",
@@ -61,13 +77,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15019/",
     "localCapture": "research/preloaded/raw/hw05.txt",
     "declarations": 136,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 10246,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-preloaded-hw06",
@@ -75,13 +95,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15020/",
     "localCapture": "research/preloaded/raw/hw06.txt",
     "declarations": 106,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 8332,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-preloaded-hw07",
@@ -89,13 +113,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15023/",
     "localCapture": "research/preloaded/raw/hw07.txt",
     "declarations": 4,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 457,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-preloaded-hw08",
@@ -103,13 +131,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15027/",
     "localCapture": "research/preloaded/raw/hw08.txt",
     "declarations": 190,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 15318,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      4
+    ]
   },
   {
     "id": "calc-preloaded-hw09",
@@ -117,13 +149,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15028/",
     "localCapture": "research/preloaded/raw/hw09.txt",
     "declarations": 204,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 17087,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
   },
   {
     "id": "calc-preloaded-hw10-1",
@@ -131,13 +167,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15034/",
     "localCapture": "research/preloaded/raw/hw10-1.txt",
     "declarations": 290,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 22528,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
   },
   {
     "id": "calc-preloaded-hw10-2",
@@ -145,13 +185,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15035/",
     "localCapture": "research/preloaded/raw/hw10-2.txt",
     "declarations": 290,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 22528,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
   },
   {
     "id": "calc-preloaded-hw10-3",
@@ -159,13 +203,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15036/",
     "localCapture": "research/preloaded/raw/hw10-3.txt",
     "declarations": 290,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 22528,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
   },
   {
     "id": "calc-preloaded-hw11",
@@ -173,13 +221,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15037/",
     "localCapture": "research/preloaded/raw/hw11.txt",
     "declarations": 32,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2272,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
   },
   {
     "id": "calc-preloaded-hw12",
@@ -187,13 +239,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15045/",
     "localCapture": "research/preloaded/raw/hw12.txt",
     "declarations": 338,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 31675,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
   },
   {
     "id": "calc-preloaded-hw13",
@@ -201,13 +257,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15051/",
     "localCapture": "research/preloaded/raw/hw13.txt",
     "declarations": 388,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 40610,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
   },
   {
     "id": "calc-preloaded-hw14",
@@ -215,13 +275,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15059/",
     "localCapture": "research/preloaded/raw/hw14.txt",
     "declarations": 303,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 34167,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
   },
   {
     "id": "calc-preloaded-hw15-1",
@@ -229,13 +293,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15062/",
     "localCapture": "research/preloaded/raw/hw15-1.txt",
     "declarations": 420,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 43740,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
   },
   {
     "id": "calc-preloaded-hw15-2",
@@ -243,13 +311,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15063/",
     "localCapture": "research/preloaded/raw/hw15-2.txt",
     "declarations": 420,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 43740,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
   },
   {
     "id": "calc-preloaded-hw16",
@@ -257,13 +329,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15065/",
     "localCapture": "research/preloaded/raw/hw16.txt",
     "declarations": 449,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 46866,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
   },
   {
     "id": "calc-preloaded-hw17",
@@ -271,13 +347,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15069/",
     "localCapture": "research/preloaded/raw/hw17.txt",
     "declarations": 494,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 50394,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      8
+    ]
   },
   {
     "id": "calc-preloaded-hw18",
@@ -285,13 +365,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15072/",
     "localCapture": "research/preloaded/raw/hw18.txt",
     "declarations": 303,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 34167,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
   },
   {
     "id": "calc-preloaded-hw19",
@@ -299,13 +383,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15073/",
     "localCapture": "research/preloaded/raw/hw19.txt",
     "declarations": 584,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 62069,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
   },
   {
     "id": "calc-preloaded-hw19-2",
@@ -313,13 +401,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15074/",
     "localCapture": "research/preloaded/raw/hw19-2.txt",
     "declarations": 584,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 62070,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
   },
   {
     "id": "calc-preloaded-hw20",
@@ -327,13 +419,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15087/",
     "localCapture": "research/preloaded/raw/hw20.txt",
     "declarations": 502,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 52155,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      10
+    ]
   },
   {
     "id": "calc-preloaded-hw21",
@@ -341,13 +437,17 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15095/",
     "localCapture": "research/preloaded/raw/hw21.txt",
     "declarations": 239,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 24394,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      11
+    ]
   },
   {
     "id": "calc-preloaded-hw22",
@@ -355,13 +455,1073 @@
     "format": "CalcCheck theorem-list popup",
     "status": "complete-popup-copy",
     "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
     "url": "http://130.113.68.214:15108/",
     "localCapture": "research/preloaded/raw/hw22.txt",
     "declarations": 329,
     "candidates": 0,
     "pages": 0,
     "charactersRead": 27170,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "weeks": [
+      11
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15002",
+    "name": "2025i Example 1.1: Universal and Existential Quantification · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15002/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15002.txt",
+    "declarations": 301,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 33735,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15003",
+    "name": "2025i Example 1.2: The Answer · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15003/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15003.txt",
+    "declarations": 34,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 2514,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15005",
+    "name": "2025i Exercise 1.1: Simple Calculations in CalcCheck · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15005/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15005.txt",
+    "declarations": 30,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 2179,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15006",
+    "name": "2025i Exercise 1.2: An Equational Theory of Integers · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15006/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15006.txt",
+    "declarations": 4,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 414,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15007",
+    "name": "2025i Exercise 1.3: Substitution · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15007/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15007.txt",
+    "declarations": 34,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 2513,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15008",
+    "name": "2025i Exercise 1.4: Re-Proving the Equational Theory of Integers with Rigid Matching · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15008/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15008.txt",
+    "declarations": 4,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 414,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15009",
+    "name": "2025i Exercise 1.5: Re-Proving the Integer Theorems without Automatic Associativity and Symmetry · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15009/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15009.txt",
+    "declarations": 4,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 414,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15010",
+    "name": "2025i Exercise 1.6: Re-Proving the Integer Theorems for Masochists · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15010/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15010.txt",
+    "declarations": 4,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 414,
+    "rawBytesAvailable": true,
+    "weeks": [
+      1
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15013",
+    "name": "2025i Exercise 2.1: Propositional Calculus: From Equivalence to Inequivalence · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15013/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15013.txt",
+    "declarations": 4,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 414,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15014",
+    "name": "2025i Exercise 2.2: Propositional Calculus: Disjunction · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15014/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15014.txt",
+    "declarations": 24,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 1758,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15015",
+    "name": "2025i Exercise 2.3: Propositional Calculus: Conjunction · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15015/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15015.txt",
+    "declarations": 33,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 2393,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15016",
+    "name": "2025i Exercise 2.4: Implication · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15016/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15016.txt",
+    "declarations": 63,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 4796,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15017",
+    "name": "2025i Extra Exercise 2.5: Knights and Knaves · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15017/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15017.txt",
+    "declarations": 128,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 10142,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15018",
+    "name": "2025i Exercise 2.6: Assignment Commands with Boolean Variables · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15018/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15018.txt",
+    "declarations": 94,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 7050,
+    "rawBytesAvailable": true,
+    "weeks": [
+      2
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15022",
+    "name": "2025i Assignment 1 Notebook 2: Assignment Commands with Boolean Variables · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15022/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15022.txt",
+    "declarations": 94,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 7049,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15024",
+    "name": "2025i Exercise 3.1: Leibniz as Axiom, Replacement · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15024/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15024.txt",
+    "declarations": 142,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 10743,
+    "rawBytesAvailable": true,
+    "weeks": [
+      3
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15025",
+    "name": "2025i Exercise 3.2: Natural Numbers and Induction: Addition and Multiplication · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15025/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15025.txt",
+    "declarations": 12,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 902,
+    "rawBytesAvailable": true,
+    "weeks": [
+      3
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15026",
+    "name": "2025i Exercise 3.3: Monus Subtraction · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15026/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15026.txt",
+    "declarations": 22,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 1501,
+    "rawBytesAvailable": true,
+    "weeks": [
+      3
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15029",
+    "name": "2025i Exercise 4.1: Calculations with Monotonicity and Antitonicity · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15029/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15029.txt",
+    "declarations": 132,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 9802,
+    "rawBytesAvailable": true,
+    "weeks": [
+      4
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15030",
+    "name": "2025i Reference Notebook Inequality · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15030/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15030.txt",
+    "declarations": 24,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 1768,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15031",
+    "name": "2025i Exercise 4.2: Positivity · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15031/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15031.txt",
+    "declarations": 192,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 15193,
+    "rawBytesAvailable": true,
+    "weeks": [
+      4
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15032",
+    "name": "2025i Exercise 4.3: Partial Solutions to Exercise 4.2: Positivity · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15032/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15032.txt",
+    "declarations": 192,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 15193,
+    "rawBytesAvailable": true,
+    "weeks": [
+      4
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15033",
+    "name": "2025i Exercise 4.4: Order on Integers · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15033/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15033.txt",
+    "declarations": 209,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 16511,
+    "rawBytesAvailable": true,
+    "weeks": [
+      4
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15038",
+    "name": "2025i Reference Notebook: General Quantification Following LADM Chapter 8 · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15038/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15038.txt",
+    "declarations": 237,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 24052,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15039",
+    "name": "2025i Reference Notebook: General Quantification Instantiated for ∀ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15039/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15039.txt",
+    "declarations": 164,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 13422,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15040",
+    "name": "2025i Reference Notebook: General Quantification Instantiated for ∃ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15040/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15040.txt",
+    "declarations": 237,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 24055,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15041",
+    "name": "2025i Reference Notebook: General Quantification Instantiated for ∑ on ℕ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15041/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15041.txt",
+    "declarations": 280,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 26940,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15042",
+    "name": "2025i Reference Notebook: General Quantification Instantiated for ∏ on ℕ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15042/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15042.txt",
+    "declarations": 280,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 26941,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15043",
+    "name": "2025i Reference Notebook: Universal Quantification (LADM 9.1) · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15043/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15043.txt",
+    "declarations": 200,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 19308,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15044",
+    "name": "2025i Reference Notebook: Existential Quantification (LADM 9.2) · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15044/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15044.txt",
+    "declarations": 276,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 30553,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15047",
+    "name": "2025i Exercise 5.2: Equality and Predecessors in ℕ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15047/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15047.txt",
+    "declarations": 98,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 6975,
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15048",
+    "name": "2025i Exercise 5.3: Simple Proofs `By cases` on ℕ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15048/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15048.txt",
+    "declarations": 209,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 16037,
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15049",
+    "name": "2025i Exercise 5.4: Manipulating Ranges in ℤ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15049/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15049.txt",
+    "declarations": 251,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 19709,
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15050",
+    "name": "2025i Exercise 5.5: Sum Quantification in ℤ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15050/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15050.txt",
+    "declarations": 337,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 31807,
+    "rawBytesAvailable": true,
+    "weeks": [
+      5
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15052",
+    "name": "2025i Exercise 6.1: Introduction to Sequences · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15052/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15052.txt",
+    "declarations": 395,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 40816,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15053",
+    "name": "2025i Exercise 6.2: Sequences Continued · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15053/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15053.txt",
+    "declarations": 414,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 42364,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15054",
+    "name": "2025i Exercise 6.3: Practice with ∀ and ∃ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15054/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15054.txt",
+    "declarations": 379,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 39242,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15055",
+    "name": "2025i Exercise 6.4: Indirect Equality, Maximum, and Minimum on ℤ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15055/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15055.txt",
+    "declarations": 317,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 29394,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15056",
+    "name": "2025i Exercise 6.5: “Mixed Monotonicity” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15056/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15056.txt",
+    "declarations": 402,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 40962,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15057",
+    "name": "2025i Exercise 6.6: Correctness of `while` Loops · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15057/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15057.txt",
+    "declarations": 326,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 27226,
+    "rawBytesAvailable": true,
+    "weeks": [
+      6
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15058",
+    "name": "2025i Reference Notebook “Set Theory” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15058/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15058.txt",
+    "declarations": 303,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 33748,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15060",
+    "name": "2025i Exercise 7.1: Set Theory · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15060/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15060.txt",
+    "declarations": 397,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 40669,
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15061",
+    "name": "2025i Exercise 7.2: Pairs and Cartesian Products · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15061/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15061.txt",
+    "declarations": 408,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 42300,
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15064",
+    "name": "2025i Exercise 7.3: Typed Universal Sets · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15064/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15064.txt",
+    "declarations": 449,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 46266,
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15066",
+    "name": "2025i Exercise 7.4: Relations via Set Theory: More Properties · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15066/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15066.txt",
+    "declarations": 449,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 46283,
+    "rawBytesAvailable": true,
+    "weeks": [
+      7
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15067",
+    "name": "2025i Reference Notebook “Basic Relation Operation Properties” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15067/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15067.txt",
+    "declarations": 449,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 46286,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15070",
+    "name": "2025i Reference Notebook “Operators Combining Sets and Relations” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15070/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15070.txt",
+    "declarations": 494,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 49769,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15071",
+    "name": "2025i Exercise 8.2: Operators Combining Sets and Relations · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15071/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15071.txt",
+    "declarations": 572,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 56841,
+    "rawBytesAvailable": true,
+    "weeks": [
+      8
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15075",
+    "name": "2025i Exercise 9.1: Multiplication on ℕ Using Explicit Induction Principle · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15075/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15075.txt",
+    "declarations": 321,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 35353,
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15076",
+    "name": "2025i Exercise 9.2: Binary Trees · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15076/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15076.txt",
+    "declarations": 567,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 60488,
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15077",
+    "name": "2025i Exercise 9.2 (variant): Binary Trees · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15077/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15077.txt",
+    "declarations": 567,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 60647,
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15078",
+    "name": "2025i Reference Notebook “Induction Principles for ℕ” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15078/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15078.txt",
+    "declarations": 451,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 43452,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15079",
+    "name": "2025i Reference Notebook “Well-foundedness of ℕ” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15079/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15079.txt",
+    "declarations": 420,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 41985,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15080",
+    "name": "2025i Reference Notebook “Subidentity Relations in Set Theory” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15080/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15080.txt",
+    "declarations": 542,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 54945,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15081",
+    "name": "2025i Assignment 2 Notebook 1: Partial-Function Application · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15081/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15081.txt",
+    "declarations": 587,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 58417,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15082",
+    "name": "2025i Assignment 2 Notebook 2: Conditional Commands · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15082/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15082.txt",
+    "declarations": 272,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 21763,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15083",
+    "name": "2025i Assignment 2 Notebook 3: Proofs about Sum Quantification on ℕ · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15083/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15083.txt",
+    "declarations": 403,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 39061,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15084",
+    "name": "2025i Reference Notebook “Z Arrows” · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15084/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15084.txt",
+    "declarations": 638,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 62405,
+    "rawBytesAvailable": true,
+    "weeks": []
+  },
+  {
+    "id": "calc-preloaded-2025i-15085",
+    "name": "2025i Exercise 9.3: Sequences Misc. · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15085/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15085.txt",
+    "declarations": 455,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 45858,
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15086",
+    "name": "2025i Exercise 9.4: Sum Quantification Misc. · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15086/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15086.txt",
+    "declarations": 477,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 51932,
+    "rawBytesAvailable": true,
+    "weeks": [
+      9
+    ]
+  },
+  {
+    "id": "calc-preloaded-2025i-15088",
+    "name": "2025i Exercise 10.2: Bags · 预载列表",
+    "format": "CalcCheck theorem-list popup",
+    "status": "complete-popup-copy",
+    "lineage": "2025 course-provided preloaded theorem lists",
+    "year": 2025,
+    "url": "http://130.113.68.214:15088/",
+    "localCapture": "research/preloaded/raw2025i-extra/port15088.txt",
+    "declarations": 571,
+    "candidates": 0,
+    "pages": 0,
+    "charactersRead": 60561,
+    "rawBytesAvailable": true,
+    "weeks": [
+      10
+    ]
   },
   {
     "id": "calc-2026-16001",
@@ -375,7 +1535,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 14822,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16002",
@@ -389,7 +1553,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2371,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16003",
@@ -403,7 +1571,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 580,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16004",
@@ -417,7 +1589,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2747,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16005",
@@ -431,7 +1607,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 580,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16006",
@@ -445,7 +1625,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 580,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16007",
@@ -459,7 +1643,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 580,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16008",
@@ -473,7 +1661,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 3743,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16009",
@@ -487,7 +1679,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2368,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16010",
@@ -501,7 +1697,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 3810,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      1
+    ]
   },
   {
     "id": "calc-2026-16011",
@@ -515,7 +1715,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 580,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16012",
@@ -529,7 +1733,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 1944,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16013",
@@ -543,7 +1751,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 2588,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16014",
@@ -557,7 +1769,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 5021,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16015",
@@ -571,7 +1787,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 10586,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16016",
@@ -585,7 +1805,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 7329,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16017",
@@ -599,7 +1823,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 577,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16018",
@@ -613,7 +1841,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 8477,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      2
+    ]
   },
   {
     "id": "calc-2026-16020",
@@ -627,7 +1859,9 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 7328,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": []
   },
   {
     "id": "calc-2026-16021",
@@ -641,7 +1875,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 577,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16022",
@@ -655,7 +1893,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 1072,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16023",
@@ -669,7 +1911,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 1681,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16024",
@@ -683,7 +1929,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 7231,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16025",
@@ -697,7 +1947,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 16604,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16026",
@@ -711,7 +1965,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 15627,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      4
+    ]
   },
   {
     "id": "calc-2026-16027",
@@ -725,7 +1983,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 16603,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      4
+    ]
   },
   {
     "id": "calc-2026-16028",
@@ -739,7 +2001,11 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 10393,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
   },
   {
     "id": "calc-2026-16029",
@@ -753,6 +2019,217 @@
     "candidates": 0,
     "pages": 0,
     "charactersRead": 8479,
-    "rawBytesAvailable": true
+    "rawBytesAvailable": true,
+    "year": 2026,
+    "weeks": [
+      3
+    ]
+  },
+  {
+    "id": "notebook-2026-16019",
+    "name": "2026 A1.1 · proved notebook theorems",
+    "url": "http://130.113.68.214:16019/",
+    "year": 2026,
+    "weeks": [],
+    "weekEvidence": {
+      "method": "unassigned"
+    },
+    "file": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+    "sha256": "8234692e97fe8fcceca24b113ce7da50f03e437b491010222ab1c03eef4d42db",
+    "port": 16019,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 25,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 25,
+    "calculationProofDeclarations": 25,
+    "eligibleDeclarations": 25,
+    "notebookCells": 32
+  },
+  {
+    "id": "notebook-2026-16020",
+    "name": "2026 A1.2 · proved notebook theorems",
+    "url": "http://130.113.68.214:16020/",
+    "year": 2026,
+    "weeks": [],
+    "weekEvidence": {
+      "method": "unassigned"
+    },
+    "file": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+    "sha256": "7a033683ff2d2a8ae5de6722a569f133031973d11248c628bf65ae12f0a58d95",
+    "port": 16020,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 3,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 3,
+    "calculationProofDeclarations": 3,
+    "eligibleDeclarations": 3,
+    "notebookCells": 7
+  },
+  {
+    "id": "notebook-2026-16022",
+    "name": "2026 Ex3.1 · proved notebook theorems",
+    "url": "http://130.113.68.214:16022/",
+    "year": 2026,
+    "weeks": [
+      3
+    ],
+    "weekEvidence": {
+      "method": "Exercise N.x"
+    },
+    "file": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+    "sha256": "de285e82760bdd157d34df3819b24aa85d07ec3763960cac10a0f86468f2677a",
+    "port": 16022,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 8,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 8,
+    "calculationProofDeclarations": 8,
+    "eligibleDeclarations": 8,
+    "notebookCells": 14
+  },
+  {
+    "id": "notebook-2026-16023",
+    "name": "2026 Ex3.2 · proved notebook theorems",
+    "url": "http://130.113.68.214:16023/",
+    "year": 2026,
+    "weeks": [
+      3
+    ],
+    "weekEvidence": {
+      "method": "Exercise N.x"
+    },
+    "file": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+    "sha256": "f7137b9ceaecd57ec1cd942f0ea141a175dd75cb15ba22e11a33c63da936670d",
+    "port": 16023,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 7,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 7,
+    "calculationProofDeclarations": 7,
+    "eligibleDeclarations": 7,
+    "notebookCells": 18
+  },
+  {
+    "id": "notebook-2026-16024",
+    "name": "2026 Ex3.3 · proved notebook theorems",
+    "url": "http://130.113.68.214:16024/",
+    "year": 2026,
+    "weeks": [
+      3
+    ],
+    "weekEvidence": {
+      "method": "Exercise N.x"
+    },
+    "file": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+    "sha256": "3aee97e06c7c0a433167bf4ff3e0be4a99e271f861fc86fef1cbb93d93650c2d",
+    "port": 16024,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 11,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 11,
+    "directProofDeclarations": 3,
+    "eligibleDeclarations": 11,
+    "calculationProofDeclarations": 8,
+    "notebookCells": 26
+  },
+  {
+    "id": "notebook-2026-16025",
+    "name": "2026 Ex3.4 · proved notebook theorems",
+    "url": "http://130.113.68.214:16025/",
+    "year": 2026,
+    "weeks": [
+      3
+    ],
+    "weekEvidence": {
+      "method": "Exercise N.x"
+    },
+    "file": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+    "sha256": "133c88b45d60f9fadfe2cd4e562d400d7845595e0b0b5c5f4b748728613dbd86",
+    "port": 16025,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 8,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 8,
+    "calculationProofDeclarations": 8,
+    "eligibleDeclarations": 8,
+    "notebookCells": 13
+  },
+  {
+    "id": "notebook-2026-16021",
+    "name": "2026 H6 · proved notebook theorems",
+    "url": "http://130.113.68.214:16021/",
+    "year": 2026,
+    "weeks": [
+      3
+    ],
+    "weekEvidence": {
+      "method": "reviewed homework correspondence",
+      "sourceId": "calc-2026-16021",
+      "weeks": [
+        3
+      ],
+      "confidence": "very-high",
+      "evidence": [
+        "正文证明自然数加法右单位、suc 移位、交换律；随后以 Week3.Homework-6_Nat-sucInd_SOL 被 Ex3.1–Ex3.4 预载。",
+        "自身预载仅 4 条 Equality，归类依据是正文产出的定理。"
+      ]
+    },
+    "file": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+    "sha256": "a51d5ce750ea690035f98041462b4eca8baf4c7005f371ee855c2ff150e2ce43",
+    "port": 16021,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 5,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 5,
+    "calculationProofDeclarations": 5,
+    "eligibleDeclarations": 5,
+    "notebookCells": 23
+  },
+  {
+    "id": "notebook-2026-16027",
+    "name": "2026 H7.2 · proved notebook theorems",
+    "url": "http://130.113.68.214:16027/",
+    "year": 2026,
+    "weeks": [
+      4
+    ],
+    "weekEvidence": {
+      "method": "reviewed homework correspondence",
+      "sourceId": "calc-2026-16027",
+      "weeks": [
+        4
+      ],
+      "confidence": "medium-high-cross-year",
+      "evidence": [
+        "正文新证明 ℕ 上 ≤ 的反对称、传递，以及加法与 pred 单调性；2025i Ex4.4 正文也证明 Transitivity of ≤ 和 ≤-Monotonicity of +。",
+        "正文说明预载 H6、Ex3.1–Ex3.3，因此与 Ex3.4 的完整预载重合属于先修累积；2026 Ex4 尚未开放。"
+      ]
+    },
+    "file": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+    "sha256": "fbb81f70599326b40b441ad9da069ddf94e5a915600610ce09813fada0aac559",
+    "port": 16027,
+    "format": "CalcCheck proved notebook declarations",
+    "sourceType": "notebook-proved",
+    "declarations": 9,
+    "localCapture": "research/notebooks/proved-declarations.json",
+    "status": "checked-rendered-declaration-extraction",
+    "renderedDeclarations": 9,
+    "calculationProofDeclarations": 9,
+    "eligibleDeclarations": 9,
+    "notebookCells": 20
   }
 ]

@@ -1,0 +1,55 @@
+{
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "317CC06A-4B11-488F-8F97-68888E023946",
+          "deviceName": "2LC3-Final-UI-Isolated",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 45,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "TheoremQuest · Built with macOS 27.2",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1790803250.945,
+    "passedTests": 45,
+    "result": "Passed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1790802794.346,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - TheoremQuest",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "96% of duration",
+        "text": "1 longest test run with outlier durations exceeding 9.82s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 45
+  },
+  "sourceSHA256": {
+    "assets/engine.js": "618c94065599f05d3e406e68dc2733487a5d042f17cfa4e6cb508f25590d285b",
+    "assets/app.js": "46dc768fe295f770d0b45541c1a9f138be1c1fb7f32baa5846cbb7d34f4eaf4f",
+    "assets/notebook-hints.js": "db93fb102ca840be25f51c096a9f7efc6bd2b56a27e4bed1c03fd1f6bdfd6e1d",
+    "assets/proofs.js": "b2a14766ea304a13ac08b6a3984a943e3bd0c3e467621e9eac7659eb033378dc",
+    "data/theorems.json": "3f790dd8f8a2ed0a1f122ff7f2ff2ca767f0ebce9bddcc9a5bfd32de04141650",
+    "ios/TheoremQuestUITests/TheoremQuestUITests.swift": "f8677b3975ecc92dda3cf63c11539064ebbbe326615efd9387b26639e7678e43",
+    "ios/TheoremQuestUITests/FillKeyboardUITests.swift": "34044040db05e8665a3775f425bae8b5b63012a57e5635a039b4253ea70497ed"
+  },
+  "bundledHTMLSHA256": "af4a1f4c7c260301e469c892fddd0728005f37e4698fef8d987d077360812ea0"
+}

@@ -1,0 +1,78 @@
+{
+  "correctAnswers": 200,
+  "browserRestarts": 0,
+  "browserChannel": "chromium",
+  "browserVersion": "Chrome/148.0.7778.96",
+  "memorySnapshots": [
+    {
+      "answers": 0,
+      "heapUsedMiB": 13.7,
+      "documents": 12,
+      "nodes": 2839,
+      "jsEventListeners": 42
+    },
+    {
+      "answers": 25,
+      "heapUsedMiB": 13.2,
+      "documents": 1,
+      "nodes": 1229,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 50,
+      "heapUsedMiB": 17.7,
+      "documents": 1,
+      "nodes": 5473,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 75,
+      "heapUsedMiB": 15.6,
+      "documents": 1,
+      "nodes": 12866,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 100,
+      "heapUsedMiB": 12.7,
+      "documents": 1,
+      "nodes": 2142,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 125,
+      "heapUsedMiB": 14.7,
+      "documents": 1,
+      "nodes": 3691,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 150,
+      "heapUsedMiB": 9.5,
+      "documents": 1,
+      "nodes": 2761,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 175,
+      "heapUsedMiB": 10.9,
+      "documents": 1,
+      "nodes": 2645,
+      "jsEventListeners": 34
+    },
+    {
+      "answers": 200,
+      "heapUsedMiB": 12.0,
+      "documents": 1,
+      "nodes": 4294,
+      "jsEventListeners": 34
+    }
+  ],
+  "nativeStorageAfterReload": true,
+  "serviceWorkerOfflineReload": true,
+  "firstLoadMs": 980,
+  "answerMedianMs": 205,
+  "answerP95Ms": 746,
+  "answerMaxMs": 36903,
+  "javascriptErrors": []
+}

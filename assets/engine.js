@@ -30,6 +30,10 @@
   });
   const SHORTCUT_KEYS=Object.keys(SHORTCUTS).sort((a,b)=>a.localeCompare(b));
   const SHORTCUT_SYMBOLS=new Set(Object.values(SHORTCUTS));
+  const SHORTCUT_REPLACEMENTS=Object.keys(SHORTCUTS).sort((a,b)=>b.length-a.length).map(key=>{
+    const escaped=key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return [new RegExp(escaped+(/[a-zA-Z]$/.test(key)?'(?![a-zA-Z])':''),'g'),SHORTCUTS[key]];
+  });
   function shortcutSuggestions(prefix,limit=20) {
     if(typeof prefix!=='string'||!prefix.startsWith('\\')||prefix.length<2)return [];
     const query=prefix.toLocaleLowerCase();
@@ -56,11 +60,7 @@
     let s = text.normalize('NFC').replace(/[\u00a0\u2007\u202f]/g,' ').replace(/[−–]/g,'-')
       .replace(/⋅/g,'·').replace(/′/g,"'").replace(/\/≡/g,'≢').replace(/\/=/g,'≠');
     // Longest-first replacement with a boundary: \in must not consume \int.
-    const keys = Object.keys(SHORTCUTS).sort((a,b)=>b.length-a.length);
-    for (const key of keys) {
-      const escaped = key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-      s = s.replace(new RegExp(escaped + (/[a-zA-Z]$/.test(key) ? '(?![a-zA-Z])' : ''),'g'), SHORTCUTS[key]);
-    }
+    if(s.includes('\\'))for(const [pattern,symbol] of SHORTCUT_REPLACEMENTS)s=s.replace(pattern,symbol);
     return s.replace(/<=>|<==>/g,'≡').replace(/==>/g,'⇒').replace(/=>/g,'⇒').replace(/<==/g,'⇐')
       .replace(/\/\\/g,'∧').replace(/\\\//g,'∨').replace(/!=/g,'≠')
       .replace(/<=/g,'≤').replace(/>=/g,'≥').replace(/&&/g,'∧').replace(/\|\|/g,'∨')
@@ -112,7 +112,7 @@
   const COMM = new Set(['≡','≢','∨','∧','+','·','∪','∩','↑','↓']);
   const ASSOC = new Set([...COMM,'⨾','∘','⊕','⌢']);
   const SYM = new Set(['=','≠']);
-  function parse(text) {
+  function parse(text,normalizeReverse=true) {
     const ts=Array.isArray(text)?text:tokenize(text); let i=0, depth=0;
     function atomStart(t) { return !!t && (t==='(' || WORD.test(t) || /^\d/.test(t)) && !(t in PRE); }
     function expr(min=0) {
@@ -132,11 +132,11 @@
         const p=PRE[t]; if(p===undefined || p<min) break;
         i++; const right=expr(p+(RIGHT.has(t)?0:1));
         let op=t==='*'?'·':t, args=[left,right];
-        if(t==='⇐') {op='⇒'; args.reverse();}
-        if(t==='≥') {op='≤'; args.reverse();}
-        if(t==='>') {op='<'; args.reverse();}
-        if(t==='⊇') {op='⊆';args.reverse();}
-        if(t==='⊃') {op='⊂';args.reverse();}
+        if(normalizeReverse&&t==='⇐') {op='⇒'; args.reverse();}
+        if(normalizeReverse&&t==='≥') {op='≤'; args.reverse();}
+        if(normalizeReverse&&t==='>') {op='<'; args.reverse();}
+        if(normalizeReverse&&t==='⊇') {op='⊆';args.reverse();}
+        if(normalizeReverse&&t==='⊃') {op='⊂';args.reverse();}
         left={op,args};
       }
       depth--;return left;
@@ -203,6 +203,16 @@
     const changes=[...map.entries()].filter(([a,b])=>a!==b);
     return changes.length ? '变量改名一致：'+changes.map(([a,b])=>a+' → '+b).join('，') : '公式结构与原定理一致。';
   }
+  function identicalAST(a,b) {
+    return a.op===b.op && (a.value===b.value) &&
+      (!a.args || a.args.length===b.args?.length && a.args.every((part,i)=>identicalAST(part,b.args[i])));
+  }
+  function copiedRelation(expected,answer) {
+    const relations=new Set(['≡','≢','=','≠','≤','<','≥','>','⊆','⊂','⊇','⊃']);
+    const x=parse(expected,false),y=parse(answer,false);
+    return x.op===y.op && relations.has(x.op) &&
+      !identicalAST(x.args[0],x.args[1]) && identicalAST(y.args[0],y.args[1]);
+  }
   function compareFormula(expected,answer) {
     let a,b;
     try {a=tokenize(expected);b=tokenize(answer);} catch(e) {return {ok:false,kind:'invalid',message:e.message};}
@@ -211,6 +221,7 @@
     const direct=tokenAlpha(a,b);
     if(direct) return {ok:true,kind:'alpha',mapping:Object.fromEntries(direct),message:mapMessage(direct)};
     try {
+      if(copiedRelation(a,b))return {ok:false,kind:'copied',message:'左右两边写成同一个式子，不能代替原定理的变形关系。'};
       const x=parse(a),y=parse(b);
       const map=matchAST(x,y)||matchAST(stripTruth(x),stripTruth(y));
       if(map) return {ok:true,kind:'structural',mapping:Object.fromEntries(map),message:mapMessage(map)+' 已接受交换、结合或反向关系写法。'};
@@ -223,6 +234,20 @@
     const tokens=tokenize(formula), blanks=[];
     tokens.forEach((t,i)=>{if(isVariable(t))blanks.push({index:i,variable:t});});
     return {tokens,blanks,variables:varsOf(tokens)};
+  }
+  const CLOZE_GROUPS = [
+    ['≡','≢','⇒','⇐'], ['∧','∨','¬'], ['=','≠','<','≤','>','≥'],
+    ['+','-','·','/'], ['∈','∉','⊆','⊂','⊇','⊃'], ['∪','∩','∖'], ['∀','∃']
+  ];
+  const CLOZE_TOKENS = new Set(CLOZE_GROUPS.flat());
+  function clozeTemplate(formula,rng=Math.random) {
+    const tokens=tokenize(formula);
+    const candidates=tokens.map((token,index)=>({token,index})).filter(x=>CLOZE_TOKENS.has(x.token));
+    if(!candidates.length)return null;
+    const blank=candidates[Math.floor(rng()*candidates.length)];
+    const group=CLOZE_GROUPS.find(g=>g.includes(blank.token));
+    const options=shuffle([blank.token,...shuffle(group.filter(x=>x!==blank.token),rng).slice(0,3)],rng);
+    return {tokens,index:blank.index,correct:blank.token,options};
   }
   function fillTemplate(template,values) {
     if(values.length!==template.blanks.length||values.some(x=>!isVariable(normalizeInput(x)))) return null;
@@ -250,8 +275,17 @@
       return pair.length===2&&compareRefs(num,pair[0])>=0&&compareRefs(num,pair[1])<=0;
     }));
   }
+  function gradeBlanks(template,values) {
+    const answer=fillTemplate(template,values);
+    if(!answer)return {ok:false,kind:'invalid',message:'每个空只能填一个字母变量。'};
+    const mapping=tokenAlpha(template.tokens,tokenize(answer));
+    return {ok:!!mapping,kind:'blanks',message:mapping?'变量关系正确。':'同一个变量须保持一致，不同变量不能合并。'};
+  }
   function normalizeName(s) {
-    return normalizeInput(s).toLocaleLowerCase().replace(/[“”"'`‘’]/g,'').replace(/\s+/g,' ').trim();
+    // Names contain ordinary words such as "and" and "not". Uppercasing a
+    // name must not reinterpret those words as formula input operators.
+    const words=typeof s==='string'?s.replace(/\b(?:NOT|AND|OR)\b/g,word=>word.toLowerCase()):s;
+    return normalizeInput(words).toLocaleLowerCase().replace(/[“”"'`‘’]/g,'').replace(/\s+/g,' ').trim();
   }
   function searchRecords(records,query) {
     const q=normalizeName(query); if(!q)return records.slice();
@@ -263,11 +297,97 @@
       else if(labels.some(s=>s.includes(q))||normalizeName(r.formula).includes(q))rest.push(r);
     }return [...exact,...prefix,...rest];
   }
+  function hintLocations(r, sources, weekBySource = {}) {
+    const sourceMap = new Map(sources.map(s => [s.id, s])), locations = new Map();
+    for (const origin of r.sources || []) {
+      const source = sourceMap.get(origin.sourceId);
+      if (!source) continue;
+      if (!locations.has(source.id)) locations.set(source.id, {
+        sourceId: source.id, name: source.name, url: source.url,
+        year: source.year || (source.id.startsWith('calc-2026-') ? 2026 : 2025),
+        weeks: [...new Set(weekBySource[source.id] ?? source.weeks ?? [])].sort((a,b) => a-b),
+        lines: [], sections: []
+      });
+      const location = locations.get(source.id), locator = origin.locator || {};
+      if (Number.isInteger(locator.line) && !location.lines.includes(locator.line)) location.lines.push(locator.line);
+      if (locator.section && !location.sections.includes(locator.section)) location.sections.push(locator.section);
+    }
+    return [...locations.values()].map(location => ({...location, lines: location.lines.sort((a,b) => a-b)}))
+      .sort((a,b) => b.year-a.year || (a.weeks[0] ?? Infinity)-(b.weeks[0] ?? Infinity) || a.name.localeCompare(b.name));
+  }
   function label(r) { return `${r.displayRef} · ${r.name}`; }
+  // Rank real cards by the visible name and formula structure, ignoring variable spelling.
+  function overlap(a,b) {
+    const x=new Set(a),y=new Set(b),union=new Set([...x,...y]);
+    return union.size?[...x].filter(t=>y.has(t)).length/union.size:0;
+  }
+  function nameFeatures(name) {
+    const s=normalizeName(name).replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+    const chars=Array.from(s.replace(/ /g,''));
+    return {text:s,words:s.split(' ').filter(Boolean),pairs:chars.slice(1).map((c,i)=>chars[i]+c)};
+  }
+  const choiceFeatureCache=new WeakMap();
+  function choiceFeatures(r) {
+    const aliases=JSON.stringify(r.aliases||[]),cached=choiceFeatureCache.get(r);
+    if(cached&&cached.formula===r.formula&&cached.name===r.name&&cached.aliases===aliases)return cached.features;
+    const variables=new Map();
+    const tokens=tokenize(r.formula).map(t=>{
+      if(!isVariable(t))return t;
+      if(!variables.has(t))variables.set(t,variables.size);
+      return '$'+variables.get(t);
+    });
+    const features={names:[r.name,...(r.aliases||[])].filter(n=>n&&n!=='原文未命名').map(nameFeatures),
+      tokens,pairs:tokens.slice(1).map((t,i)=>tokens[i]+' '+t),
+      operators:tokens.filter(t=>!t.startsWith('$')&&!['(',')','[',']','{','}'].includes(t))};
+    choiceFeatureCache.set(r,{formula:r.formula,name:r.name,aliases,features});
+    return features;
+  }
+  function featureSimilarity(a,b,sameTopic) {
+    let name=0;
+    for(const x of a.names)for(const y of b.names)
+      name=Math.max(name,x.text===y.text?1:0.55*overlap(x.words,y.words)+0.45*overlap(x.pairs,y.pairs));
+    const formula=0.65*overlap(a.pairs,b.pairs)+0.35*overlap(a.operators,b.operators);
+    return 0.6*name+0.35*formula+(sameTopic?0.05:0);
+  }
+  function choiceSimilarity(a,b) {
+    return featureSimilarity(choiceFeatures(a),choiceFeatures(b),!!a.topic&&a.topic===b.topic);
+  }
+  function isFoundationalTheorem(r) {
+    return [r.name,...(r.aliases||[])].filter(Boolean).some(name=>
+      /\b(?:asso|associativity|associative|symmetry|symmetric|reflexivity|reflexive|reflextivity)\b|结合律|对称(?:性|律)|自反(?:性|律)/iu.test(normalizeName(name)));
+  }
+  function choiceOptions(records,target,difficulty=2,rng=Math.random) {
+    const level=[1,2,3].includes(difficulty)?difficulty:2,targetFeatures=choiceFeatures(target);
+    const ranked=shuffle(records.filter(r=>isQuestionCard(r)&&(level!==3||!isFoundationalTheorem(r))&&r.id!==target.id&&label(r)!==label(target)),rng)
+      .map(r=>({r,score:featureSimilarity(targetFeatures,choiceFeatures(r),!!target.topic&&r.topic===target.topic)}))
+      .sort((a,b)=>a.score-b.score);
+    // The middle level draws from the middle of the similarity ranking.
+    const midpoint=(ranked.length-1)*0.5;
+    const ordered=level===3?ranked.reverse():level===1?ranked:ranked.map((x,i)=>({...x,distance:Math.abs(i-midpoint)})).sort((a,b)=>a.distance-b.distance);
+    const options=[target],seen=new Set([label(target)]);
+    const variants=r=>[r.formula,...(r.formulaVariants||[])];
+    for(const {r} of ordered) {
+      if(seen.has(label(r))||variants(target).some(a=>variants(r).some(b=>compareFormula(a,b).ok)))continue;
+      seen.add(label(r));options.push(r);
+      if(options.length===4)break;
+    }
+    return shuffle(options,rng);
+  }
   function nameGroup(records,record) {
     if(!record.numbers?.length||!record.name||record.name==='原文未命名')return [record];
     const name=normalizeName(record.name);
     return records.filter(r=>r.numbers?.length&&normalizeName(r.name)===name);
+  }
+  function answerVariants(records,record) {
+    const group=nameGroup(records,record);
+    return [record,...group.filter(r=>r.id!==record.id)].map(r=>({
+      id:r.id,
+      names:[...new Set([r.name,...(r.aliases||[])].filter(Boolean))],
+      references:[...new Set([r.displayRef,...(r.numbers||[]).map(n=>`(${n})`)].filter(Boolean))],
+      formulas:[...new Set([r.formula,...(r.formulaVariants||[])].filter(Boolean))],
+      variantLabel:r.variantLabel||'',
+      sideCondition:r.sideCondition||''
+    }));
   }
   function gradeName(records,target,{selectedId=null,groupSelected=false,typed=''}) {
     if(selectedId){
@@ -280,25 +400,33 @@
     if(!query)return {ok:false,kind:'empty'};
     // A bare shared name denotes the group. A reference always denotes one card.
     if(group.length>1&&query===normalizeName(target.name))return {ok:true,kind:'group'};
-    const names=[target.name,...(target.aliases||[])];
+    // The source's lack of a name is metadata, never a correct recalled name.
+    const names=target.name==='原文未命名'?[]:[target.name,...(target.aliases||[])];
     if(names.some(n=>normalizeName(n)===query))return {ok:true,kind:'name'};
     const refs=[target.displayRef,...(target.numbers||[]),...(target.numbers||[]).map(n=>`(${n})`)];
     if(refs.some(n=>normalizeName(n)===query)) {
-      const matches=records.filter(r=>[r.displayRef,...(r.numbers||[]),...(r.numbers||[]).map(n=>`(${n})`)].some(v=>normalizeName(v)===query));
-      return {ok:matches.length>0&&matches.every(r=>compareFormula(r.formula,target.formula).ok),kind:'numbered'};
+      return {ok:true,kind:'numbered'};
     }
     if(refs.some(ref=>names.some(name=>[
       `${ref} · ${name}`,`${ref} ${name}`,`${name} ${ref}`
     ].some(v=>normalizeName(v)===query))))return {ok:true,kind:'numbered'};
     return {ok:false,kind:'mismatch'};
   }
-  function eligibleModes(r,modes) {
+  function gradeProofName(record, answer) {
+    const query=normalizeName(String(answer||'').trim());
+    return !!query && !!record.proof && record.proof.answers.some(name=>normalizeName(name)===query);
+  }
+  function eligibleModes(r,modes,choiceDifficulty=2) {
+    if(r.proof)return modes.filter(m=>m==='proof');
+    modes=modes.filter(m=>m!=='proof');
     const blanks=blankTemplate(r.formula).blanks.length;
     const symbols=symbolsInFormula(r.formula).length;
-    return modes.filter(m=>(m!=='blanks'||blanks>0)&&(m!=='symbol'||symbols>0));
+    const cloze=clozeTemplate(r.formula,()=>0);
+    return modes.filter(m=>(m!=='choice'||choiceDifficulty!==3||!isFoundationalTheorem(r))&&(m!=='blanks'||blanks>0)&&(m!=='symbol'||symbols>0)&&(m!=='cloze'||!!cloze));
   }
   function isQuestionCard(r) { return !!r && !/inference rule/i.test(r.kind || ''); }
   function modeWeight(r,mode) {
+    if(mode==='cloze')return 3;
     if(mode!=='formula')return 1;
     const tokens=tokenize(r.formula);
     return tokens.length>35||tokens.filter(isVariable).length>8?0.2:1;
@@ -306,15 +434,15 @@
   function shuffle(a,rng=Math.random) {
     const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;
   }
-  function makeSession(records,modes,count=10,rng=Math.random) {
+  function makeSession(records,modes,count=10,rng=Math.random,choiceDifficulty=2) {
     if(!records.length)throw new Error('当前范围没有定理，请调整筛选。');
     if(!modes.length)throw new Error('至少选择一种题型。');
-    const supported=records.filter(r=>isQuestionCard(r)&&eligibleModes(r,modes).length);
+    const supported=records.filter(r=>isQuestionCard(r)&&eligibleModes(r,modes,choiceDifficulty).length);
     if(!supported.length)throw new Error('当前范围没有适合所选题型的条目。');
     const queue=[];let bag=[];
     for(let i=0;i<count;i++) {
       if(!bag.length)bag=shuffle(supported,rng);
-      const r=bag.pop(), options=eligibleModes(r,modes);
+      const r=bag.pop(), options=eligibleModes(r,modes,choiceDifficulty);
       const total=options.reduce((n,m)=>n+modeWeight(r,m),0);
       let choice=rng()*total,mode=options[options.length-1];
       for(const candidate of options){choice-=modeWeight(r,candidate);if(choice<0){mode=candidate;break;}}
@@ -325,6 +453,12 @@
     return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
   }
   function freshProgress() {return {schemaVersion:1,records:{},xp:0,days:{},history:[],stars:[]};}
+  const mergedCardIds={
+    'p-b1df9f7082d5':'t-d212aba8ab10',
+    'p-2d263565f9b0':'t-e06bc0f878a5',
+    'p-ac9634bfb530':'t-5edb0ccb8b07'
+  };
+  function canonicalId(id) {return mergedCardIds[id]||id;}
   function applyAttempt(progress,id,mode,ok,answer='',assisted=false,now=Date.now()) {
     const old=progress.records[id]||{attempts:0,correct:0,wrong:0,streak:0,wrongModes:[],modeWins:{},log:[]};
     const r={...old,wrongModes:[...(old.wrongModes||[])],modeWins:{...(old.modeWins||{})},log:[...(old.log||[])]};
@@ -345,22 +479,74 @@
   }
   function validateProgress(obj,validIds) {
     if(!obj||obj.schemaVersion!==1||!obj.records||typeof obj.records!=='object'||Array.isArray(obj.records))throw new Error('不是有效的 Theorem Quest 学习备份。');
-    const clean=freshProgress(), good=new Set(validIds), modes=new Set(['name','choice','blanks','formula','symbol']);
+    const clean=freshProgress(), good=new Set(validIds), modes=new Set(['name','choice','blanks','cloze','formula','symbol','proof']);
     const num=(v,max=1e8)=>Number.isFinite(v)?Math.max(0,Math.min(max,Math.floor(v))):0;
     clean.xp=num(obj.xp);
-    for(const [id,v] of Object.entries(obj.records)) {
+    for(const [oldId,v] of Object.entries(obj.records)) {
+      const id=canonicalId(oldId);
       if(!good.has(id)||!v||typeof v!=='object')continue;
       const r={attempts:num(v.attempts),correct:num(v.correct),wrong:num(v.wrong),streak:num(v.streak,1000),lastAt:num(v.lastAt,1e14),dueAt:num(v.dueAt,1e14),
         lastAnswer:String(v.lastAnswer||'').slice(0,2400),lastMode:modes.has(v.lastMode)?v.lastMode:'name',wrongModes:(Array.isArray(v.wrongModes)?v.wrongModes:[]).filter(m=>modes.has(m)),modeWins:{},log:[]};
       for(const m of modes)r.modeWins[m]=num(v.modeWins?.[m],1e4);
       r.active=r.wrongModes.length>0;
       if(Array.isArray(v.log))r.log=v.log.slice(0,12).filter(x=>x&&modes.has(x.mode)).map(x=>({at:num(x.at,1e14),mode:x.mode,ok:!!x.ok,assisted:!!x.assisted,answer:String(x.answer||'').slice(0,800)}));
-      clean.records[id]=r;
+      const previous=clean.records[id];
+      if(previous){
+        const latest=r.lastAt>=previous.lastAt?r:previous;
+        latest.attempts+=r===latest?previous.attempts:r.attempts;
+        latest.correct+=r===latest?previous.correct:r.correct;
+        latest.wrong+=r===latest?previous.wrong:r.wrong;
+        latest.wrongModes=[...new Set([...previous.wrongModes,...r.wrongModes])];
+        latest.active=latest.wrongModes.length>0;
+        latest.log=[...previous.log,...r.log].sort((a,b)=>b.at-a.at).slice(0,12);
+        clean.records[id]=latest;
+      }else clean.records[id]=r;
     }
     for(const [d,n] of Object.entries(obj.days||{}))if(/^\d{4}-\d{2}-\d{2}$/.test(d))clean.days[d]=num(n);
-    clean.stars=(Array.isArray(obj.stars)?obj.stars:[]).filter(id=>good.has(id));
+    clean.stars=[...new Set((Array.isArray(obj.stars)?obj.stars:[]).map(canonicalId).filter(id=>good.has(id)))];
     clean.history=(Array.isArray(obj.history)?obj.history:[]).slice(0,100).filter(x=>x&&Number.isFinite(x.at)).map(x=>({at:num(x.at,1e14),correct:num(x.correct),total:num(x.total),xp:num(x.xp)}));
     return clean;
   }
-  return {SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,fillTemplate,compareRefs,referenceInRange,normalizeName,searchRecords,label,nameGroup,gradeName,isQuestionCard,eligibleModes,shuffle,makeSession,localDay,freshProgress,applyAttempt,validateProgress};
+  function notebookMatchesScope(notebook, scope={}) {
+    if(scope.era&&scope.era!=='all'&&String(notebook.year)!==scope.era)return false;
+    if(scope.notebook&&String(notebook.port)!==scope.notebook&&notebook.sourceId!==scope.notebook)return false;
+    return !scope.week||(notebook.weeks||[]).some(w=>w===Number(scope.week)||(scope.weekMode==='through'&&w<Number(scope.week)));
+  }
+  function notebookHintRows(data, scope={}) {
+    const notebooks=(data?.notebooks||[]).filter(n=>notebookMatchesScope(n,scope));
+    return (data?.groups||[]).map(group=>{
+      const matches=notebooks.filter(n=>(n.groupCounts?.[group.id]||0)>0);
+      const uses=matches.flatMap(n=>(n.hintUses||[]).filter(u=>u.groups.some(g=>g.id===group.id)).map(u=>({...u,notebook:n})));
+      return {...group,hintCount:matches.reduce((sum,n)=>sum+(n.groupCounts[group.id]||0),0),notebookCount:matches.length,uses};
+    }).filter(g=>g.hintCount>0).sort((a,b)=>b.hintCount-a.hintCount||a.label.localeCompare(b.label));
+  }
+  function notebookHintCardCounts(data, scope={}) {
+    const counts=new Map();
+    for(const notebook of data?.notebooks||[]){
+      if(!notebookMatchesScope(notebook,scope))continue;
+      for(const [id,count] of Object.entries(notebook.theoremCounts||{}))counts.set(id,(counts.get(id)||0)+count);
+    }
+    return counts;
+  }
+  // Keep verified local evidence when an older update has the identical card.
+  function retainDocumentStudy(records, bundledRecords) {
+    const bundled=new Map(bundledRecords.map(r=>[r.id,r]));
+    return records.map(r=>{
+      const local=bundled.get(r.id);
+      return !r.documentStudy&&local?.documentStudy&&local.formula===r.formula
+        ? {...r,documentStudy:local.documentStudy} : r;
+    });
+  }
+  // Document study counts are distinct from notebook preloaded availability.
+  function documentFocusMatches(record, focus='all') {
+    const study=record.documentStudy;
+    const important=!!study?.important;
+    const repeated=!!study?.repeated;
+    if(focus==='important')return important;
+    if(focus==='repeated')return repeated;
+    if(focus==='priority')return important||repeated;
+    if(focus==='both')return important&&repeated;
+    return true;
+  }
+  return {notebookMatchesScope,notebookHintRows,notebookHintCardCounts,gradeProofName,retainDocumentStudy,documentFocusMatches,SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,clozeTemplate,fillTemplate,gradeBlanks,compareRefs,referenceInRange,normalizeName,searchRecords,hintLocations,label,choiceSimilarity,choiceOptions,isFoundationalTheorem,nameGroup,answerVariants,gradeName,isQuestionCard,eligibleModes,shuffle,makeSession,localDay,canonicalId,freshProgress,applyAttempt,validateProgress};
 });

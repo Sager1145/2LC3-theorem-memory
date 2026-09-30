@@ -1,0 +1,53 @@
+✔ uppercase theorem names preserve ordinary AND, OR and NOT words (12.547041ms)
+✔ choice similarity follows edits to formula, name and alias contents after reuse (19.785625ms)
+✔ document focus overrides repeated preloaded availability and distinguishes union from intersection (524.001334ms)
+✔ unannotated older data remains readable but does not claim document evidence (1641.087667ms)
+✔ older updates retain verified evidence only for identical stable cards (15.606375ms)
+Pure propositional cards checked: 132
+✔ hint locations pair each notebook with its own weeks and deduplicate occurrences (2.390625ms)
+✔ CalcCheck aliases, boundaries, command assignment ≠ substitution (17.482375ms)
+✔ every backslash command is convertible and can be suggested for symbol practice (6.534375ms)
+✔ consistent renaming, Greek, primes and subscripts (2.207583ms)
+✔ AC / parentheses / reversed relations accepted, wrong law rejected (1.835125ms)
+✔ valid reassociation and symmetry accept alternate brackets without reordering noncommutative operations (1.87175ms)
+✔ syntax and long-input errors are safe (0.470584ms)
+✔ numeric ranges do not lexically misorder numbers or parse regex (1.254083ms)
+✔ shared theorem names accept the group, while numbered answers identify the exact result (443.945625ms)
+✔ complex formulas are less likely to use free spelling when other modes are enabled (1.251083ms)
+✔ answer feedback includes every name, reference and formula with the current variant first (0.577791ms)
+✔ symbol cloze hides a real formula token and offers a built-in choice set (0.388125ms)
+✔ queue only draws checked modes and current scope (363.123958ms)
+✔ inference rules never become questions (957.422375ms)
+✔ wrong bank: two unaided wins in each failed mode are required (5.343792ms)
+✔ backup validation and round-trip preserve mistakes, discard unknown IDs (2.261208ms)
+✔ merged unnamed card IDs retain saved progress and stars (0.340875ms)
+✔ every published card is source-traceable and self-matchable (476.587333ms)
+✔ every generated blank exercise accepts identity and fresh bijective renaming (3045.584625ms)
+✔ pure propositional entries are true on every Boolean valuation (846.375916ms)
+✔ choice difficulty increases distractor similarity and keeps answer positions shuffled (17.8175ms)
+✔ choice distractors exclude equivalent formulas, variants, duplicate labels and inference rules (5.898292ms)
+✔ hard choice excludes foundational questions and distractors without affecting other modes (6.40725ms)
+✔ letter blanks preserve each occurrence even when a swapped formula is equivalent (0.193333ms)
+✔ notebook scope uses actual hints and recomputes repetition locally (1.623125ms)
+✔ real hint inventory preserves source coverage and excludes ambiguous card guesses (162.502167ms)
+✔ popup provenance remains complete alongside proved notebook declarations (852.59ms)
+✔ unnamed declarations only borrow a name from an identical named source (354.946833ms)
+✔ weekly inventory follows Exercise titles and reviewed Homework evidence (277.259ms)
+✔ year-specific module labels and repeat counts follow source occurrences (1017.042958ms)
+✔ every openable popup has a zero-collapsed live expansion record (17.684791ms)
+✔ proof steps accept only theorem names, never a reference or formula (2.516958ms)
+✔ proof steps and declaration questions keep their own eligible modes (3.870541ms)
+✔ proof mistakes survive backup export and restore, and resolve through proof practice (3.445209ms)
+✔ bank fetch bypasses stale cache: https://example.test/app/data/version.json / default (269.663042ms)
+✔ bank fetch bypasses stale cache: https://example.test/app/data/theorems.json / default (2.737917ms)
+✔ bank fetch bypasses stale cache: https://example.test/app/data/sources.json / default (5.304ms)
+✔ bank fetch bypasses stale cache: https://example.test/app/file.json?tq-bank-update=123 / default (2.891ms)
+✔ bank fetch bypasses stale cache: https://example.test/app/file.json / no-store (2.91525ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11526.98725

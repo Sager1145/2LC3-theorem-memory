@@ -1,0 +1,496 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "doc-82de153287d6",
+      "name": "2019-12-20_CalcCheck-Syntax-Hints.pdf",
+      "family": "2019-12-20_CalcCheck-Syntax-Hints",
+      "unitsRead": 2,
+      "charactersRead": 6620,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-250f7070d54d",
+      "name": "2LC3.docx",
+      "family": "2LC3.docx",
+      "unitsRead": 111,
+      "charactersRead": 2426,
+      "matchedCards": 9
+    },
+    {
+      "id": "doc-b42ead30e79e",
+      "name": "2lc sets common theorems.docx",
+      "family": "2lc sets common theorems.docx",
+      "unitsRead": 26,
+      "charactersRead": 1331,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-67422e01cb8c",
+      "name": "2lc-sets.docx",
+      "family": "2lc-sets.docx",
+      "unitsRead": 15,
+      "charactersRead": 28813,
+      "matchedCards": 317
+    },
+    {
+      "id": "doc-b27833206509",
+      "name": "2lcslides.pdf",
+      "family": "2025 lecture slides",
+      "unitsRead": 79,
+      "charactersRead": 462669,
+      "matchedCards": 255
+    },
+    {
+      "id": "doc-8234692e97fe",
+      "name": "A1/A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+      "family": "A1.1 — Assignment 1 Notebook 1_ Propositional Calculus — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 30790,
+      "matchedCards": 54
+    },
+    {
+      "id": "doc-7a033683ff2d",
+      "name": "A1/A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "family": "A1.2 — Assignment 1 Notebook 2_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 6879,
+      "matchedCards": 6
+    },
+    {
+      "id": "doc-c9bea2e1d395",
+      "name": "COMPSCI_2LC3_CalcCheck_Proof_Format_Guide.docx",
+      "family": "COMPSCI_2LC3_CalcCheck_Proof_Format_Guide.docx",
+      "unitsRead": 169,
+      "charactersRead": 8129,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-0a4f4b5fd147",
+      "name": "CalcCheck-Manual-DRAFT_2025-01-12.pdf",
+      "family": "CalcCheck-Manual-DRAFT_2025-01-12",
+      "unitsRead": 15,
+      "charactersRead": 35925,
+      "matchedCards": 8
+    },
+    {
+      "id": "doc-1ff50260820c",
+      "name": "Getting Started with CalcCheckWeb.html",
+      "family": "Getting Started with CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 9081,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-90398a679c36",
+      "name": "Getting Started with the CalcCheck Language.html",
+      "family": "Getting Started with the CalcCheck Language.html",
+      "unitsRead": 1,
+      "charactersRead": 3434,
+      "matchedCards": 3
+    },
+    {
+      "id": "doc-1843ea29ceec",
+      "name": "Indicating Substitutions for Theorem References in CalcCheck Hints.html",
+      "family": "Indicating Substitutions for Theorem References in CalcCheck Hints.html",
+      "unitsRead": 1,
+      "charactersRead": 1873,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-c31e36497f98",
+      "name": "LADM.pdf",
+      "family": "LADM",
+      "unitsRead": 517,
+      "charactersRead": 977188,
+      "matchedCards": 235
+    },
+    {
+      "id": "doc-72d8e3bad6a2",
+      "name": "claccheck4.1.docx",
+      "family": "claccheck4.1.docx",
+      "unitsRead": 94,
+      "charactersRead": 11608,
+      "matchedCards": 23
+    },
+    {
+      "id": "doc-afd767971ec8",
+      "name": "organizednotes/COMPSCI_2LC3_A1_Full_Notebook.pdf",
+      "family": "COMPSCI_2LC3_A1_Full_Notebook",
+      "unitsRead": 29,
+      "charactersRead": 43887,
+      "matchedCards": 100
+    },
+    {
+      "id": "doc-1464ea666e2b",
+      "name": "organizednotes/COMPSCI_2LC3_Week1_Lectures_Reconstructed.pdf",
+      "family": "Week 1 study notes",
+      "unitsRead": 28,
+      "charactersRead": 43224,
+      "matchedCards": 13
+    },
+    {
+      "id": "doc-dfe3d46ba394",
+      "name": "organizednotes/COMPSCI_2LC3_Week1_Proof_Theorem_Notebook.pdf",
+      "family": "Week 1 study notes",
+      "unitsRead": 37,
+      "charactersRead": 43398,
+      "matchedCards": 181
+    },
+    {
+      "id": "doc-9d670ebff381",
+      "name": "organizednotes/COMPSCI_2LC3_Week2_Full_Notebook.pdf",
+      "family": "Week 2 study notes",
+      "unitsRead": 33,
+      "charactersRead": 33286,
+      "matchedCards": 156
+    },
+    {
+      "id": "doc-5dfef44493c4",
+      "name": "organizednotes/COMPSCI_2LC3_Week2_Lecture_Notes.pdf",
+      "family": "Week 2 study notes",
+      "unitsRead": 18,
+      "charactersRead": 24529,
+      "matchedCards": 18
+    },
+    {
+      "id": "doc-a2ac3dffd1bc",
+      "name": "organizednotes/COMPSCI_2LC3_Week3_Full_Notebook.pdf",
+      "family": "Week 3 study notes",
+      "unitsRead": 55,
+      "charactersRead": 75424,
+      "matchedCards": 199
+    },
+    {
+      "id": "doc-a35a9cf70fba",
+      "name": "organizednotes/COMPSCI_2LC3_Week3_Lecture_Companion.pdf",
+      "family": "Week 3 study notes",
+      "unitsRead": 20,
+      "charactersRead": 28046,
+      "matchedCards": 23
+    },
+    {
+      "id": "doc-1b8f55eb3b20",
+      "name": "week1/COMPSCI_2LC3_Week1_Companion_Appendix.pdf",
+      "family": "Week 1 study notes",
+      "unitsRead": 21,
+      "charactersRead": 29688,
+      "matchedCards": 9
+    },
+    {
+      "id": "doc-267d9a56602a",
+      "name": "week1/COMPSCI_2LC3_Week1_Main_Notes.pdf",
+      "family": "Week 1 study notes",
+      "unitsRead": 71,
+      "charactersRead": 124070,
+      "matchedCards": 29
+    },
+    {
+      "id": "doc-96b3a86ed8a7",
+      "name": "week1/CompSci2LC3_2026-09-09_Introduction__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-09_Introduction",
+      "unitsRead": 13,
+      "charactersRead": 25047,
+      "matchedCards": 13
+    },
+    {
+      "id": "doc-0f641f3e916d",
+      "name": "week1/CompSci2LC3_2026-09-11_Expressions_Substitution__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-11_Expressions_Substitution",
+      "unitsRead": 13,
+      "charactersRead": 17370,
+      "matchedCards": 11
+    },
+    {
+      "id": "doc-d9e6139c53ba",
+      "name": "week1/Ex1.1 — Exercise 1.1_ Simple Calculations in CalcCheck — CalcCheckWeb.html",
+      "family": "Ex1.1 — Exercise 1.1_ Simple Calculations in CalcCheck — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 3521,
+      "matchedCards": 4
+    },
+    {
+      "id": "doc-07f5e21ea98a",
+      "name": "week1/Ex1.2 — Exercise 1.2_ An Equational Theory of Integers — CalcCheckWeb.html",
+      "family": "Ex1.2 — Exercise 1.2_ An Equational Theory of Integers — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 2764,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-a964a5979e1f",
+      "name": "week1/Ex1.3 — Exercise 1.3_ Substitution — CalcCheckWeb.html",
+      "family": "Ex1.3 — Exercise 1.3_ Substitution — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 2334,
+      "matchedCards": 1
+    },
+    {
+      "id": "doc-a0e310024016",
+      "name": "week1/Ex1.7 — Exercise 1.7_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "family": "Ex1.7 — Exercise 1.7_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 5540,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-de77d58f1016",
+      "name": "week1/H1 — Homework 1_ Getting Started with CalcCheck — CalcCheckWeb.html",
+      "family": "H1 — Homework 1_ Getting Started with CalcCheck — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 7686,
+      "matchedCards": 9
+    },
+    {
+      "id": "doc-023cc7c49d11",
+      "name": "week1/H2 — Homework 2_ Expressions and Calculations — CalcCheckWeb.html",
+      "family": "H2 — Homework 2_ Expressions and Calculations — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 11497,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-a8aca9c4a82e",
+      "name": "week2/CompSci2LC3_2026-09-14_AssignmentCommands_Leibniz__PRELIMINARY-slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-14_AssignmentCommands_Leibniz",
+      "unitsRead": 9,
+      "charactersRead": 10954,
+      "matchedCards": 11
+    },
+    {
+      "id": "doc-8099c5ddd28e",
+      "name": "week2/CompSci2LC3_2026-09-14_AssignmentCommands_Leibniz__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-14_AssignmentCommands_Leibniz",
+      "unitsRead": 13,
+      "charactersRead": 16649,
+      "matchedCards": 12
+    },
+    {
+      "id": "doc-277613835cb4",
+      "name": "week2/CompSci2LC3_2026-09-16_BoolExpr_PropCalc1__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-16_BoolExpr_PropCalc1",
+      "unitsRead": 10,
+      "charactersRead": 12558,
+      "matchedCards": 9
+    },
+    {
+      "id": "doc-4292bb9d5a65",
+      "name": "week2/Ex2.1 — Exercise 2.1_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "family": "Ex2.1 — Exercise 2.1_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 5424,
+      "matchedCards": 10
+    },
+    {
+      "id": "doc-f7be8852fa8e",
+      "name": "week2/Ex2.2 — Exercise 2.2_ Propositional Calculus_ Disjunction — CalcCheckWeb.html",
+      "family": "Ex2.2 — Exercise 2.2_ Propositional Calculus_ Disjunction — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 1812,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-db06ef82ad75",
+      "name": "week2/Ex2.3 — Exercise 2.3_ Propositional Calculus_ Conjunction — CalcCheckWeb.html",
+      "family": "Ex2.3 — Exercise 2.3_ Propositional Calculus_ Conjunction — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 3221,
+      "matchedCards": 3
+    },
+    {
+      "id": "doc-ea6704481fe9",
+      "name": "week2/Ex2.4 — Exercise 2.4_ Propositional Calculus_ Implication — CalcCheckWeb.html",
+      "family": "Ex2.4 — Exercise 2.4_ Propositional Calculus_ Implication — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 2353,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-883049b8da66",
+      "name": "week2/Ex2.5 — Extra Exercise 2.5_ Knights and Knaves — CalcCheckWeb.html",
+      "family": "Ex2.5 — Extra Exercise 2.5_ Knights and Knaves — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 6556,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-b1989722b55c",
+      "name": "week2/Ex2.6 — Exercise 2.6_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "family": "Ex2.6 — Exercise 2.6_ Assignment Commands with Boolean Variables — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 2441,
+      "matchedCards": 0
+    },
+    {
+      "id": "doc-d11885610f3a",
+      "name": "week2/H3 — Homework 3_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "family": "H3 — Homework 3_ Correctness of Assignment Commands — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 2368,
+      "matchedCards": 1
+    },
+    {
+      "id": "doc-ceab36b71c80",
+      "name": "week2/H4 — Homework 4_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "family": "H4 — Homework 4_ First Steps in Propositional Calculus following LADM Chapter 3 — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 4213,
+      "matchedCards": 9
+    },
+    {
+      "id": "doc-0686527b39ed",
+      "name": "week2/H5 — Homework 5_ Propositional Calculus — CalcCheckWeb.html",
+      "family": "H5 — Homework 5_ Propositional Calculus — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 3221,
+      "matchedCards": 2
+    },
+    {
+      "id": "doc-f9cd35a0e6f4",
+      "name": "week3/CompSci2LC3_2026-09-21_Consequence_with2__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-21_Consequence_with2",
+      "unitsRead": 10,
+      "charactersRead": 13396,
+      "matchedCards": 30
+    },
+    {
+      "id": "doc-12e56641c10c",
+      "name": "week3/CompSci2LC3_2026-09-23_NatInd_Assuming__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-23_NatInd_Assuming",
+      "unitsRead": 8,
+      "charactersRead": 10476,
+      "matchedCards": 14
+    },
+    {
+      "id": "doc-3cad71162000",
+      "name": "week3/CompSci2LC3_2026-09-25_Monotonicity_ProofStructures__slides-3up-letter.pdf",
+      "family": "CompSci2LC3_2026-09-25_Monotonicity_ProofStructures",
+      "unitsRead": 10,
+      "charactersRead": 18972,
+      "matchedCards": 47
+    },
+    {
+      "id": "doc-de285e82760b",
+      "name": "week3/Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+      "family": "Ex3.1 — Exercise 3.1_ Natural Numbers and Induction_ Addition and Multiplication — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 16375,
+      "matchedCards": 5
+    },
+    {
+      "id": "doc-f7137b9ceaec",
+      "name": "week3/Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+      "family": "Ex3.2 — Exercise 3.2_ Monus Subtraction of the Natural Numbers — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 23473,
+      "matchedCards": 13
+    },
+    {
+      "id": "doc-3aee97e06c7c",
+      "name": "week3/Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+      "family": "Ex3.3 — Exercise 3.3_ Equality and Predecessors in ℕ — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 17680,
+      "matchedCards": 26
+    },
+    {
+      "id": "doc-133c88b45d60",
+      "name": "week3/Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+      "family": "Ex3.4 — Exercise 3.4_ Simple Proofs `By cases` on ℕ — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 19456,
+      "matchedCards": 22
+    },
+    {
+      "id": "doc-a51d5ce750ea",
+      "name": "week3/H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+      "family": "H6 — Homework 6_ Natural Numbers and Induction — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 15284,
+      "matchedCards": 4
+    },
+    {
+      "id": "doc-f67a71abb928",
+      "name": "week3/H7.1 — Homework 7 Notebook 1_ Calculations with Monotonicity and Antitonicity — CalcCheckWeb.html",
+      "family": "H7.1 — Homework 7 Notebook 1_ Calculations with Monotonicity and Antitonicity — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 5250,
+      "matchedCards": 5
+    },
+    {
+      "id": "doc-fbb81f705993",
+      "name": "week3/H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+      "family": "H7.2 — Homework 7 Notebook 2_ Order on ℕ — CalcCheckWeb.html",
+      "unitsRead": 1,
+      "charactersRead": 23474,
+      "matchedCards": 16
+    }
+  ],
+  "ambiguousReferencesExcluded": [
+    "11.13",
+    "11.4",
+    "11.42",
+    "11.43",
+    "11.44",
+    "11.59",
+    "11.7",
+    "11.70",
+    "11.79",
+    "11.80",
+    "11.81",
+    "13.7",
+    "14.8",
+    "14.9",
+    "15.1",
+    "15.2",
+    "15.29",
+    "15.3",
+    "15.4",
+    "15.41",
+    "15.42",
+    "15.5",
+    "3.43",
+    "3.44",
+    "3.47",
+    "3.76",
+    "3.82",
+    "3.84",
+    "3.84c",
+    "3.85",
+    "3.86",
+    "3.87.1",
+    "8.11",
+    "8.12.1",
+    "8.12.1₂",
+    "8.12.1₃",
+    "8.12.2",
+    "8.12.2₂",
+    "8.12.2₃",
+    "8.13",
+    "8.14",
+    "8.15",
+    "8.16",
+    "8.16.1",
+    "8.17",
+    "8.18",
+    "8.19",
+    "8.19.1",
+    "8.20",
+    "8.20.1",
+    "8.20.2",
+    "8.20.3",
+    "8.21",
+    "8.22",
+    "8.22.1",
+    "8.22.2",
+    "8.22.3",
+    "9.12a",
+    "9.18",
+    "9.3",
+    "9.4"
+  ],
+  "matchedCount": 485,
+  "importantCount": 11,
+  "repeatedCount": 367,
+  "countMethod": "Unambiguous numbered references or quoted theorem names in local document text; number/name declaration pairs counted once. Per document family maximum across exports. ZIP copies and preloaded popup availability excluded. Counts are text extraction lower bounds; ambiguous base references and unnumbered names omitted. Proof counts match explicit angle-bracket hints."
+}

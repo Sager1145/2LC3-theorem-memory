@@ -13,6 +13,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+from week_classification import MODULE_LABELS, homework_evidence, source_weeks
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'research/preloaded/raw'
@@ -20,8 +21,37 @@ DATA = ROOT / 'data'
 KINDS = ('Derived inference rule', 'Primitive inference rule', 'Axiom', 'Theorem', 'Lemma', 'Corollary', 'Fact')
 START = re.compile(r'^(' + '|'.join(map(re.escape, KINDS)) + r')\b')
 SECTION = re.compile(r'^[A-Za-z][A-Za-z0-9._/-]*$')
-NUMBER = re.compile(r'\((\d+(?:\.\d+)*(?:[a-z])?)\)')
+NUMBER = re.compile(r'\(([^()\s]+)\)')
 NAME = re.compile(r'“([^”]+)”')
+# These declarations have identical references, kinds, formulas and conditions to
+# named declarations elsewhere in the captured popups. Keep the established ID.
+NAMED_DUPLICATES = {
+    'p-b1df9f7082d5': 't-d212aba8ab10',
+    'p-2d263565f9b0': 't-e06bc0f878a5',
+    'p-ac9634bfb530': 't-5edb0ccb8b07',
+}
+
+
+def resolve_unnamed(bank):
+    by_id = {card['id']: card for card in bank}
+    for removed_id, kept_id in NAMED_DUPLICATES.items():
+        removed, kept = by_id[removed_id], by_id[kept_id]
+        assert removed['name'] == '原文未命名' and kept['name'] != '原文未命名'
+        assert removed['kind'] == kept['kind'] and removed['numbers'] == kept['numbers']
+        assert normalized(removed['formula']) == normalized(kept['formula'])
+        assert removed['sideCondition'] == kept['sideCondition']
+        kept['sources'].extend(removed['sources'])
+        for field in ('preloadedSections', 'preloadedHomework', 'preloaded2025'):
+            kept[field] = sorted(set(kept[field] + removed[field]))
+        kept['occurrences'] = len(kept['preloaded2025'])
+        kept['documentCount'] = kept['occurrences']
+        kept['repeated'] = kept['occurrences'] > 1
+    bank[:] = [card for card in bank if card['id'] not in NAMED_DUPLICATES]
+
+
+def header_numbers(header: str):
+    # Parentheses inside a quoted theorem name are part of the name, not refs.
+    return NUMBER.findall(NAME.sub('', header))
 PORTS = {
     'hw01': 15001, 'hw02': 15004, 'hw03': 15011, 'hw04': 15012,
     'hw05': 15019, 'hw06': 15020, 'hw07': 15023, 'hw08': 15027,
@@ -38,10 +68,10 @@ def normalized(formula: str) -> str:
     return re.sub(r'\s+', '', formula.replace('`', ''))
 
 
-def parse_file(name: str):
-    lines = (RAW / f'{name}.txt').read_text(encoding='utf-8').splitlines()
-    assert lines[0].endswith(' Theorem List'), (name, lines[0])
-    assert lines[-1].endswith('OK'), (name, lines[-1])
+def parse_path(path: Path):
+    lines = path.read_text(encoding='utf-8').splitlines()
+    assert lines[0].endswith(' Theorem List'), (path, lines[0])
+    assert lines[-1].endswith('OK'), (path, lines[-1])
     # The popup's OK button follows its final statement without a line break.
     lines[-1] = lines[-1][:-2]
     section = None
@@ -49,15 +79,40 @@ def parse_file(name: str):
     for line_number, line in enumerate(lines, 1):
         line = line.rstrip()
         if START.match(line):
-            entries.append({'line': line_number, 'section': section, 'raw': line,
+            entries.append({'line': line_number, 'endLine': line_number, 'section': section, 'raw': line,
                             'continuation': []})
         elif SECTION.fullmatch(line) and line not in {'OK', 'Symbol', 'Operator'}:
             if line not in {'Symbol Entry Codes', 'Operator Precedences'}:
                 section = line
         elif entries and line[:1].isspace() and line.strip():
             entries[-1]['continuation'].append(line.strip())
-    assert entries, name
+            entries[-1]['endLine'] = line_number
+    assert entries, path
+    for entry in entries:
+        entry['rawBlock'] = '\n'.join(lines[entry['line']-1:entry['endLine']])
     return entries
+
+
+def parse_file(name: str):
+    return parse_path(RAW / f'{name}.txt')
+
+
+def capture_specs():
+    specs=[{'id':f'calc-preloaded-{name}', 'port':port, 'name':f'{name.upper()} · CalcCheck preloaded theorem list',
+            'path':RAW/f'{name}.txt', 'homework':name} for name,port in PORTS.items()]
+    audit_path=ROOT/'research/preloaded/audit-2025i.json'
+    if audit_path.exists():
+        audit=json.loads(audit_path.read_text(encoding='utf-8'))
+        known=set(PORTS.values())
+        for record in audit['records']:
+            if record['status']!='popup' or record['port'] in known:continue
+            path=ROOT/record['localCapture']
+            assert path.is_file(),path
+            specs.append({'id':f'calc-preloaded-2025i-{record["port"]}','port':record['port'],
+                          'name':f'2025i {record["name"]} · 预载列表','path':path,'homework':None})
+        expected={ROOT/r['localCapture'] for r in audit['records'] if r['status']=='popup'}
+        assert expected=={s['path'] for s in specs},'2025i 弹窗清单与原文捕获不一致'
+    return specs
 
 
 def main():
@@ -69,37 +124,43 @@ def main():
         by_formula[normalized(record['formula'])].append(record)
 
     source_defs = []
+    specs=capture_specs()
+    audit_path=ROOT/'research/preloaded/audit-2025i.json'
+    unavailable=[{'name':f'2025i {r["name"]} ({r["port"]})','reason':r['reason']}
+                 for r in json.loads(audit_path.read_text(encoding='utf-8'))['records'] if r['status']!='popup'] if audit_path.exists() else []
     unique = {}
-    for name, port in PORTS.items():
-        entries = parse_file(name)
-        source_id = f'calc-preloaded-{name}'
+    for spec in specs:
+        entries = parse_path(spec['path'])
+        source_id = spec['id']
         source_defs.append({
-            'id': source_id, 'name': f'{name.upper()} · CalcCheck preloaded theorem list',
+            'id': source_id, 'name': spec['name'],
             'format': 'CalcCheck theorem-list popup', 'status': 'complete-popup-copy',
-            'lineage': '2025 course-provided preloaded theorem lists',
-            'url': f'http://130.113.68.214:{port}/',
-            'localCapture': f'research/preloaded/raw/{name}.txt',
+            'lineage': '2025 course-provided preloaded theorem lists', 'year':2025,
+            'url': f'http://130.113.68.214:{spec["port"]}/',
+            'localCapture': str(spec['path'].relative_to(ROOT)),
             'declarations': len(entries), 'candidates': 0, 'pages': 0,
-            'charactersRead': (RAW / f'{name}.txt').stat().st_size,
+            'charactersRead': spec['path'].stat().st_size,
             'rawBytesAvailable': True,
         })
         for entry in entries:
             # Repeated identical declarations in one popup are one card.
-            key = entry['raw'] + '\n' + '\n'.join(entry['continuation'])
+            key = re.sub(r'\s+', ' ', entry['raw'] + '\n' + '\n'.join(entry['continuation'])).strip()
             item = unique.setdefault(key, {**entry, 'occurrences': []})
             item['occurrences'].append({
                 'sourceId': source_id,
-                'locator': {'line': entry['line'], 'section': entry['section']},
+                'locator': {'line': entry['line'], 'endLine': entry['endLine'], 'section': entry['section']},
                 'excerpt': entry['raw'],
+                'rawBlock': entry['rawBlock'],
             })
 
     bank = []
     reused_ids = set()
+    assigned_ids = set()
     for item in unique.values():
         raw = item['raw']
         kind = START.match(raw).group(1)
         header, _, tail = raw.partition(':')
-        numbers = NUMBER.findall(header)
+        numbers = header_numbers(header)
         names = NAME.findall(header)
         formula = tail.replace('\u00a0', ' ').strip().replace('`', '')
         conditions = [x for x in item['continuation'] if x.startswith('— CalcCheck:')]
@@ -118,6 +179,8 @@ def main():
             record = {**previous}
         else:
             digest = sha256(raw.encode()).hexdigest()[:12]
+            if 'p-'+digest in assigned_ids:
+                digest = sha256((raw+'\n'+'\n'.join(item['continuation'])).encode()).hexdigest()[:12]
             record = {
                 'id': 'p-' + digest, 'topic': item['section'] or '其他',
                 'importantEvidence': [], 'emphasisEvidence': [],
@@ -132,18 +195,23 @@ def main():
             'preloadedSections': sorted({x['locator']['section'] for x in item['occurrences']
                                          if x['locator']['section']}),
             'preloadedHomework': sorted({x['sourceId'].removeprefix('calc-preloaded-')
-                                         for x in item['occurrences']}),
-            'sideCondition': '；'.join(conditions) if conditions else record.get('sideCondition'),
+                                         for x in item['occurrences'] if x['sourceId'].startswith('calc-preloaded-hw')}),
+            'preloaded2025': sorted({int(x['sourceId'].rsplit('-',1)[-1]) if x['sourceId'].startswith('calc-preloaded-2025i-')
+                                     else PORTS[x['sourceId'].removeprefix('calc-preloaded-')]
+                                     for x in item['occurrences']}),
+            'sideCondition': '；'.join(conditions) if conditions else None,
         })
         if not previous:
             record['topic'] = item['section'] or '其他'
-        record['occurrences'] = len(record['preloadedHomework'])
+        record['occurrences'] = len(record['preloaded2025'])
         record['documentCount'] = record['occurrences']
         record['repeated'] = record['occurrences'] > 1
         record['important'] = bool(record.get('importantEvidence'))
         record['priority'] = bool(record.get('emphasisEvidence'))
         record['displayRef'] = (f'({numbers[-1]})' if numbers else
                                 '未编号 · ' + record['id'].split('-')[-1][:6])
+        assert record['id'] not in assigned_ids,record['id']
+        assigned_ids.add(record['id'])
         bank.append(record)
 
     # The old bank contained material from lecture notes and proof tasks; keep
@@ -154,22 +222,26 @@ def main():
     (ROOT / 'research/preloaded').mkdir(parents=True, exist_ok=True)
     (ROOT / 'research/preloaded/excluded-existing.json').write_text(
         json.dumps(excluded, ensure_ascii=False, indent=2) + '\n')
+    resolve_unnamed(bank)
     bank.sort(key=lambda r: (r['topic'], r['displayRef'], r['name'], r['formula']))
     sources = source_defs
+    week_evidence=homework_evidence()
+    for source in sources:
+        source['weeks']=source_weeks(source,week_evidence)
     coverage.update({
         'builtAt': str(date.today()), 'theoremCount': len(bank),
         'currentCount': len(bank), 'historicalCount': 0,
-        'preloadedNotebookCount': len(PORTS),
+        'preloadedNotebookCount': len(specs),
         'preloadedDeclarationCount': sum(s['declarations'] for s in source_defs),
         'preloadedUniqueCount': len(unique),
         'excludedPriorCards': len(excluded), 'sourceFiles': len(sources),
         'readFiles': len(sources), 'pdfPagesRead': 0, 'reviewCount': 0,
-        'completePreloadedAccess': True, 'unavailable': [],
+        'completePreloadedAccess': not unavailable, 'unavailable': unavailable,
         'importantCount': sum(r['important'] for r in bank),
         'repeatedCount': sum(r['repeated'] for r in bank),
-        'notice': '答题库逐条来自 2025 课程提供的 26 份 Homework CalcCheck「preloaded theorems」弹窗。Notebook 正文中的待证明题不作为入库依据。',
-        'countMethod': '重复次数表示同一声明出现在几份 Homework 的预载弹窗中；H19 与 H19v 分别计数。不是课件引用次数或重要程度。',
-        'curationNote': '所有原始弹窗文本和逐行位置保存在 research/preloaded/raw；题卡只从弹窗声明生成。旧题库中无法逐字对应弹窗声明的条目已从答题库移出。',
+        'notice': f'答题库逐条来自 2025 课程提供的 {len(specs)} 份 CalcCheck「preloaded theorems」弹窗。Notebook 正文中的待证明题不作为入库依据。',
+        'countMethod': '重复次数表示同一声明出现在几份 notebook 的预载弹窗中；同一弹窗内重复出现另保留各自行号。不是课件引用次数或重要程度。',
+        'curationNote': '原始弹窗文本和逐行位置保存在 research/preloaded/raw 与 raw2025i-extra；题卡只从弹窗声明生成。旧题库中无法对应弹窗声明的条目已移出。',
     })
     (DATA / 'theorems.json').write_text(json.dumps(bank, ensure_ascii=False, indent=2) + '\n')
     (DATA / 'sources.json').write_text(json.dumps(sources, ensure_ascii=False, indent=2) + '\n')
@@ -178,16 +250,18 @@ def main():
     (DATA / 'review-candidates.json').write_text('[]\n')
     (DATA / 'extraction-audit.json').write_text(json.dumps({
         'method': 'Only the copied preloaded theorem popups form the quiz bank.',
-        'homework': len(PORTS), 'declarations': coverage['preloadedDeclarationCount'],
-        'uniqueDeclarations': len(bank), 'excludedPriorCards': len(excluded),
+        'homework': len(PORTS), 'notebooks':len(specs),'declarations': coverage['preloadedDeclarationCount'],
+        'uniqueDeclarations': len(unique), 'excludedPriorCards': len(excluded),
         'excludedArchive': 'research/preloaded/excluded-existing.json',
     }, ensure_ascii=False, indent=2) + '\n')
-    payload = {'theorems': bank, 'sources': sources, 'coverage': coverage, 'review': review}
+    payload = {'theorems': bank, 'sources': sources, 'coverage': coverage, 'review': review,
+               'weekBySource': {source['id']:source['weeks'] for source in sources},
+               'weekModuleLabels': MODULE_LABELS}
     (ROOT / 'assets/data.js').write_text(
         '/* Generated from the course-provided CalcCheck preloaded theorem lists. */\n'
         'window.THEOREM_DATA = ' + json.dumps(payload, ensure_ascii=False,
                                                separators=(',', ':')).replace('<', '\\u003c') + ';\n')
-    print(json.dumps({'homework': len(PORTS), 'declarations': coverage['preloadedDeclarationCount'],
+    print(json.dumps({'homework': len(PORTS), 'notebooks':len(specs), 'declarations': coverage['preloadedDeclarationCount'],
                       'unique': len(bank), 'reused': len(reused_ids), 'excluded': len(excluded)},
                      ensure_ascii=False))
 
