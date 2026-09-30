@@ -89,11 +89,19 @@ test('complex formulas are less likely to use free spelling when other modes are
  assert.equal(E.makeSession([long],['formula'],1,()=>0.3)[0].mode,'formula');
 });
 test('queue only draws checked modes and current scope',()=>{
- const small=bank.slice(0,12),q=E.makeSession(small,['choice','formula'],12,()=>0.4);
+ const small=bank.filter(E.isQuestionCard).slice(0,12),q=E.makeSession(small,['choice','formula'],12,()=>0.4);
  assert.equal(q.length,12);assert.equal(new Set(q.map(t=>t.id)).size,12);
  assert(q.every(t=>['choice','formula'].includes(t.mode)&&small.some(r=>r.id===t.id)));
  const t={id:'true',formula:'true'};
  assert.throws(()=>E.makeSession([t],['blanks'],1));assert.throws(()=>E.makeSession(small,[],1));
+});
+test('inference rules never become questions',()=>{
+ const rules=bank.filter(r=>/inference rule/i.test(r.kind));
+ assert.equal(rules.length,9);
+ assert(rules.every(r=>!E.isQuestionCard(r)));
+ assert.equal(bank.filter(E.isQuestionCard).length,bank.length-rules.length);
+ assert(E.makeSession(bank,['name','choice','blanks','formula','symbol'],100,()=>0.4).every(q=>E.isQuestionCard(bank.find(r=>r.id===q.id))));
+ assert.throws(()=>E.makeSession(rules,['choice'],1));
 });
 test('wrong bank: two unaided wins in each failed mode are required',()=>{
  const p=E.freshProgress(),id=bank[0].id;

@@ -297,6 +297,7 @@
     const symbols=symbolsInFormula(r.formula).length;
     return modes.filter(m=>(m!=='blanks'||blanks>0)&&(m!=='symbol'||symbols>0));
   }
+  function isQuestionCard(r) { return !!r && !/inference rule/i.test(r.kind || ''); }
   function modeWeight(r,mode) {
     if(mode!=='formula')return 1;
     const tokens=tokenize(r.formula);
@@ -308,7 +309,7 @@
   function makeSession(records,modes,count=10,rng=Math.random) {
     if(!records.length)throw new Error('当前范围没有定理，请调整筛选。');
     if(!modes.length)throw new Error('至少选择一种题型。');
-    const supported=records.filter(r=>eligibleModes(r,modes).length);
+    const supported=records.filter(r=>isQuestionCard(r)&&eligibleModes(r,modes).length);
     if(!supported.length)throw new Error('当前范围没有适合所选题型的条目。');
     const queue=[];let bag=[];
     for(let i=0;i<count;i++) {
@@ -361,5 +362,5 @@
     clean.history=(Array.isArray(obj.history)?obj.history:[]).slice(0,100).filter(x=>x&&Number.isFinite(x.at)).map(x=>({at:num(x.at,1e14),correct:num(x.correct),total:num(x.total),xp:num(x.xp)}));
     return clean;
   }
-  return {SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,fillTemplate,compareRefs,referenceInRange,normalizeName,searchRecords,label,nameGroup,gradeName,eligibleModes,shuffle,makeSession,localDay,freshProgress,applyAttempt,validateProgress};
+  return {SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,fillTemplate,compareRefs,referenceInRange,normalizeName,searchRecords,label,nameGroup,gradeName,isQuestionCard,eligibleModes,shuffle,makeSession,localDay,freshProgress,applyAttempt,validateProgress};
 });

@@ -15,6 +15,8 @@ test('all published cards come from copied 2025 or 2026 preloaded popups',()=>{
   assert.equal(coverage.preloadedNotebookCount,26);
   assert.equal(coverage.preloadedUniqueCount,1052);
   assert.equal(coverage.current2026Count,bank.filter(card=>card.preloaded2026.length).length);
+  assert.equal(coverage.practiceCount,bank.filter(card=>!/inference rule/i.test(card.kind)).length);
+  assert.equal(coverage.current2026PracticeCount,bank.filter(card=>card.preloaded2026.length&&!/inference rule/i.test(card.kind)).length);
   assert.equal(coverage.preloadedDeclarationCount,sources.filter(s=>s.id.startsWith('calc-preloaded-')).reduce((n,s)=>n+s.declarations,0));
   const lines=new Map(sources.map(s=>[
     s.id,fs.readFileSync(path.join(root,s.localCapture),'utf8').split(/\r?\n/)

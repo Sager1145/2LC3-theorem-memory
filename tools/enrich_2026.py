@@ -127,6 +127,9 @@ def main():
         card['preloaded2026Weeks']=sorted({int(m.group(1)) for section in card['preloaded2026Sections'] if (m:=re.match(r'Week(\d+)\.',section))})
     bank.sort(key=lambda r:(r['topic'],r['displayRef'],r['name'],r['formula']))
     coverage.update({'builtAt':str(date.today()),'theoremCount':len(bank),'current2026Count':sum(bool(r['preloaded2026']) for r in bank),
+                     'practiceCount':sum('inference rule' not in r['kind'].lower() for r in bank),
+                     'current2026PracticeCount':sum(bool(r['preloaded2026']) and 'inference rule' not in r['kind'].lower() for r in bank),
+                     'inferenceRuleCount':sum('inference rule' in r['kind'].lower() for r in bank),
                      'current2026NotebookCount':len(HOMEWORK),'sourceFiles':len(sources),'readFiles':len(sources),
                      'notice':f'2026 当前范围只使用 {len(HOMEWORK)} 份已复制 notebook 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。',
                      'unavailable':[{'name':'2026 A1.1 预载弹窗','reason':'课程页面明确禁用预载列表；未把正文证明题加入题库。'},

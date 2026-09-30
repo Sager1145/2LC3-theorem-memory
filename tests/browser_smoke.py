@@ -90,20 +90,20 @@ with sync_playwright() as pw:
  assert 'De Morgan six' in p.locator('[data-preset]').inner_text()
  p.locator('[data-action="reset-filters"]').click();p.locator('[data-filter="important"]').check();assert p.evaluate('TQDiagnostics().scopeCount')==11
  p.locator('[data-action="detail"]').first.click();assert 'Important' in p.locator('#modal-root').inner_text();p.locator('[data-action="close-modal"]').first.click()
- go(p,'audit');assert '2026 已核对卡片' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, Important cards and source audit');p.close()
+ go(p,'audit');assert '2026 可练卡片' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, Important cards and source audit');p.close()
  # Current-year notebook and archive Week selectors are real intersections.
- p=page_new(browser,seed={});assert p.evaluate('TQDiagnostics().scopeCount')==248
+ p=page_new(browser,seed={});assert p.evaluate('TQDiagnostics().scopeCount')==244
  assert p.locator('[data-filter="archiveWeek"]').first.locator('option').count()==2
  p.locator('[data-filter="archiveWeek"]').first.select_option('3')
  assert p.evaluate('TQDiagnostics().scopeCount')==43
  p.locator('[data-filter="archiveWeek"]').first.select_option('')
  p.locator('[data-filter="notebook"]').first.select_option('16018')
- h5_count=p.evaluate('TQDiagnostics().scopeCount');assert 0<h5_count<248
+ h5_count=p.evaluate('TQDiagnostics().scopeCount');assert 0<h5_count<244
  expected_ports={str(port) for r in bank for port in r.get('preloaded2026',[])}
  actual_ports=set(p.locator('[data-filter="notebook"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))
  assert actual_ports==expected_ports,(actual_ports^expected_ports)
  p.locator('[data-filter="notebook"]').first.select_option('16025')
- assert 0<p.evaluate('TQDiagnostics().scopeCount')<248
+ assert 0<p.evaluate('TQDiagnostics().scopeCount')<244
  go(p,'library');assert p.locator('[data-filter="notebook"]').first.input_value()=='16025'
  p.locator('[data-filter="era"]').first.select_option('2025')
  assert p.locator('[data-filter="notebook"]').first.input_value()==''
@@ -136,6 +136,14 @@ with sync_playwright() as pw:
  options.nth(chosen).click()
  assert p.locator('#symbol-answer').input_value()==code
  check(p);ok(p);logs.append('symbol: command completion and answer validation');p.close()
+ all_settings=settings('choice');all_settings['scope']={'era':'all','manual':False,'selected':[]}
+ p=page_new(browser,'choice',seed={'tq.settings.v1':json.dumps(all_settings)})
+ question_ids={r['id'] for r in bank if 'inference rule' not in r['kind'].lower()}
+ assert p.evaluate('TQDiagnostics().scopeCount')==len(question_ids)
+ launch(p)
+ assert p.evaluate('TQDiagnostics().question.id') in question_ids
+ assert set(p.locator('[data-action="choose"]').evaluate_all('(buttons)=>buttons.map(b=>b.dataset.id)'))<=question_ids
+ logs.append('inference rules excluded from quiz scope and answer choices');p.close()
  # Responsive layout at both narrow and common phone widths.
  for w in [320,390]:
   p=page_new(browser,'formula',width=w)
