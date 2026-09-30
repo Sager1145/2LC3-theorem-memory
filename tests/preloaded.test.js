@@ -8,11 +8,13 @@ const bank=require('../data/theorems.json');
 const sources=require('../data/sources.json');
 const coverage=require('../data/coverage.json');
 
-test('all published cards come from one of the 26 copied preloaded popups',()=>{
-  assert.equal(sources.length,26);
+test('all published cards come from copied 2025 or 2026 preloaded popups',()=>{
+  assert.equal(sources.length,37);
+  assert.equal(sources.filter(s=>s.id.startsWith('calc-2026-')).length,11);
   assert.equal(coverage.preloadedNotebookCount,26);
-  assert.equal(coverage.preloadedUniqueCount,bank.length);
-  assert.equal(coverage.preloadedDeclarationCount,sources.reduce((n,s)=>n+s.declarations,0));
+  assert.equal(coverage.preloadedUniqueCount,1052);
+  assert.equal(coverage.current2026Count,bank.filter(card=>card.preloaded2026.length).length);
+  assert.equal(coverage.preloadedDeclarationCount,sources.filter(s=>s.id.startsWith('calc-preloaded-')).reduce((n,s)=>n+s.declarations,0));
   const lines=new Map(sources.map(s=>[
     s.id,fs.readFileSync(path.join(root,s.localCapture),'utf8').split(/\r?\n/)
   ]));

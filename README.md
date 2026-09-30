@@ -2,7 +2,7 @@
 
 一个无需服务器、账号、API key 或前端依赖安装的 COMPSCI 2LC3 定理练习网站。采用短关卡、进度条、大按钮、即时反馈、连对 XP 和错题重试；界面与标志为独立设计，不是 Duolingo 或 CalcCheck 的官方产品。
 
-> **题库白名单：课程 Homework 的预载定理列表。** 已逐份展开并复制 2025 课程索引中的 26 份 CalcCheck Homework notebook，共 7,156 次声明，按原文与侧条件去重为 1,052 张卡。Notebook 正文中的待证明题不入库；这不是 2026 学期进度或所有课程材料的全集。逐份来源与旧题库排除记录见 `docs/SOURCE_AUDIT.md`。
+> **题库白名单：课程 Homework 的预载定理列表。** 已逐份展开并复制 2025 课程索引中的 26 份 CalcCheck Homework notebook，共 7,156 次声明，按原文与侧条件去重为 1,052 张卡。Notebook 正文中的待证明题不入库；另已核对 2026 年 11 份可打开预载弹窗，当前学期默认范围为 248 张卡；可按 notebook 选择目前学习的范围。2026 PPT 和材料发布周次尚无公开证据。逐份来源与旧题库排除记录见 `docs/SOURCE_AUDIT.md`。
 
 **在线练习：** https://sager1145.github.io/2LC3-theorem-memory/
 
@@ -34,7 +34,7 @@ python3 -m http.server 8000
 
 ## 手动划范围
 
-在“定理库”按模块、Homework 来源、Important、重复预载、收藏或错题筛选。编号输入支持：
+在首页或“定理库”选择 2026 预载范围、具体 Homework notebook；2025 归档材料可按资料本身的 Week 标签筛选。Week 3/4/6/7/11 标签来自 2025 模块名，不表示 2026 发布周次。也可按模块、Homework 来源、Important、重复预载、收藏或错题筛选。编号输入支持：
 
 ```text
 3.47
@@ -121,6 +121,7 @@ python3 tests/browser_smoke.py --screenshots test-results/screenshots
 
 ```bash
 python3 tools/import_preloaded.py
+python3 tools/enrich_2026.py
 node --test tests/engine.test.js
 python3 tools/build_site.py --out _site
 ```

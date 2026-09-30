@@ -38,3 +38,10 @@ python3 tools/build_site.py --out _site --portable Theorem-Quest-Standalone.html
 ```
 
 Node 单元测试不需要 npm 安装。浏览器测试需要 Python `playwright` 与系统 Chromium，脚本使用内存存储替身而非假装原生存储可用。静态构建只使用 Python 标准库。
+
+## 2026 学期范围更新（2026-09-30）
+
+- `npm test`：提交内容单独验证 12/12 通过；新增来源测试涵盖 2025/2026 共 37 份预载弹窗，逐条核对原文行。
+- `python3 tests/browser_smoke.py`：提交内容单独验证 13 个场景通过，包括 2026 notebook 选择、2025 Week 6 可读名称，以及 320px/390px 响应式页面。测试使用内存存储替身。
+- `npm run build`：静态网站与单文件版构建成功。
+- 2026 A1.1 课程页面主动禁用预载弹窗；2026 PPT 发布周次未获公开证据，因此这些资料没有作为新增题卡或周次断言的依据。

@@ -76,7 +76,18 @@ with sync_playwright() as pw:
  assert 'De Morgan six' in p.locator('[data-preset]').inner_text()
  p.locator('[data-action="reset-filters"]').click();p.locator('[data-filter="important"]').check();assert p.evaluate('TQDiagnostics().scopeCount')==11
  p.locator('[data-action="detail"]').first.click();assert 'Important' in p.locator('#modal-root').inner_text();p.locator('[data-action="close-modal"]').first.click()
- go(p,'audit');assert 'Archive.zip' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, 11 Important cards and source audit');p.close()
+ go(p,'audit');assert '2026 已核对卡片' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, Important cards and source audit');p.close()
+ # Current-year notebook and archive Week selectors are real intersections.
+ p=page_new(browser,seed={});assert p.evaluate('TQDiagnostics().scopeCount')==248
+ p.locator('[data-filter="notebook"]').first.select_option('16018')
+ h5_count=p.evaluate('TQDiagnostics().scopeCount');assert 0<h5_count<248
+ go(p,'library');assert p.locator('[data-filter="notebook"]').first.input_value()=='16018'
+ p.locator('[data-filter="era"]').first.select_option('2025')
+ assert p.locator('[data-filter="notebook"]').first.input_value()==''
+ p.locator('[data-filter="archiveWeek"]').first.select_option('6')
+ assert p.evaluate('TQDiagnostics().scopeCount')>0
+ assert 'Week 6 · 序列进阶' in p.locator('#app').inner_text()
+ logs.append('2026 notebook scope and readable 2025 Week 6 labels');p.close()
  # In-session retry and hint accountability.
  p=page_new(browser,seed={'tq.settings.v1':json.dumps(settings('formula',True))});launch(p);p.locator('[data-action="skip"]').click()
  assert p.locator('[role="progressbar"]').get_attribute('aria-valuemax')=='2';p.locator('[data-action="continue"]').click()

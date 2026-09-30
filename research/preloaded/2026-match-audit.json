@@ -1,0 +1,29 @@
+{
+  "matches": {
+    "formula": 1094,
+    "reference": 0,
+    "new": 4
+  },
+  "newCards": [
+    {
+      "port": 16001,
+      "id": "y26-8a90bd187761",
+      "raw": "Theorem “Replace variable by `true`”:   p ⇒ E ≡ p ⇒ E[p ≔ true]"
+    },
+    {
+      "port": 16001,
+      "id": "y26-9f0ebffccf36",
+      "raw": "Theorem “Replace variable by `false`”:   ¬ p ⇒ E ≡ ¬ p ⇒ E[p ≔ false]"
+    },
+    {
+      "port": 16027,
+      "id": "y26-ae4b0b730247",
+      "raw": "Corollary “Zero of ·”:   0 · a = 0"
+    },
+    {
+      "port": 16027,
+      "id": "y26-8ee7c4234f61",
+      "raw": "Theorem “Predecessor of non-zero”:   n ≠ 0 ≡ suc pred n = n"
+    }
+  ]
+}

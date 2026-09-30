@@ -1,26 +1,37 @@
 {
   "schemaVersion": 1,
-  "builtAt": "2026-09-29",
+  "builtAt": "2026-09-30",
   "completeProjectAccess": false,
-  "sourceFiles": 26,
-  "readFiles": 26,
+  "sourceFiles": 37,
+  "readFiles": 37,
   "pdfPagesRead": 0,
-  "theoremCount": 1052,
+  "theoremCount": 1056,
   "currentCount": 1052,
   "reviewCount": 0,
   "importantCount": 11,
   "repeatedCount": 796,
-  "notice": "答题库逐条来自 2025 课程提供的 26 份 Homework CalcCheck「preloaded theorems」弹窗。Notebook 正文中的待证明题不作为入库依据。",
+  "notice": "2026 当前范围只使用 11 份 Homework/Assignment 的预载弹窗逐条声明；A1.1 禁用弹窗，未作为来源。2025 历史 Week 标签不代表 2026 发布周次。",
   "countMethod": "重复次数表示同一声明出现在几份 Homework 的预载弹窗中；H19 与 H19v 分别计数。不是课件引用次数或重要程度。",
   "historicalCount": 0,
   "curationCount": 82,
   "mergedDuplicateCount": 50,
   "formulaVariantCount": 377,
-  "unavailable": [],
+  "unavailable": [
+    {
+      "name": "2026 A1.1 预载弹窗",
+      "reason": "课程页面明确禁用预载列表；未把正文证明题加入题库。"
+    },
+    {
+      "name": "2026 PPT 发布周次",
+      "reason": "课程官网未公开列出；Avenue 材料尚未提供，故不推断发布周次。"
+    }
+  ],
   "curationNote": "所有原始弹窗文本和逐行位置保存在 research/preloaded/raw；题卡只从弹窗声明生成。旧题库中无法逐字对应弹窗声明的条目已从答题库移出。",
   "preloadedNotebookCount": 26,
   "preloadedDeclarationCount": 7156,
   "preloadedUniqueCount": 1052,
   "excludedPriorCards": 59,
-  "completePreloadedAccess": true
+  "completePreloadedAccess": true,
+  "current2026Count": 248,
+  "current2026NotebookCount": 11
 }
