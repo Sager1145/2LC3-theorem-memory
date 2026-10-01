@@ -62,6 +62,20 @@ class DataManifestTest(unittest.TestCase):
             self.assertNotEqual(changed_sources["revision"], first["revision"])
             self.assertEqual(changed_sources["files"]["theorems"], first["files"]["theorems"])
 
+    def test_study_changes_revision_without_changing_theorem_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            (root/'theorems.json').write_text('[{"id":"one"}]')
+            (root/'sources.json').write_text('[{"id":"source"}]')
+            study=root/'study.json'
+            study.write_text('{"proofQuestions":[]}')
+            first=write_data_manifest(root/'first',root,study=study)
+            study.write_text('{"proofQuestions":[{"id":"proof"}]}')
+            second=write_data_manifest(root/'second',root,study=study)
+            self.assertNotEqual(first['revision'],second['revision'])
+            self.assertEqual(first['files']['theorems'],second['files']['theorems'])
+            self.assertEqual(second['files']['study']['sha256'],hashlib.sha256(study.read_bytes()).hexdigest())
+
 
 if __name__ == "__main__":
     unittest.main()

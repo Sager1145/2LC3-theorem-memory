@@ -2,6 +2,18 @@ import SwiftUI
 
 struct SyncView: View {
     let library: LibraryStore
+    var language = "zh-CN"
+    private func copy(_ chinese: String, _ english: String) -> String { language == "en" ? english : chinese }
+
+    private var localizedStatus: String {
+        let message = library.statusMessage
+        guard language == "en" else { return message }
+        if message == "题库已是最新版本。" { return "Your bank is up to date." }
+        if message.hasPrefix("题库已更新，共 ") { return "Bank updated: \(library.theorems.count) cards (GitHub Pages)." }
+        return message.replacingOccurrences(of: "更新失败，继续使用本地题库：", with: "Update failed; using the local bank: ")
+            .replacingOccurrences(of: "学习进度保存失败：", with: "Unable to save study progress: ")
+            .replacingOccurrences(of: "学习记录无法读取；原文件已保留以便恢复。", with: "Unable to read study records; the original file was kept for recovery.")
+    }
 
     var body: some View {
         ScrollView {
@@ -9,9 +21,9 @@ struct SyncView: View {
                 HStack(spacing: 14) {
                     QuestMark(size: 48)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("题库更新")
+                        Text(copy("题库更新", "Bank updates"))
                             .font(QuestFont.text(.title2, bold: true))
-                        Text("随时获取最新课程定理")
+                        Text(copy("随时获取最新课程定理", "Get the latest course theorems"))
                             .font(QuestFont.text(.subheadline))
                             .foregroundStyle(QuestStyle.secondary)
                     }
@@ -21,15 +33,15 @@ struct SyncView: View {
                 .questCard(tint: QuestStyle.green.opacity(0.4), fill: QuestStyle.hero)
 
                 VStack(alignment: .leading, spacing: 14) {
-                    Text("题库")
+                    Text(copy("题库", "Theorem bank"))
                         .font(QuestFont.text(.headline))
-                LabeledContent("本地条目", value: "\(library.theorems.count)")
-                LabeledContent("版本", value: library.manifest.map { String($0.revision.prefix(12)) } ?? "App 内置版本")
+                LabeledContent(copy("本地条目", "Local cards"), value: "\(library.theorems.count)")
+                LabeledContent(copy("版本", "Version"), value: library.manifest.map { String($0.revision.prefix(12)) } ?? copy("App 内置版本", "Bundled version"))
                 if let manifest = library.manifest {
-                    LabeledContent("版本时间", value: manifest.builtAt)
+                    LabeledContent(copy("版本时间", "Published"), value: manifest.builtAt)
                 }
                 if let date = library.lastCheckedAt {
-                    LabeledContent("上次检查", value: date.formatted(date: .abbreviated, time: .shortened))
+                    LabeledContent(copy("上次检查", "Last checked"), value: date.formatted(date: .abbreviated, time: .shortened))
                 }
                 }
                 .padding(20)
@@ -40,7 +52,7 @@ struct SyncView: View {
                     Task { await library.checkForUpdates(force: true) }
                 } label: {
                     HStack {
-                        Label("立即检查更新", systemImage: "arrow.clockwise")
+                        Label(copy("立即检查更新", "Check for updates"), systemImage: "arrow.clockwise")
                         if library.isChecking { Spacer(); ProgressView() }
                     }
                     .frame(maxWidth: .infinity)
@@ -50,9 +62,9 @@ struct SyncView: View {
                 .disabled(library.isChecking)
                 .accessibilityIdentifier("sync.checkUpdates")
                 if !library.statusMessage.isEmpty {
-                    Text(library.statusMessage).font(QuestFont.text(.footnote)).foregroundStyle(QuestStyle.secondary)
+                    Text(localizedStatus).font(QuestFont.text(.footnote)).foregroundStyle(QuestStyle.secondary)
                 }
-                Text("从 GitHub Pages 网站下载最新题库，更新后保留收藏、错题与学习记录。打开 App 时至多每天检查一次；离线时继续使用本地题库。")
+                Text(copy("从 GitHub Pages 网站下载最新题库，更新后保留收藏、错题与学习记录。打开 App 时至多每天检查一次；离线时继续使用本地题库。", "Download the latest bank from GitHub Pages while keeping favorites, mistakes and study records. The app checks at most once daily on launch and uses the local bank offline."))
                     .font(QuestFont.text(.footnote))
                     .foregroundStyle(QuestStyle.secondary)
                 }
@@ -60,12 +72,12 @@ struct SyncView: View {
                 .questCard()
 
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("数据来源")
+                    Text(copy("数据来源", "Sources"))
                         .font(QuestFont.text(.headline))
                 Link(destination: LibraryStore.siteURL) {
-                    Label("打开 GitHub Pages 网站", systemImage: "safari")
+                    Label(copy("打开 GitHub Pages 网站", "Open GitHub Pages"), systemImage: "safari")
                 }
-                Text("题卡来自课程 notebook 的预载定理列表，保留来源信息。学习记录仅保存在此设备。")
+                Text(copy("题卡来自课程 notebook 的预载定理列表，保留来源信息。学习记录仅保存在此设备。", "Cards retain their course notebook sources. Study records stay on this device."))
                     .font(QuestFont.text(.footnote))
                     .foregroundStyle(QuestStyle.secondary)
                 }
@@ -77,6 +89,6 @@ struct SyncView: View {
             .frame(maxWidth: .infinity)
         }
         .background(QuestStyle.page)
-        .navigationTitle("更新与说明")
+        .navigationTitle(copy("更新与说明", "Updates & details"))
     }
 }

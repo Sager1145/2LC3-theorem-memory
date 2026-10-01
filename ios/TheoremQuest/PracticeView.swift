@@ -479,34 +479,32 @@ private struct FillAnswerView: View {
             .questCard(tint: QuestStyle.blue, fill: QuestStyle.blue.opacity(0.07))
 
             if !checked {
-                Text(isLetters ? "点空白可切换位置；点字母填入并前进。允许一致改名，不同变量不能合并。" : "点符号键填入空白，再检查答案。")
+                Text(isLetters ? "点空白可切换位置；点字母填入并前进。允许一致改名，不同变量不能合并。" : "共 \(question.blankIndices.count) 个符号空；点空白可切换位置，点符号填入并前进。填完全部空白后检查答案。")
                     .font(QuestFont.text(.footnote))
                     .foregroundStyle(QuestStyle.secondary)
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(isLetters ? "字母键盘 · 第 \(activeSlot + 1) / \(question.blankIndices.count) 空" : "符号键盘")
+                    Text("\(isLetters ? "字母" : "符号")键盘 · 第 \(activeSlot + 1) / \(question.blankIndices.count) 空")
                         .font(QuestFont.text(.headline, bold: true))
-                    if isLetters {
-                        HStack {
-                            Button("上一空", systemImage: "chevron.left") { activeSlot -= 1 }
-                                .disabled(activeSlot == 0)
-                            Button("下一空", systemImage: "chevron.right") { activeSlot += 1 }
-                                .disabled(activeSlot + 1 >= question.blankIndices.count)
-                            Spacer(minLength: 0)
-                            Button("删除", systemImage: "delete.left") {
-                                if values[activeSlot, default: ""].isEmpty && activeSlot > 0 { activeSlot -= 1 }
-                                values[activeSlot] = ""
-                            }
-                            .accessibilityIdentifier("practice.delete")
+                    HStack {
+                        Button("上一空", systemImage: "chevron.left") { activeSlot -= 1 }
+                            .disabled(activeSlot == 0)
+                        Button("下一空", systemImage: "chevron.right") { activeSlot += 1 }
+                            .disabled(activeSlot + 1 >= question.blankIndices.count)
+                        Spacer(minLength: 0)
+                        Button("删除", systemImage: "delete.left") {
+                            if values[activeSlot, default: ""].isEmpty && activeSlot > 0 { activeSlot -= 1 }
+                            values[activeSlot] = ""
                         }
-                        .labelStyle(.iconOnly)
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
+                        .accessibilityIdentifier("practice.delete")
                     }
+                    .labelStyle(.iconOnly)
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 52))], spacing: 10) {
                         ForEach(question.keyboardOptions, id: \.self) { token in
                             Button {
                                 values[activeSlot] = token
-                                if isLetters && activeSlot + 1 < question.blankIndices.count { activeSlot += 1 }
+                                if activeSlot + 1 < question.blankIndices.count { activeSlot += 1 }
                             } label: {
                                 Text(token)
                                     .font(QuestFont.theorem(.title3))
@@ -525,7 +523,7 @@ private struct FillAnswerView: View {
                         guard canSubmit else { return }
                         let answers = question.blankIndices.indices.map { values[$0, default: ""] }
                         let correct = isLetters ? PracticeEngine.gradeBlanks(question: question, values: answers)
-                            : answers.first == question.correctOption
+                            : PracticeEngine.gradeCloze(question: question, values: answers)
                         onSubmit(answers.joined(separator: " "), correct)
                     }
                     .font(QuestFont.text(.body, bold: true))

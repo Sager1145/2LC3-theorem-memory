@@ -31,6 +31,7 @@ final class LibraryStore {
     private(set) var sources: [TheoremSource] = []
     // Preserve every web-only field when handing a verified snapshot to the game.
     private(set) var webSnapshot: (theorems: Data, sources: Data)?
+    private(set) var webStudySnapshot: Data?
     private(set) var manifest: DataManifest?
     private(set) var progress = PracticeProgress()
     private(set) var isLoading = true
@@ -38,6 +39,7 @@ final class LibraryStore {
     private(set) var lastCheckedAt: Date?
     private(set) var statusMessage = ""
     private var bundledRevision: String?
+    var currentRevision: String? { manifest?.revision ?? bundledRevision }
 
     private var appDirectory: URL {
         storageDirectory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -59,7 +61,8 @@ final class LibraryStore {
                    let sourceData = try? await Self.read(snapshot.appendingPathComponent("sources.json")),
                    Self.hash(theoremData) == saved.files.theorems.sha256.lowercased(),
                    Self.hash(sourceData) == saved.files.sources.sha256.lowercased(),
-                   (try? await install(theoremData: theoremData, sourceData: sourceData)) != nil {
+                   let study = try? await Self.readStudy(saved.files.study, from: snapshot),
+                   (try? await install(theoremData: theoremData, sourceData: sourceData, studyData: study.data)) != nil {
                     manifest = saved
                     restored = true
                 }
@@ -75,8 +78,12 @@ final class LibraryStore {
                     }
                     let theoremData = try await Self.read(theoremURL)
                     let sourceData = try await Self.read(sourceURL)
-                    try await install(theoremData: theoremData, sourceData: sourceData)
-                    bundledRevision = Self.revision(theorems: theoremData, sources: sourceData)
+                    let studyData: Data?
+                    if let studyURL = Bundle.main.url(forResource: "study", withExtension: "json") {
+                        studyData = try await Self.read(studyURL)
+                    } else { studyData = nil }
+                    try await install(theoremData: theoremData, sourceData: sourceData, studyData: studyData)
+                    bundledRevision = Self.revision(theorems: theoremData, sources: sourceData, study: studyData)
                 }
             }
             let progressURL = base.appendingPathComponent("progress.json")
@@ -128,12 +135,16 @@ final class LibraryStore {
             guard next.schemaVersion == 1 else { throw LibraryError.unsupportedVersion }
             guard next.revision.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil,
                   next.files.theorems.path == "data/theorems.json",
-                  next.files.sources.path == "data/sources.json" else { throw LibraryError.invalidPath }
+                  next.files.sources.path == "data/sources.json",
+                  next.files.study == nil || next.files.study?.path == "data/study.json" else { throw LibraryError.invalidPath }
             let theoremHash = next.files.theorems.sha256.lowercased()
             let sourceHash = next.files.sources.sha256.lowercased()
-            guard theoremHash.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil,
+            let studyHash = next.files.study?.sha256.lowercased()
+            let hashes = [theoremHash, sourceHash] + (studyHash.map { [$0] } ?? [])
+            guard studyHash == nil || studyHash?.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil,
+                  theoremHash.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil,
                   sourceHash.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil,
-                  Self.hash(Data("\(theoremHash):\(sourceHash)".utf8)) == next.revision else {
+                  Self.hash(Data(hashes.joined(separator: ":").utf8)) == next.revision else {
                 throw LibraryError.checksumMismatch
             }
             if (manifest?.revision ?? bundledRevision) != next.revision {
@@ -150,14 +161,22 @@ final class LibraryStore {
                       Self.hash(sourceData) == next.files.sources.sha256.lowercased() else {
                     throw LibraryError.checksumMismatch
                 }
+                let studyData: Data?
+                if let file = next.files.study {
+                    let data = try await download(file.path, revision: next.revision)
+                    guard Self.hash(data) == file.sha256.lowercased() else { throw LibraryError.checksumMismatch }
+                    try Self.validateStudy(data)
+                    studyData = data
+                } else { studyData = nil }
                 let (decoded, decodedSources) = try await Self.decode(theoremData: theoremData, sourceData: sourceData)
                 guard !decoded.isEmpty, decoded.count == next.theoremCount else { throw LibraryError.countMismatch }
                 let base = appDirectory
                 try await Self.saveSnapshot(theoremData: theoremData, sourceData: sourceData,
-                                            manifestData: manifestData, revision: next.revision, to: base)
+                                            studyData: studyData, manifestData: manifestData, revision: next.revision, to: base)
                 theorems = decoded
                 sources = decodedSources
                 webSnapshot = (theoremData, sourceData)
+                webStudySnapshot = studyData
                 manifest = next
                 statusMessage = "题库已更新，共 \(next.theoremCount) 条（GitHub Pages）。"
             } else {
@@ -192,11 +211,13 @@ final class LibraryStore {
 
     func source(for id: String) -> TheoremSource? { sources.first { $0.id == id } }
 
-    private func install(theoremData: Data, sourceData: Data) async throws {
+    private func install(theoremData: Data, sourceData: Data, studyData: Data? = nil) async throws {
+        if let studyData { try Self.validateStudy(studyData) }
         let (decodedTheorems, decodedSources) = try await Self.decode(theoremData: theoremData, sourceData: sourceData)
         theorems = decodedTheorems
         sources = decodedSources
         webSnapshot = (theoremData, sourceData)
+        webStudySnapshot = studyData
     }
 
     private nonisolated static func read(_ url: URL) async throws -> Data {
@@ -216,7 +237,7 @@ final class LibraryStore {
     }
 
     private nonisolated static func saveSnapshot(
-        theoremData: Data, sourceData: Data, manifestData: Data, revision: String, to base: URL
+        theoremData: Data, sourceData: Data, studyData: Data?, manifestData: Data, revision: String, to base: URL
     ) async throws {
         try await Task.detached(priority: .utility) {
             let snapshots = base.appendingPathComponent("snapshots", isDirectory: true)
@@ -224,6 +245,7 @@ final class LibraryStore {
             try FileManager.default.createDirectory(at: snapshot, withIntermediateDirectories: true)
             try theoremData.write(to: snapshot.appendingPathComponent("theorems.json"), options: .atomic)
             try sourceData.write(to: snapshot.appendingPathComponent("sources.json"), options: .atomic)
+            if let studyData { try studyData.write(to: snapshot.appendingPathComponent("study.json"), options: .atomic) }
             try manifestData.write(to: base.appendingPathComponent("version.json"), options: .atomic)
             let old = (try? FileManager.default.contentsOfDirectory(at: snapshots, includingPropertiesForKeys: nil)) ?? []
             for directory in old where directory.lastPathComponent != revision {
@@ -263,8 +285,67 @@ final class LibraryStore {
         return data
     }
 
-    private nonisolated static func revision(theorems: Data, sources: Data) -> String {
-        hash(Data("\(hash(theorems)):\(hash(sources))".utf8))
+    private nonisolated static func revision(theorems: Data, sources: Data, study: Data? = nil) -> String {
+        let hashes = [hash(theorems), hash(sources)] + (study.map { [hash($0)] } ?? [])
+        return hash(Data(hashes.joined(separator: ":").utf8))
+    }
+
+    private nonisolated static func readStudy(_ file: DataManifest.FileEntry?, from directory: URL) async throws -> (data: Data?, present: Bool) {
+        guard let file else { return (nil, false) }
+        guard file.path == "data/study.json" else { throw LibraryError.invalidPath }
+        let data = try await read(directory.appendingPathComponent("study.json"))
+        guard hash(data) == file.sha256.lowercased() else { throw LibraryError.checksumMismatch }
+        try validateStudy(data)
+        return (data, true)
+    }
+
+    private nonisolated static func validateStudy(_ data: Data) throws {
+        guard let study = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              study["schemaVersion"] as? Int == 1,
+              let bank = study["bank"] as? [String: Any], bank["theorems"] == nil, bank["sources"] == nil,
+              bank["coverage"] is [String: Any], bank["weekBySource"] is [String: Any],
+              let proofs = study["proofQuestions"] as? [[String: Any]],
+              let sources = study["proofSources"] as? [[String: Any]],
+              let hints = study["notebookHints"] as? [String: Any],
+              let notebooks = hints["notebooks"] as? [[String: Any]],
+              let groups = hints["groups"] as? [[String: Any]] else {
+            throw LibraryError.invalidResponse
+        }
+        let proofIDs = proofs.compactMap { $0["id"] as? String }
+        let sourceIDs = sources.compactMap { $0["id"] as? String }
+        guard proofIDs.count == proofs.count, sourceIDs.count == sources.count,
+              !proofIDs.contains(""), !sourceIDs.contains(""),
+              Set(proofIDs).count == proofIDs.count, Set(sourceIDs).count == sourceIDs.count else {
+            throw LibraryError.duplicateID
+        }
+        for proof in proofs {
+            guard ["name", "formula", "kind", "topic", "displayRef"].allSatisfy({ proof[$0] is String }),
+                  proof["aliases"] is [String], proof["numbers"] is [String],
+                  let locations = proof["sources"] as? [[String: Any]], !locations.isEmpty,
+                  locations.allSatisfy({ location in
+                      guard let id = location["sourceId"] as? String else { return false }
+                      return sourceIDs.contains(id) && location["excerpt"] is String
+                  }),
+                  let step = proof["proof"] as? [String: Any],
+                  ["start", "end", "relation", "hint", "hintTemplate", "notebook", "proofLabel"].allSatisfy({ step[$0] is String }),
+                  let answers = step["answers"] as? [String], !answers.isEmpty else { throw LibraryError.invalidResponse }
+        }
+        for source in sources {
+            guard source["name"] is String, source["url"] is String, source["weeks"] is [Any] else { throw LibraryError.invalidResponse }
+        }
+        for notebook in notebooks {
+            guard notebook["sourceId"] is String, notebook["name"] is String, notebook["url"] is String,
+                  notebook["weeks"] is [Any], notebook["theoremCounts"] is [String: Any],
+                  notebook["groupCounts"] is [String: Any],
+                  let uses = notebook["hintUses"] as? [[String: Any]],
+                  uses.allSatisfy({ $0["groups"] is [Any] }) else { throw LibraryError.invalidResponse }
+        }
+        for group in groups {
+            guard group["id"] is String, group["label"] is String,
+                  ["names", "references", "theoremIds", "candidateTheoremIds"].allSatisfy({ group[$0] is [String] }) else {
+                throw LibraryError.invalidResponse
+            }
+        }
     }
 
     private nonisolated static func hash(_ data: Data) -> String {

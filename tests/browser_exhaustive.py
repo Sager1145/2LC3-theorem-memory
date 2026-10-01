@@ -53,8 +53,11 @@ ANSWER = r"""({limit}) => {
     else if(q.mode==='symbol'){
       input(document.querySelector('#symbol-answer'),correct?Object.entries(E.SHORTCUTS).find(([,symbol])=>symbol===s.state.symbolTarget)[0]:'\\invalidcommand');
     }else if(q.mode==='cloze'){
-      const token=correct?s.state.cloze.correct:s.state.cloze.options.find(t=>t!==s.state.cloze.correct);
-      [...document.querySelectorAll('[data-action="cloze-key"]')].find(b=>b.dataset.token===token).click();
+      for(const [i,blank] of s.state.cloze.blanks.entries()){
+        document.querySelector('[data-action="cloze-slot"][data-slot="'+i+'"]').click();
+        const token=correct||i>0?blank.correct:s.state.cloze.options.find(t=>t!==blank.correct);
+        [...document.querySelectorAll('[data-action="cloze-key"]')].find(b=>b.dataset.token===token).click();
+      }
     }else if(q.mode==='blanks'){
       const template=E.blankTemplate(r.formula), values=template.blanks.map(b=>b.variable);
       if(!correct){

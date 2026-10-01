@@ -194,7 +194,7 @@ enum PracticeEngine {
             let tokens = tokenize(theorem.formula)
             switch requestedMode {
             case .blanks: return tokens.contains(where: isVariable)
-            case .cloze: return tokens.contains { token in clozeGroups.contains { $0.contains(token) } }
+            case .cloze: return hasClozeSymbol(in: theorem.formula)
             default: return true
             }
         }
@@ -214,12 +214,11 @@ enum PracticeEngine {
                                             keyboardOptions: keys)
                 }
                 let candidates = tokens.indices.filter { index in clozeGroups.contains { $0.contains(tokens[index]) } }
-                let index = candidates.randomElement()!
-                let correct = tokens[index]
-                let group = clozeGroups.first { $0.contains(correct) }!
-                let options = ([correct] + group.filter { $0 != correct }.shuffled().prefix(3)).shuffled()
-                return PracticeQuestion(theorem: theorem, mode: mode, options: options, correctOption: correct,
-                                        answerVariants: variants, tokens: tokens, blankIndices: [index],
+                var seen = Set<String>()
+                let options = clozeGroups.filter { group in candidates.contains { group.contains(tokens[$0]) } }
+                    .flatMap { $0 }.filter { seen.insert($0).inserted }.shuffled()
+                return PracticeQuestion(theorem: theorem, mode: mode, options: options, correctOption: theorem.formula,
+                                        answerVariants: variants, tokens: tokens, blankIndices: candidates,
                                         keyboardOptions: options)
             }
             let correct = mode == .name ? "\(theorem.displayRef) · \(theorem.name)" : theorem.formula
@@ -294,6 +293,7 @@ enum PracticeEngine {
         "\\in": "∈",
         "\\notin": "∉",
         "\\union": "∪",
+        "\\setminus": "∖",
         "\\cup": "∪",
         "\\intersection": "∩",
         "\\cap": "∩",
@@ -378,7 +378,15 @@ enum PracticeEngine {
     }
 
     static func hasClozeSymbol(in formula: String) -> Bool {
-        tokenize(formula).contains { token in clozeGroups.contains { $0.contains(token) } }
+        tokenize(formula).filter { token in clozeGroups.contains { $0.contains(token) } }.count >= 2
+    }
+
+    static func gradeCloze(question: PracticeQuestion, values: [String]) -> Bool {
+        guard question.mode == .cloze, question.blankIndices.count >= 2,
+              values.count == question.blankIndices.count else { return false }
+        return zip(question.blankIndices, values).allSatisfy { index, value in
+            question.tokens.indices.contains(index) && normalizeInput(value) == question.tokens[index]
+        }
     }
 
     static func gradeBlanks(question: PracticeQuestion, values: [String]) -> Bool {

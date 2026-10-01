@@ -6,6 +6,8 @@ import WebKit
 /// and file sharing. There is one learning record across all five destinations.
 struct CompleteQuestView: View {
     let library: LibraryStore
+    @State private var appearance = Self.savedPreference("appearance", fallback: "system")
+    @State private var language = Self.savedPreference("language", fallback: "zh-CN")
     @State private var showUpdates = false
     @State private var updateRevision: String?
     @State private var sharedFile: QuestSharedFile?
@@ -18,20 +20,20 @@ struct CompleteQuestView: View {
         ZStack {
             QuestStyle.page.ignoresSafeArea()
             if library.isLoading {
-                ProgressView("正在准备关卡…")
+                ProgressView(copy("正在准备关卡…", "Preparing your quest…"))
             } else {
                 QuestWebView(library: library, textScale: webTextSize / 16, onUpdates: { updateRevision = library.manifest?.revision; showUpdates = true },
                              onExport: export, onExternal: { externalPage = QuestExternalPage(url: $0) },
-                             onError: { loadError = $0 })
+                             onError: { loadError = $0 }, onAppearance: { appearance = $0; language = $1 })
                     .id(reloadID)
                     .ignoresSafeArea(.container, edges: .bottom)
             }
             if let loadError {
                 VStack(spacing: 16) {
                     Image(systemName: "exclamationmark.triangle").font(.largeTitle)
-                    Text("学习界面暂时无法打开").font(.headline)
+                    Text(copy("学习界面暂时无法打开", "Unable to open the learning screen")).font(.headline)
                     Text(loadError).font(.footnote).multilineTextAlignment(.center)
-                    Button("重新载入") { self.loadError = nil; reloadID = UUID() }
+                    Button(copy("重新载入", "Reload")) { self.loadError = nil; reloadID = UUID() }
                         .buttonStyle(.borderedProminent)
                 }
                 .padding(24)
@@ -39,6 +41,7 @@ struct CompleteQuestView: View {
                 .padding(20)
             }
         }
+        .preferredColorScheme(appearance == "dark" ? .dark : appearance == "light" ? .light : nil)
         .foregroundStyle(QuestStyle.ink)
         .onChange(of: library.manifest?.revision) { oldRevision, newRevision in
             // Automatic/background installs must also reach the running game;
@@ -49,8 +52,8 @@ struct CompleteQuestView: View {
             if updateRevision != library.manifest?.revision { reloadID = UUID() }
         }) {
             NavigationStack {
-                SyncView(library: library)
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { showUpdates = false } } }
+                SyncView(library: library, language: language)
+                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button(copy("完成", "Done")) { showUpdates = false } } }
             }
         }
         .sheet(item: $sharedFile, onDismiss: removeSharedFile) { item in
@@ -59,6 +62,17 @@ struct CompleteQuestView: View {
         .sheet(item: $externalPage) { item in
             QuestSourceBrowser(url: item.url)
         }
+    }
+
+    private func copy(_ chinese: String, _ english: String) -> String { language == "en" ? english : chinese }
+
+    private static func savedPreference(_ key: String, fallback: String) -> String {
+        guard let stored = UserDefaults.standard.dictionary(forKey: "quest.web.storage.v1") as? [String: String],
+              let raw = stored["tq.settings.v1"], let data = raw.data(using: .utf8),
+              let settings = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let value = settings[key] as? String else { return fallback }
+        let supported = key == "appearance" ? ["system", "light", "dark"] : ["zh-CN", "en"]
+        return supported.contains(value) ? value : fallback
     }
 
     private func export(name: String, content: String) {
@@ -103,6 +117,7 @@ private struct QuestWebView: UIViewRepresentable {
     let onExport: (String, String) -> Void
     let onExternal: (URL) -> Void
     let onError: (String) -> Void
+    let onAppearance: (String, String) -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
 
@@ -146,15 +161,6 @@ private struct QuestWebView: UIViewRepresentable {
 
     private func bootstrap() -> String {
         var stored = UserDefaults.standard.dictionary(forKey: Self.storageKey) as? [String: String] ?? [:]
-        #if DEBUG
-        let arguments = ProcessInfo.processInfo.arguments
-        if let modeIndex = arguments.firstIndex(of: "-ui-testing-keyboard-mode"), modeIndex + 1 < arguments.count {
-            stored["tq.settings.v1"] = json([
-                "modeDefaultsVersion": 2, "modes": [arguments[modeIndex + 1]], "count": 1, "retry": false,
-                "sound": false, "scope": ["era": "all", "manual": true, "selected": ["t-077f95896e0f"]]
-            ])
-        }
-        #endif
         // One-time migration of the old native app's actual favorites, pending
         // mistakes and daily counts. No attempt history or XP is fabricated.
         if stored["tq.native.migrated"] == nil {
@@ -177,16 +183,27 @@ private struct QuestWebView: UIViewRepresentable {
                                                "count": 1, "retry": false, "scope": ["era": "2026"]])
         }
         if let index = webTestArguments.firstIndex(of: "-ui-testing-keyboard-mode"), index + 1 < webTestArguments.count {
-            stored["tq.settings.v1"] = json(["modeDefaultsVersion": 2, "modes": [webTestArguments[index + 1]],
-                                               "count": 1, "retry": false,
-                                               "scope": ["era": "all", "manual": true, "selected": ["t-077f95896e0f"]]])
+            let mode = webTestArguments[index + 1]
+            let defaultCard = mode == "proof" ? "proof-3e41c92377583554" : mode == "cloze" ? "p-af737baba7fa" : "t-077f95896e0f"
+            let cardIndex = webTestArguments.firstIndex(of: "-ui-testing-keyboard-card")
+            let card = cardIndex.flatMap { $0 + 1 < webTestArguments.count ? webTestArguments[$0 + 1] : nil } ?? defaultCard
+            let difficultyIndex = webTestArguments.firstIndex(of: "-ui-testing-keyboard-difficulty")
+            let difficulty = difficultyIndex.flatMap { $0 + 1 < webTestArguments.count ? Int(webTestArguments[$0 + 1]) : nil } ?? 2
+            stored["tq.settings.v1"] = json(["modeDefaultsVersion": 2, "modes": [mode],
+                                               "count": 1, "retry": false, "sound": false, "choiceDifficulty": difficulty,
+                                               "fullKeyboard": webTestArguments.contains("-ui-testing-full-keyboard"),
+                                               "scope": ["era": "all", "manual": true, "selected": [card]]])
         }
         #endif
         let snapshot: String
         if let raw = library.webSnapshot,
            let theorems = try? JSONSerialization.jsonObject(with: raw.theorems),
            let sources = try? JSONSerialization.jsonObject(with: raw.sources) {
-            snapshot = json(["theorems": theorems, "sources": sources])
+            var payload: [String: Any] = ["theorems": theorems, "sources": sources]
+            if let revision = library.currentRevision { payload["revision"] = revision }
+            if let data = library.webStudySnapshot,
+               let study = try? JSONSerialization.jsonObject(with: data) { payload["study"] = study }
+            snapshot = json(payload)
         } else { snapshot = "null" }
         return """
         window.TQ_NATIVE = true;
@@ -229,6 +246,20 @@ private struct QuestWebView: UIViewRepresentable {
             case "storage":
                 if let values = body["values"] as? [String: String] {
                     UserDefaults.standard.set(values.filter { $0.key.hasPrefix("tq.") }, forKey: QuestWebView.storageKey)
+                }
+            case "appearance":
+                if let value = body["value"] as? String, ["system", "light", "dark"].contains(value) {
+                    parent.onAppearance(value, body["language"] as? String == "en" ? "en" : "zh-CN")
+                    let style: UIUserInterfaceStyle = value == "dark" ? .dark : value == "light" ? .light : .unspecified
+                    message.webView?.overrideUserInterfaceStyle = style
+                    message.webView?.backgroundColor = UIColor(QuestStyle.page)
+                    message.webView?.scrollView.backgroundColor = UIColor(QuestStyle.page)
+                }
+            case "button-input":
+                if let enabled = body["enabled"] as? Bool {
+                    // Button-only blanks own their cursor and values. Disable
+                    // native text menus there, restoring them for answer reading.
+                    message.webView?.configuration.preferences.isTextInteractionEnabled = !enabled
                 }
             case "updates": parent.onUpdates()
             case "copy":

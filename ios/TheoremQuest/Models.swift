@@ -133,6 +133,13 @@ struct DataManifest: Codable, Sendable {
     struct Files: Codable, Sendable {
         let theorems: FileEntry
         let sources: FileEntry
+        let study: FileEntry?
+
+        init(theorems: FileEntry, sources: FileEntry, study: FileEntry? = nil) {
+            self.theorems = theorems
+            self.sources = sources
+            self.study = study
+        }
     }
     let schemaVersion: Int
     let revision: String

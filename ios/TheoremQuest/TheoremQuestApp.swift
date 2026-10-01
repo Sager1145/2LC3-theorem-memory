@@ -186,7 +186,6 @@ private struct RootView: View {
 
     var body: some View {
         CompleteQuestView(library: library)
-        .preferredColorScheme(.light)
         .tint(QuestStyle.green)
         .font(QuestFont.text())
         .foregroundStyle(QuestStyle.ink)

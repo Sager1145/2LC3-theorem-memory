@@ -2,6 +2,12 @@
 
 最低 iOS 17，仅支持 iPhone。SwiftUI 外壳通过 `CompleteQuestView.swift` 的 WKWebView 载入 App 内置的 `TheoremQuest.html`，复用网页版界面、题型和判题引擎。主导航为闯关、定理库、专项复习、证明引用、错题本、资料审计、设置；无需登录，首次打开即可离线学习。
 
+## 手机版 QWERTY 输入
+
+App 内置界面与手机版网页共用完整屏幕 QWERTY 键盘。填空题默认只使用大按键，含干扰选项、左右移动和红色退格；“完整键盘输入”默认关闭，开启后填空也可使用 QWERTY。名称、Proof、公式与搜索等非填空输入始终使用 QWERTY。所有文本字段均禁止唤起 iOS 系统键盘；数字行和额外标点置于字母区上方，Shift 切换大写及上档符号。完整键盘模式的数学符号通过反斜线代码、候选或 Tab/空格补全；默认符号填空直接点击符号按键。Return 提交，Shift+Return 在公式中换行，Done 收起键盘。
+
+补全列表保留原输入框的 `aria-controls` / `aria-activedescendant`，放入键盘上方的滚动区域；题面独立滚动，横屏显示内容与键盘两列。布局适配 safe area、深色模式及 Dynamic Type。`FillKeyboardUITests` 通过触控屏幕键验证全部题型，并在操作后断言系统键盘数量为零。
+
 ## 功能
 
 - 七种题型：名称回忆、名称选择、字母填空、符号填空、公式拼写、反斜线符号、Proof 定理填空。公式输入、符号键盘、提示、作答反馈、同组名称与公式变体均由 web engine 处理；Proof 题仅接受定理名称。
@@ -11,6 +17,10 @@
 - 资料审计保留题库覆盖范围、来源和判题边界。外部来源链接在 Safari 面板打开，访问原网页需要网络。
 
 Important 和重复次数来自 `documentStudy` 的课程文档依据：多次出现指至少两次声明或明确引用（含同一文档多次引用），同一资料的导出副本不重复累加；重点与高频是 Important 或多次出现的合集。旧题库仍可读取，但缺少 `documentStudy` 的卡片不进入专项范围；更新中的同 ID 同公式卡片可保留内置文档依据；原资料 `!!` 强调与 Important 标签分别展示。定理详情可查看依据，作答提示由同一网页引擎提供。
+
+## 语言与外观
+
+在「设置 → 界面与显示」选择简体中文或 English，以及浅色、深色或跟随系统。选项保存在本地，重启后恢复；中英文切换保留定理原名称、公式和原文片段。网页版、单文件版与 iOS 内置学习界面共享这些选项；iOS 外观同时应用到原生弹窗。
 
 ## 构建
 
@@ -32,7 +42,7 @@ python3 tools/build_ios_web.py --output /private/tmp/TheoremQuest.html
 
 ## 离线与本机存储
 
-界面和判题脚本内置于 App，学习过程不依赖线上站点，也不调用 AI 或外部 API。内置 `data/theorems.json` 与 `data/sources.json`，可用已校验的下载快照替换；Swift 注入原始 JSON，保留网页版需要的额外字段。
+界面和判题脚本内置于 App，学习过程不依赖线上站点，也不调用 AI 或外部 API。内置 `data/theorems.json` 与 `data/sources.json`，可用已校验的下载快照替换；Swift 注入原始 JSON，保留网页版需要的额外字段。构建脚本同时生成内置 `study.json`，与网页发布使用同一生成函数。
 
 完整学习进度、设置和未完成关卡通过原生 storage bridge 保存至 App 的 UserDefaults，键为 `quest.web.storage.v1`，内部保留 `tq.progress.v1`、`tq.settings.v1`、`tq.session.v1`。它与 Safari／网页版浏览器的记录独立，跨设备迁移需手动导出、导入，没有云同步。分享文件临时写入 `QuestExports` 目录，关闭分享面板后删除。
 
@@ -40,7 +50,7 @@ python3 tools/build_ios_web.py --output /private/tmp/TheoremQuest.html
 
 ## 题库更新
 
-设置中的“管理题库更新”打开原生更新面板。客户端从 `https://sager1145.github.io/2LC3-theorem-memory/` 获取 `data/version.json`；版本变化时下载题库和来源 JSON，校验 SHA-256、条目数与数据结构后切换快照。失败时继续使用内置或上次成功下载的数据。只有安装了不同版本的题库，关闭更新面板才会重新载入学习界面；取消或失败时保留当前页面。
+设置中的“管理题库更新”打开原生更新面板。客户端从 `https://sager1145.github.io/2LC3-theorem-memory/` 获取 `data/version.json`；版本变化时下载定理、来源与完整学习数据 `data/study.json`，同步 Proof 题、证明引用、Week 范围及审计元数据。全部通过 SHA-256、条目数与结构校验后切换快照；仅 Proof 或证明引用变化也会触发更新。失败时继续使用内置或上次成功下载的数据。安装不同版本后重新载入学习界面，保留关卡队列及答题记录，当前题面重新生成，避免使用旧填空模板或选项；取消或失败时保留当前页面。
 
 兼容尚未发布版本清单的旧 Pages：仅当清单返回 HTTP 404 时，通过 HTTPS 获取同站点的 `data/theorems.json` 与 `data/sources.json`，校验结构、非空题库和唯一 ID 后保存快照。旧版兼容流程没有发布者清单哈希可比对，本机计算的哈希用于后续快照恢复校验。其他网络错误或无效清单不会触发兼容流程。更新请求绕过缓存，与内置题库相同的线上版本也会显示版本信息。
 
@@ -58,13 +68,17 @@ xcodebuild -project ios/TheoremQuest.xcodeproj -scheme TheoremQuest \
   CODE_SIGNING_ALLOWED=NO test
 ```
 
+在 Codex 中若 `simctl` 同时报 `CoreSimulatorService connection became invalid` 和日志文件 `Operation not permitted`，请在沙箱外执行模拟器命令。2026-09-30 已确认本机服务和 iOS 27.0 运行时正常：沙箱外的 `xcrun simctl list devices booted`、`xcrun simctl list runtimes` 和隔离设备的 `bootstatus` 均成功。`xcodebuild` 的模拟器测试也需要相同执行权限。 本次隔离模拟器复验中，36 项单元测试及字母填空、多符号填空、公式补全三项 UI 用例通过；另外四项 UI 用例有定位或点按失败，不能视为 UI 全套通过。完整执行日志保存在 `/private/tmp/2lc3-multi-cloze-verify.log`。
+
 `LibraryStoreTests` 包含离线加载、更新校验、失败回退和快照恢复等测试。UI 测试已改为新 WebKit 主界面，覆盖五项导航、六题型入口、离线启动、关卡重启恢复、原生 JSON 分享与更新失败回退。实际运行结果以测试日志为准；文件导入完整往返、VoiceOver 与真机仍需单独检查。
 
-`FillKeyboardUITests` 专门验证内置 WebKit 的字母与符号填空：一致变量改名、符号切换、提交后键盘锁定、结果与重新开始。iOS 字母填空使用内置键盘，自动前进时保持滚动位置；判题要求重复变量一致，不同变量不能合并。
+`FillKeyboardUITests` 验证内置 WebKit 的七种题型完整作答，包含屏幕 QWERTY、触屏 Tab、名称／Proof 名称补全、公式与符号代码补全、字母与符号填空、结果与重新开始。测试同时检查完整字符键位、Shift、光标编辑和收起后重新输入，并在触控操作后断言系统键盘未出现。希腊变量及数学符号通过反斜线代码补全，再按 Tab 切换空位。判题要求重复变量一致，不同变量不能合并。
 
-发布前应在模拟器与真机检查六项导航、六种题型、范围筛选与预设、错题与统计、退出后恢复关卡、JSON 分享与导入、旧记录迁移，以及更新失败后继续离线学习。飞行模式下首次启动并完成一关，可检查内置资源是否完整。公式判题采用网页版的保守匹配规则，复杂语法和题库覆盖的实际边界见“资料审计”。
+发布前应在模拟器与真机检查七项导航、七种题型、范围筛选与预设、错题与统计、退出后恢复关卡、JSON 分享与导入、旧记录迁移，以及更新失败后继续离线学习。飞行模式下首次启动并完成一关，可检查内置资源是否完整。公式判题采用网页版的保守匹配规则，复杂语法和题库覆盖的实际边界见“资料审计”。
 
-界面采用暖白、松石绿和蓝灰文字，使用彩色关卡与立体按钮；当前统一浅色外观，不使用纯黑背景。iOS 文字大小通过原生 Dynamic Type 与网页 rem 字号桥接同步，保持手机视口尺寸；题库更新面板使用原生可缩放文字。题卡与来源可在线更新，覆盖说明及待核对清单随 App 内置版本发布，并在资料审计中标明。
+界面采用暖白、松石绿和蓝灰文字，使用彩色关卡与立体按钮；支持浅色、深色与跟随系统，不使用纯黑背景。iOS 文字大小通过原生 Dynamic Type 与网页 rem 字号桥接同步，保持手机视口尺寸；题库更新面板使用原生可缩放文字。完整更新清单同时同步题卡、Proof、证明引用、范围及审计元数据；兼容旧版两文件清单时，后几项保留内置版本，并在资料审计中标明。
+
+以下保留早期输入方案的历史测试记录；当前手机版以屏幕 QWERTY 输入方案为准。
 
 本次验证记录（2026-09-30）：网页浏览器集成 41 个场景通过；iOS 首页已在小屏 iPhone 模拟器视觉检查。五项导航、原生分享、关卡重启恢复和更新失败回退至少各有一次模拟器通过记录。完整 UI 测试尚未全部通过：存在并行运行导致的模拟器启动失败、WebKit 可访问性定位问题，且测试中途源码由其他 chat 更新。不能将这些部分通过记录视为全套或真机验收。
 
@@ -73,3 +87,13 @@ xcodebuild -project ios/TheoremQuest.xcodeproj -scheme TheoremQuest \
 最终整合验收（2026-09-30）：包含证明模块及最新名称判题修复的构建，在隔离 iOS 27.0 模拟器上通过全部 35 项单元测试和 10 项 UI 测试，失败 0。覆盖填空键盘、导航、专项复习、证明引用、六项原有题型入口、原生分享、关卡恢复及更新失败回退。较早的部分通过及中断记录保留为历史；最终命令、源码指纹和结果包见 [最终 iOS 测试报告](../docs/FINAL_IOS_TEST_REPORT.md)。真机、完整文件导入往返及 VoiceOver 未在本轮验证。
 
 The production web view also includes the **证明引用** page and offline `notebook-hints.js`: actual proof Hint uses, repeated-use lists by Notebook/year/Week, evidence positions and precise-card focused practice. Coverage and ambiguity handling follow [NOTEBOOK_HINTS](../docs/NOTEBOOK_HINTS.md). The Xcode build regenerates the bundled HTML when this asset changes.
+
+
+四项 UI 失败修复复验（2026-09-30）：选择题、名称补全、证明名称补全、反斜线代码补全四项定向测试全部通过，失败 0。修复 WebKit 固定快捷键在触摸到 click 之间失焦导致操作丢失的问题：固定键在 pointerdown 执行一次，并取消其 touchstart 默认焦点切换；候选列表保留点击与滚动。测试正确识别选择题的 Switch 可访问性类型，并避免重复点按已聚焦的输入框。移动端浏览器回归覆盖触摸后失焦、操作不重复、无指针点击和补全。日志：`/private/tmp/2lc3-ui-touch-fixed.log`；结果包：`/private/tmp/2lc3-ui-touch-fixed.xcresult`。本次为四项定向复验。
+
+
+手机系统键盘同步最终验收（2026-09-30）：当前构建通过全部 36 项单元测试与 17 项 UI 测试（53 项、失败 0），包含七题型、反斜线补全、多空符号和希腊变量输入。网页 42 项冒烟与 50 项引擎测试通过；App 内置脚本和 CSS 与网页源码逐项一致。详细两端对照、源码指纹与验证范围见 [最终 iOS 测试报告](../docs/FINAL_IOS_TEST_REPORT.md)。本轮为本地构建，真机及发布版本尚未验证。
+
+名称补全与键盘排版验收（2026-09-30）：名称/别名按前缀匹配，不显示或填入编号；未命名题目禁用名称补全。答题公式和名称使用 CalcCheck 的 `monospace` 字体。系统键盘打开时题面独立滚动，快捷栏保留至少 44 × 44px 点击区域，检查区在收起键盘后恢复。小屏、大字号 iPhone 模拟器的直接点选名称、Tab 名称补全、Proof 名称补全三项定向测试全部通过（失败 0）；WebKit 与 Chromium 的移动输入回归通过。冻结测试源码与结果包分别保存在 `/private/tmp/2lc3-keyboard-source-snapshot` 和 `/private/tmp/2lc3-keyboard-snapshot-tests.xcresult`；本次相关补全、可视高度和字体样式与冻结版本逐段核对一致。
+
+当前手机版输入验收（2026-09-30）：默认字母／符号大按键填空及主动开启的 QWERTY 填空，分别在小屏 iOS 27 模拟器通过 2 项定向测试（共 4 项，失败 0），覆盖移动、删除、自动前进、正确提交与系统键盘不出现。名称候选点击、Tab、Proof 符号补全和完整键盘重开在前一轮 5 项定向用例中通过。Chromium 与 WebKit 验证默认按钮输入、开关持久化、竖屏／横屏及可选完整键盘；手机混合出题优先选择和填空。相关脚本为 `tests/browser_fill_buttons.py`、`tests/browser_qwerty.py` 和 `tests/browser_session_mixing.py`。真机未在本轮验证。

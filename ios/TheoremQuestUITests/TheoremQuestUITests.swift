@@ -18,16 +18,23 @@ final class TheoremQuestUITests: XCTestCase {
         XCTAssertTrue(button.waitForExistence(timeout: 10), app.debugDescription)
         // WebKit sometimes reports a fixed bottom tab's activation point in
         // document coordinates. Use its visible position on this iPhone UI.
-        if ["闯关", "定理库", "错题本", "资料审计", "设置"].contains(label) {
+        if ["闯关", "定理库", "专项复习", "证明引用", "错题本", "资料审计", "设置"].contains(label) {
             button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
             return
         }
         for _ in 0..<8 {
-            if button.isHittable { break }
-            app.swipeUp()
+            let navigation = app.buttons["闯关"].firstMatch
+            let frame = button.frame
+            let coveredByNavigation = navigation.exists && navigation.isHittable && app.frame.intersects(navigation.frame) && frame.maxY >= navigation.frame.minY - 8
+            if button.isHittable && !coveredByNavigation && frame.minY >= app.frame.minY + 24 { break }
+            let origin = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            let destination = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: frame.minY < app.frame.minY + 24 ? 0.7 : 0.3))
+            origin.press(forDuration: 0.05, thenDragTo: destination)
         }
         XCTAssertTrue(button.isHittable, app.debugDescription)
-        button.tap()
+        let frame = button.frame
+        app.coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: frame.midX - app.frame.minX, dy: frame.midY - app.frame.minY)).tap()
     }
 
     func testAllDestinationsAndOfflineHome() {
@@ -86,7 +93,7 @@ final class TheoremQuestUITests: XCTestCase {
         let start = app.buttons["复习 Hint 定理"].firstMatch
         XCTAssertTrue(start.waitForExistence(timeout: 10), app.debugDescription)
         XCTAssertTrue(start.isEnabled, app.debugDescription)
-        start.tap()
+        tap("复习 Hint 定理", in: app)
         XCTAssertTrue(app.buttons["检查答案"].waitForExistence(timeout: 10), app.debugDescription)
         XCTAssertTrue(app.staticTexts["重复 Hint 定理 · 专项复习"].exists, app.debugDescription)
         let practiceAttachment = XCTAttachment(screenshot: app.screenshot())
@@ -95,17 +102,17 @@ final class TheoremQuestUITests: XCTestCase {
         add(practiceAttachment)
     }
 
-    func testSixPracticeModesAreEmbedded() {
+    func testSevenPracticeModesAreEmbedded() {
         let app = launch()
         tap("闯关", in: app)
         tap("配置练习", in: app)
-        for label in ["名称回忆", "名称选择", "字母填空", "符号填空", "公式拼写", "反斜线符号"] {
+        for label in ["名称回忆", "名称选择", "字母填空", "符号填空", "公式拼写", "反斜线符号", "Proof 定理填空"] {
             XCTAssertTrue(app.switches.matching(NSPredicate(format: "label CONTAINS %@", label)).firstMatch.exists, app.debugDescription)
         }
     }
 
     func testEachModeCanStartOffline() {
-        for mode in ["name", "choice", "blanks", "cloze", "formula", "symbol"] {
+        for mode in ["name", "choice", "blanks", "cloze", "formula", "symbol", "proof"] {
             let app = launch(mode: mode)
             tap("开始 1 题挑战", in: app)
             XCTAssertTrue(app.buttons["检查答案"].waitForExistence(timeout: 10), "Missing mode \(mode): \(app.debugDescription)")

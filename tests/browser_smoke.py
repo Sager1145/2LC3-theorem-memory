@@ -30,7 +30,7 @@ threading.Thread(target=server.serve_forever,daemon=True).start()
 url=f'http://127.0.0.1:{server.server_port}/'
 
 def settings(mode='choice',retry=False,count=1):
- return {'modes':[mode],'count':count,'goal':20,'retry':retry,'sound':False,'scope':{'era':'current','manual':True,'selected':[target['id']]}}
+ return {'modes':[mode],'count':count,'goal':20,'retry':retry,'sound':False,'fullKeyboard':True,'scope':{'era':'current','manual':True,'selected':[target['id']]}}
 
 def page_new(browser,mode='choice',seed=None,width=1440):
  p=browser.new_page(viewport={'width':width,'height':950},device_scale_factor=1)
@@ -50,12 +50,42 @@ def page_new(browser,mode='choice',seed=None,width=1440):
   print(json.dumps({'startupErrors':errors,'url':p.url,'diagnostics':diagnostics,'state':state},ensure_ascii=False),flush=True);raise
  return p
 
-def go(p,v):p.locator(f'[data-action="nav"][data-view="{v}"]').first.click()
+def go(p,v):
+ if v=='audit':go(p,'settings')
+ p.locator(f'[data-action="nav"][data-view="{v}"]').first.click()
 def launch(p):p.locator('[data-action="start"]').first.click();p.wait_for_function('TQDiagnostics().view==="quiz"')
 def ok(p):
  assert p.locator('#quiz-bottom.correct').count()==1,p.locator('#quiz-bottom').inner_text()
 
-def check(p):p.locator('#check-answer').click();p.wait_for_function('TQDiagnostics().checked')
+def screen_key(p,label):p.locator('#screen-keyboard').get_by_role('button',name=label,exact=True).click()
+def dismiss_keyboard(p):
+ if p.locator('#screen-keyboard').is_visible():screen_key(p,'Done')
+def type_screen(p,field,text):
+ field.focus()
+ field.evaluate('(el)=>el.setSelectionRange(0,el.value.length)')
+ screen_key(p,'Backspace')
+ for char in text:
+  label='Space' if char==' ' else char
+  button=p.locator('#screen-keyboard').get_by_role('button',name=label,exact=True)
+  if not button.count():
+   screen_key(p,'Shift');button=p.locator('#screen-keyboard').get_by_role('button',name=label,exact=True)
+  button.click()
+ if not p.locator('#screen-keyboard').get_by_role('button',name='a',exact=True).count():screen_key(p,'Shift')
+def screen_symbol(p,symbol,slot=None):
+ if slot is not None:p.locator(f'[data-action="cloze-slot"][data-slot="{slot}"]').click()
+ code=p.evaluate('(symbol)=>Object.entries(TQEngine.SHORTCUTS).find(([,value])=>value===symbol)[0]',symbol)
+ type_screen(p,p.locator('#cloze-answer'),code);screen_key(p,'Tab')
+def mobile_fixture(field,text):
+ # Grading smoke uses Unicode fixtures; QWERTY typing is covered separately.
+ field.focus();field.evaluate("(el,value)=>{el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));}",text)
+def check(p):
+ dismiss_keyboard(p);p.locator('#check-answer').click();p.wait_for_function('TQDiagnostics().checked')
+def saved_session(p):return json.loads(p.evaluate('window.__testStore["tq.session.v1"]'))
+def assert_active(p,card_id):
+ progress=json.loads(p.evaluate('window.__testStore["tq.progress.v1"]'))
+ assert progress['records'][card_id]['active'],progress['records'][card_id]
+def continue_question(p):p.locator('[data-action="continue"]').click()
+
 with sync_playwright() as pw:
  binary=None if args.channel else shutil.which('chromium') or shutil.which('chromium-browser')
  browser=pw.chromium.launch(executable_path=binary,channel=args.channel,headless=True,args=['--no-sandbox'])
@@ -128,14 +158,14 @@ with sync_playwright() as pw:
  p=page_new(browser,'choice');launch(p);p.locator(f'[data-action="choose"][data-id="{target["id"]}"]').click();check(p);ok(p)
  assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
  p.locator('[data-action="continue"]').click();assert p.evaluate('TQDiagnostics().view')=='result';logs.append('choice: correct selection and results screen');p.close()
- p=page_new(browser,'name');launch(p);assert p.locator('#name-answer').count()==0
- p.locator('[data-action="group-name"]').click();check(p);ok(p)
+ p=page_new(browser,'name');launch(p);assert p.locator('#name-answer').count()==1
+ p.locator('#name-answer').fill(target['name']);check(p);ok(p)
  assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
  assert '同组名称' in p.locator('#quiz-bottom').inner_text()
  logs.append('name: shared theorem group uses a name blank and accepts the group name');p.close()
  p=page_new(browser,'name');launch(p)
  other=next(r for r in bank if r['numbers'] and r['numbers'][-1]=='3.47b')
- p.locator(f'[data-action="group-ref"][data-id="{other["id"]}"]').click();check(p)
+ p.locator('.group-number-picker summary').click();p.locator(f'[data-action="group-ref"][data-id="{other["id"]}"]').click();check(p)
  assert p.locator('#quiz-bottom.incorrect').count()==1
  logs.append('name: a selected number must match the shown formula');p.close()
  p=page_new(browser,'blanks');launch(p)
@@ -148,19 +178,26 @@ with sync_playwright() as pw:
  if shots:p.screenshot(path=str(shots/'blanks-desktop.png'),full_page=True)
  p.close()
  p=page_new(browser,'cloze',width=390);launch(p)
- assert p.locator('#keyboard.cloze-keyboard').is_visible()
+ p.locator('#cloze-answer').focus()
+ assert p.locator('#screen-keyboard').is_visible()
+ assert p.locator('#keyboard.cloze-keyboard').is_hidden()
  assert p.locator('#formula-answer').count()==0
  assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
- slot_index=p.locator('.cloze-slot').evaluate('(el)=>Array.from(el.parentElement.children).indexOf(el)')
- correct=p.evaluate('TQEngine.tokenize('+json.dumps(target['formula'])+')[%d]'%slot_index)
- p.get_by_role('button',name='填入 '+correct).click();check(p);ok(p)
- logs.append('cloze: mobile built-in symbol keyboard fills and grades a formula blank');p.close()
+ template=p.evaluate('JSON.parse(window.__testStore["tq.session.v1"]).state.cloze')
+ assert p.locator('.cloze-slot').count()>=2
+ for i,blank in enumerate(template['blanks']):
+  assert p.locator('#check-answer').is_disabled()
+  screen_symbol(p,blank['correct'],i)
+ check(p);ok(p)
+ logs.append('cloze: mobile QWERTY shortcuts fill all blanks and grade them');p.close()
  p=page_new(browser,'blanks',width=390);launch(p)
- assert p.locator('#keyboard .key').count()>0
+ p.locator('#blank-0').focus()
+ assert p.locator('#screen-keyboard').is_visible()
+ assert p.locator('#keyboard').is_hidden()
  assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
- p.locator('#keyboard [data-action="key"][data-key="p"]').first.click()
+ type_screen(p,p.locator('#blank-0'),'p')
  assert p.locator('#blank-0').input_value()=='p'
- logs.append('letter blanks: mobile built-in keyboard enters a variable');p.close()
+ logs.append('letter blanks: mobile QWERTY enters a variable');p.close()
  p=page_new(browser,'formula');launch(p);p.locator('#formula-answer').fill('¬ (x ∧ y) ≡ ¬ x ∨ ¬ y');check(p);ok(p)
  assert p.locator('#correct-answer').inner_text()==target['formula']
  logs.append('formula: renamed De Morgan accepted');p.close()
@@ -213,7 +250,7 @@ with sync_playwright() as pw:
  browser.close()
  browser=pw.chromium.launch(executable_path=binary,channel=args.channel,headless=True,args=['--no-sandbox'])
  # Current-year notebook and archive Week selectors are real intersections.
- p=page_new(browser,seed={});assert p.evaluate('TQDiagnostics().scopeCount')==current_practice
+ p=page_new(browser,seed={'tq.settings.v1':json.dumps({'modes':['choice']})});assert p.evaluate('TQDiagnostics().scopeCount')==current_practice
  assert p.locator('[data-filter="archiveWeek"]').first.locator('option').count()==2
  assert set(p.locator('[data-filter="week"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))=={'1','2','3','4'}
  p.locator('[data-filter="week"]').first.select_option('1')
@@ -261,7 +298,80 @@ with sync_playwright() as pw:
  assert p.locator('[role="progressbar"]').get_attribute('aria-valuemax')=='2';p.locator('[data-action="continue"]').click()
  assert p.evaluate('TQDiagnostics().question.retry')==1
  p.locator('[data-action="hint"]').click();p.locator('[data-action="close-modal"]').first.click();p.locator('#formula-answer').fill(target['formula']);check(p)
- assert p.locator('#quiz-bottom.incorrect').count()==1;logs.append('wrong answer gets delayed retry; assisted answer cannot repair or earn XP');p.close()
+ assert p.locator('#quiz-bottom.incorrect').count()==1
+ assert len(saved_session(p)['queue'])==2
+ assert_active(p,target['id']);continue_question(p)
+ assert p.evaluate('TQDiagnostics().view')=='result'
+ logs.append('second assisted occurrence stays in wrong bank and ends without a third');p.close()
+ # A requested ten-question quest with one eligible card has at most two
+ # occurrences, including proof and symbol cards; second skips stay active.
+ for mode in ['choice','name','blanks','cloze','formula','symbol','proof']:
+  cap_settings=settings(mode,True,10)
+  if mode=='proof':cap_settings['scope']['selected']=[json.loads((ROOT/'data/proof-questions.json').read_text())[0]['id']]
+  p=page_new(browser,seed={'tq.settings.v1':json.dumps(cap_settings)})
+  launch(p);card_id=p.evaluate('TQDiagnostics().question.id')
+  queue=saved_session(p)['queue'];assert len(queue)==2 and all(q['id']==card_id for q in queue),(mode,queue)
+  for occurrence in range(2):
+   p.locator('[data-action="skip"]').click()
+   assert len(saved_session(p)['queue'])==2,(mode,saved_session(p))
+   assert_active(p,card_id);continue_question(p)
+  assert p.evaluate('TQDiagnostics().view')=='result',mode
+  logs.append(mode+': count=10 single-card quest stops after two skips');p.close()
+ # Wrong-bank review uses the same cap when its requested count exceeds scope.
+ p=page_new(browser,seed={'tq.settings.v1':json.dumps(settings('formula',True,10))})
+ launch(p);p.locator('[data-action="skip"]').click();p.locator('[data-action="exit-quiz"]').click()
+ go(p,'mistakes');p.locator('[data-action="review-all"]').first.click()
+ queue=saved_session(p)['queue'];assert len(queue)==2 and all(q['id']==target['id'] for q in queue),queue
+ for occurrence in range(2):
+  p.locator('[data-action="skip"]').click();assert len(saved_session(p)['queue'])==2
+  continue_question(p)
+ assert p.evaluate('TQDiagnostics().view')=='result';assert_active(p,target['id'])
+ logs.append('wrong-bank count=10 review stops after two occurrences and keeps skipped card active');p.close()
+ # A failed second answer is retained after simulated refresh. Legacy queues
+ # keep the checked feedback but prune third/fourth future occurrences.
+ p=page_new(browser,seed={'tq.settings.v1':json.dumps(settings('formula',True))})
+ launch(p);p.locator('[data-action="skip"]').click();continue_question(p)
+ p.locator('#formula-answer').fill('false');check(p)
+ feedback=p.locator('#quiz-bottom').inner_text()
+ seed=p.evaluate('({...window.__testStore})');legacy=json.loads(seed['tq.session.v1'])
+ assert len(legacy['queue'])==2
+ legacy['queue'].extend([dict(legacy['queue'][-1],retry=2),dict(legacy['queue'][0],mode='name')])
+ seed['tq.session.v1']=json.dumps(legacy);p.close()
+ p=page_new(browser,seed=seed);p.locator('[data-action="resume"]').first.click()
+ assert p.evaluate('TQDiagnostics().checked')
+ assert p.locator('#quiz-bottom').inner_text()==feedback
+ restored=saved_session(p);assert restored['index']==1 and len(restored['queue'])==2,restored
+ assert_active(p,target['id']);continue_question(p)
+ assert p.evaluate('TQDiagnostics().view')=='result'
+ logs.append('legacy resume prunes excess mixed-mode occurrences and retains checked second-failure feedback');p.close()
+ # A legacy unfinished third occurrence is discarded after two recorded
+ # failures, and resume reaches results without rendering another attempt.
+ legacy['index']=2;legacy['state']=None
+ seed['tq.session.v1']=json.dumps(legacy)
+ p=page_new(browser,seed=seed);p.locator('[data-action="resume"]').first.click()
+ assert p.evaluate('TQDiagnostics().view')=='result'
+ assert json.loads(p.evaluate('window.__testStore["tq.progress.v1"]'))['records'][target['id']]['attempts']==2
+ assert_active(p,target['id'])
+ logs.append('legacy unchecked third occurrence resumes directly to results after two failures');p.close()
+ # Five distinct cards put a first failure's retry after three other cards.
+ delayed_settings=settings('choice',True,5)
+ delayed_settings['scope']['selected']=[r['id'] for r in bank if r.get('preloaded2026') and 'inference rule' not in r['kind'].lower()][:5]
+ p=page_new(browser,seed={'tq.settings.v1':json.dumps(delayed_settings)})
+ launch(p);initial=saved_session(p)['queue'];assert len({q['id'] for q in initial})==5
+ failed_id=initial[0]['id'];p.locator('[data-action="skip"]').click()
+ queued=saved_session(p)['queue'];assert len(queued)==6 and queued[4]['id']==failed_id and queued[4]['retry']==1,queued
+ continue_question(p)
+ for q in initial[1:4]:
+  assert p.evaluate('TQDiagnostics().question.id')==q['id']
+  p.locator(f'[data-action="choose"][data-id="{q["id"]}"]').click();check(p);ok(p);continue_question(p)
+ assert p.evaluate('TQDiagnostics().question.id')==failed_id
+ p.locator('[data-action="skip"]').click();assert len(saved_session(p)['queue'])==6
+ assert_active(p,failed_id);continue_question(p)
+ q=p.evaluate('TQDiagnostics().question');assert q['id']==initial[4]['id']
+ p.locator(f'[data-action="choose"][data-id="{q["id"]}"]').click();check(p);ok(p);continue_question(p)
+ assert p.evaluate('TQDiagnostics().view')=='result'
+ assert_active(p,failed_id)
+ logs.append('multi-card quest delays one retry by three cards and never queues a third occurrence');p.close()
  # Backup import requires confirmation; formula-like injected HTML stays text.
  p=page_new(browser,seed={});go(p,'settings');backup={'schemaVersion':1,'records':{},'xp':70,'days':{},'stars':[target['id']],'history':[]}
  p.locator('#backup-file').set_input_files({'name':'backup.json','mimeType':'application/json','buffer':json.dumps(backup).encode()})
@@ -296,36 +406,45 @@ with sync_playwright() as pw:
   if shots and w==390:p.screenshot(path=str(shots/'home-mobile.png'),full_page=True)
   launch(p);assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),('quiz overflow',w,p.evaluate('document.documentElement.scrollWidth'))
   if shots and w==390:p.screenshot(path=str(shots/'formula-mobile.png'),full_page=True)
-  p.locator('#formula-answer').fill('true');check(p);assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
+  type_screen(p,p.locator('#formula-answer'),'true');check(p);assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
   logs.append(f'{w}px responsive home / quiz / feedback: no horizontal overflow');p.close()
  # Complete point-and-tap answer flows at both phone widths.
  for w in [320,390]:
   p=page_new(browser,'cloze',width=w);launch(p)
-  slot_index=p.locator('.cloze-slot').evaluate('(el)=>Array.from(el.parentElement.children).indexOf(el)')
-  correct=p.evaluate('TQEngine.tokenize('+json.dumps(target['formula'])+')[%d]'%slot_index)
-  options=p.locator('[data-action="cloze-key"]').evaluate_all('(buttons)=>buttons.map(b=>b.dataset.token)')
-  wrong=next(token for token in options if token!=correct)
-  p.get_by_role('button',name='填入 '+wrong,exact=True).click()
-  assert p.locator('.cloze-slot').inner_text()==wrong
-  p.get_by_role('button',name='填入 '+correct,exact=True).click()
+  template=p.evaluate('JSON.parse(window.__testStore["tq.session.v1"]).state.cloze')
+  correct=template['blanks'][0]['correct']
+  wrong=next(token for token in template['options'] if token!=correct)
+  screen_symbol(p,wrong,0)
+  assert p.locator('.cloze-slot').nth(0).inner_text()==wrong
+  p.locator('.cloze-slot').nth(0).click()
+  screen_symbol(p,correct,0)
   p.locator('[data-action="exit-quiz"]').click();p.locator('[data-action="resume"]').click()
-  assert p.locator('.cloze-slot').inner_text()==correct
+  assert p.locator('.cloze-slot').nth(0).inner_text()==correct
+  assert p.locator('#check-answer').is_disabled()
+  for i,blank in enumerate(template['blanks'][1:],1):screen_symbol(p,blank['correct'],i)
+  p.locator('.cloze-slot').nth(1).click();type_screen(p,p.locator('#cloze-answer'),'')
+  assert p.locator('#check-answer').is_disabled()
+  screen_symbol(p,template['blanks'][1]['correct'],1)
   check(p);ok(p)
-  assert p.locator('#keyboard button:enabled').count()==0
+  assert p.locator('#screen-keyboard').is_hidden()
+  assert p.locator('#keyboard').is_hidden()
+  assert p.locator('.cloze-slot:enabled').count()==0
   assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
-  logs.append(f'{w}px cloze: change selection, resume it, grade and lock symbol keys');p.close()
+  logs.append(f'{w}px cloze: multiple blanks, correction, resume, deletion, grading and locking');p.close()
   p=page_new(browser,'blanks',width=w);launch(p)
   template=p.evaluate('TQEngine.blankTemplate('+json.dumps(target['formula'])+')')
   for i,b in enumerate(template['blanks']):
    p.locator(f'#blank-{i}').click()
-   p.get_by_role('button',name='输入 '+b['variable'],exact=True).click()
+   if all(ord(char)<128 for char in b['variable']):type_screen(p,p.locator(f'#blank-{i}'),b['variable'])
+   else:mobile_fixture(p.locator(f'#blank-{i}'),b['variable'])
    assert p.locator(f'#blank-{i}').input_value()==b['variable']
   check(p);ok(p)
   assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
-  logs.append(f'{w}px letter blanks: complete and grade every slot using the built-in keyboard');p.close()
+  logs.append(f'{w}px letter blanks: complete and grade every slot using screen QWERTY');p.close()
   p=page_new(browser,'name',width=w);launch(p)
-  p.locator('[data-action="group-name"]').click()
-  p.locator(f'[data-action="group-ref"][data-id="{target["id"]}"]').click();check(p);ok(p)
+  mobile_fixture(p.locator('#name-answer'),target['name'])
+  dismiss_keyboard(p)
+  p.locator('.group-number-picker summary').click();p.locator(f'[data-action="group-ref"][data-id="{target["id"]}"]').click();check(p);ok(p)
   assert p.locator('.group-results').is_visible()
   assert target['formula'] in p.locator('.group-results').inner_text()
   assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1')

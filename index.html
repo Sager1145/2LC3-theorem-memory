@@ -8,12 +8,20 @@
   <title>Theorem Quest · 定理闯关</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./assets/style.css?v=20260930-learning-ui">
-  <script defer src="./assets/engine.js?v=20260930-learning-ui"></script>
-  <script defer src="./assets/data.js?v=20260930-learning-ui"></script>
+  <script>
+    try {
+      const preferences=JSON.parse(localStorage.getItem('tq.settings.v1')||'{}');
+      document.documentElement.dataset.theme=preferences.appearance==='dark'||preferences.appearance!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      document.documentElement.lang=preferences.language==='en'?'en':'zh-CN';
+    } catch (_) { document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+  </script>
+  <link rel="stylesheet" href="./assets/style.css?v=20260930-touch-feedback">
+  <script defer src="./assets/engine.js?v=20260930-touch-feedback"></script>
+  <script defer src="./assets/data.js?v=20260930-qwerty"></script>
   <script defer src="./assets/proofs.js?v=20260930-proof"></script>
   <script defer src="./assets/notebook-hints.js?v=20260930-hint-usage"></script>
-  <script defer src="./assets/app.js?v=20260930-bank-updates"></script>
+  <script defer src="./assets/i18n.js?v=20260930-touch-feedback"></script>
+  <script defer src="./assets/app.js?v=20260930-touch-feedback"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>

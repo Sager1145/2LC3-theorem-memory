@@ -42,6 +42,34 @@ test('every backslash command is convertible and can be suggested for symbol pra
  const q=E.makeSession([{id:'s',formula:'p ∧ q'}],['symbol'],1,()=>0.5);
  assert.equal(q[0].mode,'symbol');
 });
+test('every special symbol blank has a backslash input command',()=>{
+ const t=E.clozeTemplate('p ≡ q ≢ r ⇒ s ⇐ t ∧ u ∨ v ¬ w ≠ x ≤ y ≥ z ∈ a ∉ b ⊆ c ⊂ d ⊇ e ⊃ f ∪ g ∩ h ∖ i ∀ j ∃ k');
+ const available=new Set(Object.values(E.SHORTCUTS));
+ for(const {correct} of t.blanks)assert(available.has(correct),correct);
+ assert.equal(E.normalizeInput(String.raw`A \setminus B`),'A ∖ B');
+});
+test('backslash suggestions open immediately and narrow as the command is typed',()=>{
+ const suggestions=E.shortcutSuggestions('\\');
+ assert.equal(suggestions.length,20);
+ assert(suggestions.every(({key,symbol})=>E.SHORTCUTS[key]===symbol));
+ assert.deepEqual(E.shortcutSuggestions('\\',3),suggestions.slice(0,3));
+ const letterMatches=E.shortcutSuggestions('\\l');
+ assert(letterMatches.length>0);
+ assert(letterMatches.every(({key})=>key.toLowerCase().startsWith('\\l')));
+ assert(letterMatches.some(({key})=>key==='\\land'));
+ assert.deepEqual(E.shortcutSuggestions('\\L'),letterMatches);
+ for(const prefix of ['', 'land', '\\unknown', '\\l ', null])assert.deepEqual(E.shortcutSuggestions(prefix),[]);
+});
+test('shortcut prefixes follow the caret and ignore later text',()=>{
+ assert.deepEqual(E.shortcutPrefix('p \\'),{start:2,prefix:'\\'});
+ assert.deepEqual(E.shortcutPrefix('p \\land q',3),{start:2,prefix:'\\'});
+ assert.deepEqual(E.shortcutPrefix('p \\land q',4),{start:2,prefix:'\\l'});
+ assert.deepEqual(E.shortcutPrefix('p \\land q',6),{start:2,prefix:'\\lan'});
+ assert.deepEqual(E.shortcutPrefix('p \\land \\l'),{start:8,prefix:'\\l'});
+ assert.equal(E.shortcutPrefix('p \\land q',2),null);
+ assert.equal(E.shortcutPrefix('p \\land q'),null);
+ assert.equal(E.shortcutPrefix('p \\unknown'),null);
+});
 test('consistent renaming, Greek, primes and subscripts',()=>{
  okay('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q','¬ (x ∧ y) ≡ ¬ x ∨ ¬ y');
  okay('p ∧ (p ⇒ q) ⇒ q',"α ∧ (α ⇒ β') ⇒ β'");
@@ -110,6 +138,52 @@ test('shared theorem names accept the group, while numbered answers identify the
  assert.equal(E.gradeName(bank,unnamed,{typed:'原文未命名'}).ok,false);
  assert.equal(E.gradeName(bank,unnamed,{typed:'11.47'}).ok,true);
 });
+test('name completions rank actual names and alias prefixes without adding references or formulas',()=>{
+ const records=[
+  {id:'contains',name:'A Golden rule',aliases:[],numbers:['3.47'],displayRef:'(3.47)',formula:'p Golden q'},
+  {id:'prefix',name:'Golden rule variant',aliases:['The gold law'],numbers:['3.48'],displayRef:'(3.48)'},
+  {id:'exact',name:'Golden rule',aliases:['Gold law'],numbers:['3.49'],displayRef:'(3.49)'},
+  {id:'shared',name:'Golden rule',aliases:['Gold law'],numbers:['3.50'],displayRef:'(3.50)'}
+ ];
+ assert.deepEqual(E.nameCompletions(records,'Golden rule'),['Golden rule','Golden rule variant']);
+ assert.deepEqual(E.nameCompletions(records,'gold law'),['Gold law']);
+ assert.deepEqual(E.nameCompletions([{name:'A Golden rule',aliases:['The gold law']}],'Golden'),[]);
+ assert.deepEqual(E.nameCompletions(records,'Golden rule',2),['Golden rule','Golden rule variant']);
+ assert.deepEqual(E.nameCompletions(records,'3.47'),[]);
+ assert.deepEqual(E.nameCompletions(records,'p Golden q'),[]);
+ assert.deepEqual(E.nameCompletions(records,'unknown'),[]);
+ for(const record of records.slice(2))assert.equal(E.gradeName(records,record,{typed:'Golden rule'}).ok,true);
+ assert.equal(E.gradeName(records,records[2],{typed:'Gold law'}).ok,true);
+});
+test('name completions preserve the raw three-character threshold and exclude unnamed or numeric candidates',()=>{
+ const records=[
+  {name:'Law',aliases:['Other law','123','11.47','原文未命名','']},
+  {name:'law',aliases:['other LAW']},
+  {name:'原文未命名',aliases:['Secret law']},
+  {name:'',aliases:['Empty law']},
+  {aliases:['Missing law']},
+  {name:'123',aliases:[]}
+ ];
+ for(const query of ['',null,'La','😀'])assert.deepEqual(E.nameCompletions(records,query),[]);
+ assert.deepEqual(E.nameCompletions(records,'  L'),['Law']);
+ assert.deepEqual(E.nameCompletions(records,'LAW'),['Law']);
+ for(const query of ['   ','Secret','Empty','Missing','原文未','123','11.47'])assert.deepEqual(E.nameCompletions(records,query),[]);
+});
+test('published theorem completions contain names and aliases only, with shared names offered once',()=>{
+ assert.deepEqual(E.nameCompletions(bank,'3.47'),[]);
+ assert.deepEqual(E.nameCompletions(bank,'原文未'),[]);
+ const complements=E.nameCompletions(bank,'Complement of ∪');
+ assert(complements.includes('Complement of ∪'));
+ const deMorgan=E.nameCompletions(bank,'De Morgan');
+ assert.equal(deMorgan.filter(name=>E.normalizeName(name)===E.normalizeName('De Morgan')).length,1);
+ const known=new Set(bank.filter(r=>r.name&&r.name!=='原文未命名').flatMap(r=>[r.name,...(r.aliases||[])]));
+ for(const query of ['De Morgan','Complement','Identity','Strengthening']){
+  const names=E.nameCompletions(bank,query);
+  assert(names.length>0,query);
+  assert(names.every(name=>known.has(name)),query);
+  assert.equal(new Set(names.map(E.normalizeName)).size,names.length,query);
+ }
+});
 test('complex formulas are less likely to use free spelling when other modes are enabled',()=>{
  const long={id:'long',formula:'(∀ x ❙ R • (∀ y ❙ Q • P )) ≡ (∀ x ❙ R • (∀ y ❙ Q • P ))'};
  const short={id:'short',formula:'p ∧ q ≡ q ∧ p'};
@@ -131,15 +205,22 @@ test('answer feedback includes every name, reference and formula with the curren
  const unnamed={...a,id:'unnamed',name:'原文未命名'};
  assert.equal(E.answerVariants([unnamed,{...unnamed,id:'other'}],unnamed).length,1);
 });
-test('symbol cloze hides a real formula token and offers a built-in choice set',()=>{
- const t=E.clozeTemplate('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q',()=>0);
- assert(t&&t.options.includes(t.correct));
- assert.equal(t.tokens[t.index],t.correct);
- assert(!E.isVariable(t.correct));
+test('symbol cloze requires multiple blanks and grades every occurrence',()=>{
+ const formula='¬ (p ∧ q) ≡ ¬ p ∨ ¬ q',t=E.clozeTemplate(formula,()=>0);
+ assert.equal(t.blanks.length,3);
+ for(const b of t.blanks){assert.equal(t.tokens[b.index],b.correct);assert(t.options.includes(b.correct));}
+ const values=t.blanks.map(b=>b.correct);
+ assert(E.gradeCloze(t,values));
+ assert.equal(E.fillCloze(t,values),E.tokenize(formula).join(' '));
+ for(let i=0;i<values.length;i++){const wrong=values.slice();wrong[i]=t.options.find(x=>x!==values[i]);assert(!E.gradeCloze(t,wrong));}
+ assert(!E.gradeCloze(t,values.slice(1)));
+ assert(!E.gradeCloze(t,[...values,'∧']));
+ const incomplete=values.slice();incomplete[1]='';assert.equal(E.fillCloze(t,incomplete),null);
  assert.equal(E.clozeTemplate('true'),null);
- assert(E.eligibleModes({formula:'p ∧ q'},['cloze']).includes('cloze'));
- assert(!E.eligibleModes({formula:'true'},['cloze']).includes('cloze'));
- assert.equal(E.makeSession([{id:'x',formula:'p ∧ q'}],['cloze'],1,()=>0.5)[0].mode,'cloze');
+ assert.equal(E.clozeTemplate('p ∧ q'),null);
+ assert(!E.eligibleModes({formula:'p ∧ q'},['cloze']).includes('cloze'));
+ assert(E.eligibleModes({formula},['cloze']).includes('cloze'));
+ assert.equal(E.makeSession([{id:'x',formula}],['cloze'],1,()=>0.5)[0].mode,'cloze');
 });
 test('queue only draws checked modes and current scope',()=>{
  const small=bank.filter(E.isQuestionCard).slice(0,12),q=E.makeSession(small,['choice','formula'],12,()=>0.4);
@@ -155,6 +236,41 @@ test('inference rules never become questions',()=>{
  assert.equal(bank.filter(E.isQuestionCard).length,bank.length-rules.length);
  assert(E.makeSession(bank,['name','choice','blanks','formula','symbol'],100,()=>0.4).every(q=>E.isQuestionCard(bank.find(r=>r.id===q.id))));
  assert.throws(()=>E.makeSession(rules,['choice'],1));
+});
+test('each card appears at most twice, including mixed modes and small scopes',()=>{
+ const cards=[{id:'a',formula:'p ∧ q'},{id:'b',formula:'p ∨ q'}];
+ for(const options of [{},{mobile:true},{modesForRecord:r=>r.id==='a'?['formula']:['choice']}]){
+  const queue=E.makeSession(cards,['choice','formula'],20,()=>0.4,2,options);
+  assert.equal(queue.length,4);
+  for(const r of cards)assert.equal(queue.filter(q=>q.id===r.id).length,2);
+ }
+ assert.equal(E.makeSession([cards[0]],['formula'],10).length,2);
+ const proof={id:'proof',formula:'p',proof:{answers:['Law']}};
+ const queue=E.makeSession([...cards,proof],['formula','proof'],20,()=>0.4);
+ assert.equal(queue.length,6);assert.equal(queue.filter(q=>q.id==='proof').length,2);
+});
+test('delayed retry replaces a scheduled occurrence and stops after the second appearance',()=>{
+ const first={id:'a',mode:'symbol',retry:0,symbol:'∧'};
+ const queue=[first,...['b','c','d','e'].map(id=>({id,mode:'name',retry:0})),{id:'a',mode:'formula',retry:0}];
+ const retried=E.retryQuestion(queue,0);
+ assert.equal(retried.length,queue.length);
+ assert.deepEqual(retried[4],{...first,retry:1});
+ assert.deepEqual(retried.filter(q=>q.id==='a').map(q=>q.mode),['symbol','symbol']);
+ assert.equal(E.retryQuestion(retried,4).filter(q=>q.id==='a').length,2);
+ assert.equal(E.retryQuestion([first],0).length,2);
+});
+test('resuming old quests removes excess pending occurrences and preserves feedback',()=>{
+ const q=(id,mode='name')=>({id,mode,retry:0});
+ const state={checked:true,feedback:{ok:false}};
+ const session={queue:[q('a'),q('a','formula'),q('a','choice'),q('b')],index:1,state};
+ const capped=E.limitSessionOccurrences(session);
+ assert.deepEqual(capped.queue.map(q=>q.id),['a','a','b']);
+ assert.equal(capped.index,1);assert.equal(capped.state,state);
+ const exhausted=E.limitSessionOccurrences({...session,index:2,state:{checked:false,typed:'old answer'}});
+ assert.deepEqual(exhausted.queue.map(q=>q.id),['a','a','b']);
+ assert.equal(exhausted.index,2);assert.equal(exhausted.state,null);
+ const legacyId='p-b1df9f7082d5',id=E.canonicalId(legacyId);
+ assert.equal(E.limitSessionOccurrences({queue:[q(legacyId),q(id),q(legacyId)],index:0,state:null}).queue.length,2);
 });
 test('wrong bank: two unaided wins in each failed mode are required',()=>{
  const p=E.freshProgress(),id=bank[0].id;

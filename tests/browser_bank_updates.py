@@ -11,6 +11,9 @@ import argparse
 import json
 import shutil
 import threading
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
+from build_site import study_payload
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 
@@ -24,10 +27,11 @@ updated = deepcopy(original[1:])
 added = deepcopy(original[0]); added['id'] = 'p-bank-update-test'; added['name'] = 'Verified updated theorem'
 updated.append(added)
 
-def payload(bank):
+def payload(bank, study=None):
     texts = {'theorems': json.dumps(bank, ensure_ascii=False), 'sources': json.dumps(sources, ensure_ascii=False)}
+    if study is not None: texts['study'] = json.dumps(study, ensure_ascii=False)
     hashes = {key: hashlib.sha256(text.encode()).hexdigest() for key, text in texts.items()}
-    manifest = {'schemaVersion': 1, 'revision': hashlib.sha256((hashes['theorems'] + ':' + hashes['sources']).encode()).hexdigest(),
+    manifest = {'schemaVersion': 1, 'revision': hashlib.sha256((':'.join(hashes.values())).encode()).hexdigest(),
                 'theoremCount': len(bank), 'files': {key: {'path': 'data/' + key + '.json', 'sha256': digest} for key, digest in hashes.items()}}
     return texts, manifest
 
@@ -67,8 +71,9 @@ with sync_playwright() as pw:
     def settings(page):
         page.locator('[data-action="bank-entrance"]').click()
         page.wait_for_function('TQDiagnostics().view === "settings"')
-    def routes(context, bank, defect=None):
-        texts, manifest = payload(bank)
+    def routes(context, bank, defect=None, study=None):
+        texts, manifest = payload(bank, study)
+        if defect == 'studyhash': texts['study'] += ' '
         if defect == 'hash': manifest['files']['theorems']['sha256'] = '0' * 64
         if defect == 'count': manifest['theoremCount'] += 1
         if defect == 'schema': manifest['schemaVersion'] = 2
@@ -149,16 +154,52 @@ with sync_playwright() as pw:
     invalid = deepcopy(updated); invalid[0]['sources'][0]['sourceId'] = 'missing-source'
     context, page = create(); settings(page); routes(context, invalid)
     assert '更新失败' in check(page); context.close(); browser.close()
+    # Proof/Hint-only updates must install, persist, refresh metadata and resume.
+    study = study_payload()
+    study['proofQuestions'][0]['id'] = 'proof-parity-update'
+    study['proofQuestions'][0]['name'] = 'Proof parity marker'
+    study['notebookHints']['groups'][0]['label'] = 'Hint parity marker'
+    study['bank']['coverage']['notice'] = 'Audit parity marker'
+    context, page = create()
+    page.evaluate("localStorage.setItem('tq.session.v1',JSON.stringify({queue:[{id:THEOREM_DATA.theorems.find(r=>TQEngine.isQuestionCard(r)).id,mode:'formula',retry:0}],index:0,results:[],state:{typed:'stale answer'}}))")
+    page.reload(); page.wait_for_function('typeof TQDiagnostics === "function"')
+    settings(page); seen = routes(context, original, study=study)
+    assert '已安装题库更新' in check(page)
+    assert len(seen) == 4
+    def verify_study():
+        assert page.evaluate('PROOF_QUESTIONS.some(r=>r.id==="proof-parity-update")')
+        assert page.evaluate('NOTEBOOK_HINTS.groups[0].label') == 'Hint parity marker'
+        assert page.evaluate('THEOREM_DATA.coverage.notice') == 'Audit parity marker'
+        assert page.evaluate('JSON.parse(localStorage.getItem("tq.session.v1")).state') is None
+    verify_study()
+    page.reload(); page.wait_for_function('typeof TQDiagnostics === "function"'); verify_study()
+    settings(page); assert '已是最新版本' in check(page)
+    context.close(); browser.close()
+    for defect in ['studyhash', 'studystructure']:
+        bad = deepcopy(study)
+        if defect == 'studystructure': del bad['notebookHints']['groups']
+        context, page = create(); settings(page); routes(context, original, defect, study=bad)
+        assert '更新失败' in check(page)
+        assert not page.evaluate('PROOF_QUESTIONS.some(r=>r.id==="proof-parity-update")')
+        context.close(); browser.close()
+    # The native bootstrap uses exactly the same overlay and revision semantics.
+    context, page = create()
+    native = {'theorems': original, 'sources': sources, 'study': study, 'revision': 'b'*64}
+    context.add_init_script('window.TQ_NATIVE=true;window.TQNativeData='+json.dumps(native)+';window.webkit={messageHandlers:{quest:{postMessage(){}}}};')
+    page.evaluate("localStorage.setItem('tq.bank.revision', JSON.stringify('old'));localStorage.setItem('tq.session.v1',JSON.stringify({queue:[{id:THEOREM_DATA.theorems.find(r=>TQEngine.isQuestionCard(r)).id,mode:'formula',retry:0}],index:0,results:[],state:{typed:'stale answer'}}))")
+    page.reload(); page.wait_for_function('typeof TQDiagnostics === "function"'); verify_study()
+    assert page.evaluate('TQDiagnostics().bankRevision') == 'b'*64
+    context.close(); browser.close()
     context, page = create(portable=True); settings(page)
     assert page.locator('[data-action="check-bank-update"]').count() == 0
     assert page.get_by_role('link', name='打开在线题库').get_attribute('href') == 'https://sager1145.github.io/2LC3-theorem-memory/'
     context.close(); browser.close()
     context, page = create(native=True)
     page.locator('[data-action="bank-entrance"]').click()
-    assert page.evaluate('__nativeMessages') == [{'action': 'updates'}]
+    assert page.evaluate('__nativeMessages.filter(m=>m.action==="updates")') == [{'action': 'updates'}]
     page.locator('[data-action="nav"][data-view="settings"]').click()
     page.locator('[data-action="native-updates"]').click()
-    assert page.evaluate('__nativeMessages') == [{'action': 'updates'}, {'action': 'updates'}]
+    assert page.evaluate('__nativeMessages.filter(m=>m.action==="updates")') == [{'action': 'updates'}, {'action': 'updates'}]
     assert page.locator('[data-action="check-bank-update"]').count() == 0
     context.close(); browser.close()
 server.shutdown()

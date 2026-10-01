@@ -85,16 +85,25 @@ for(const r of cards){
  if(eligible.includes('cloze')){
   const tokens=E.tokenize(r.formula),operators=new Set(['≡','≢','⇒','⇐','∧','∨','¬','=','≠','<','≤','>','≥','+','-','·','/','∈','∉','⊆','⊂','⊇','⊃','∪','∩','∖','∀','∃']);
   const candidates=tokens.map((token,index)=>({token,index})).filter(x=>operators.has(x.token));
-  for(let i=0;i<candidates.length;i++){
-   coverage.clozePositions++;const c=E.clozeTemplate(r.formula,()=> (i+.5)/candidates.length);
-   check('cloze',r.id,'every eligible position reachable',candidates[i].index,()=>c.index);
-   check('cloze',r.id,'hidden token equals original',tokens[c.index],()=>c.correct);
-   check('cloze',r.id,'correct option appears once',1,()=>c.options.filter(x=>x===c.correct).length);
-   check('cloze',r.id,'unique options',c.options.length,()=>new Set(c.options).size);
-   // Mirrors the UI's exact-symbol decision; structural equivalence is not the cloze contract.
-   for(const option of c.options)check('cloze-ui-contract',r.id,'exact token grade',option===tokens[c.index],()=>option===c.correct,option);
+  const c=E.clozeTemplate(r.formula,()=>0.5,3),values=c.blanks.map(b=>b.correct);
+  check('cloze',r.id,'at least one symbol blank',true,()=>c.blanks.length>=1);
+  const hasConnector=candidates.some(b=>b.token==='='||b.token==='≡');
+  check('cloze',r.id,'hard hides all symbols except one connector',candidates.length-(hasConnector?1:0),()=>c.blanks.length);
+  check('cloze',r.id,'only eligible positions hidden',true,()=>c.blanks.every(b=>candidates.some(x=>x.index===b.index)));
+  if(hasConnector)check('cloze',r.id,'one equality connector remains visible',1,()=>candidates.filter(b=>(b.token==='='||b.token==='≡')&&!c.blanks.some(x=>x.index===b.index)).length);
+  check('cloze',r.id,'easy has one blank',1,()=>E.clozeTemplate(r.formula,()=>0.5,1).blanks.length);
+  check('cloze',r.id,'standard hides half remaining symbols',Math.ceil(c.blanks.length/2),()=>E.clozeTemplate(r.formula,()=>0.5,2).blanks.length);
+  check('cloze',r.id,'complete answer accepted',true,()=>E.gradeCloze(c,values));
+  check('cloze',r.id,'incomplete answer rejected',false,()=>E.gradeCloze(c,values.slice(1)));
+  check('cloze',r.id,'formula reconstructed',tokens.join(' '),()=>E.fillCloze(c,values));
+  check('cloze',r.id,'unique options',c.options.length,()=>new Set(c.options).size);
+  for(let i=0;i<c.blanks.length;i++){
+   coverage.clozePositions++;const blank=c.blanks[i];
+   check('cloze',r.id,'hidden token equals original',tokens[blank.index],()=>blank.correct);
+   check('cloze',r.id,'correct option appears once',1,()=>c.options.filter(x=>x===blank.correct).length);
+   for(const option of c.options){const answer=values.slice();answer[i]=option;check('cloze-ui-contract',r.id,'each slot graded exactly',option===blank.correct,()=>E.gradeCloze(c,answer),option);}
   }
- }else check('cloze',r.id,'operatorless formula has no cloze',null,()=>E.clozeTemplate(r.formula));
+ }else check('cloze',r.id,'fewer than two operators has no cloze',null,()=>E.clozeTemplate(r.formula));
  if(eligible.includes('symbol'))for(const symbol of E.symbolsInFormula(r.formula)){
   coverage.symbolOccurrences++;const entries=Object.entries(E.SHORTCUTS).filter(([,s])=>s===symbol);
   for(const [key] of entries){check('symbol',r.id,'shortcut accepted by UI contract',true,()=>E.SHORTCUTS[key]===symbol,key);
@@ -170,7 +179,11 @@ measured('progressStress',()=>{
  const json=JSON.stringify(p),restored=E.validateProgress(JSON.parse(json),all.map(r=>r.id));
  check('stress-progress','global','backup counters and logs survive',true,()=>all.every(r=>restored.records[r.id].attempts===p.records[r.id].attempts&&restored.records[r.id].correct===p.records[r.id].correct&&restored.records[r.id].wrong===p.records[r.id].wrong&&restored.records[r.id].log.length===12));
  stress.progressAttempts=n;stress.progressRecords=Object.keys(p.records).length;stress.progressBackupBytes=Buffer.byteLength(json);
- const q=E.makeSession(all,modes,20000,seeded(77));check('stress-session','global','large session length',20000,()=>q.length);
+ const q=E.makeSession(all,modes,20000,seeded(77));
+ const eligibleIds=new Set(all.filter(r=>E.eligibleModes(r,modes).length).map(r=>E.canonicalId(r.id)));
+ check('stress-session','global','large session stops at two appearances per eligible card',Math.min(20000,eligibleIds.size*2),()=>q.length);
+ const appearances=new Map();for(const question of q){const id=E.canonicalId(question.id);appearances.set(id,(appearances.get(id)||0)+1);}
+ check('stress-session','global','every card respects the occurrence cap',true,()=>[...appearances.values()].every(n=>n<=2));
  const ids=new Set(all.map(r=>r.id));check('stress-session','global','large session stays inside scope and eligible mode',true,()=>q.every(x=>ids.has(x.id)&&E.eligibleModes(all.find(r=>r.id===x.id),modes).includes(x.mode)));stress.sessionLength=q.length;
 });
 const report={startedAt,finishedAt:new Date().toISOString(),durationMs:+(performance.now()-start).toFixed(3),node:process.version,engineSha256,memory:process.memoryUsage(),coverage,checks,counters,timings,stress,failedChecks:failures.length,failures,limitations:['Choice grading and cloze/symbol decisions reproduce assets/app.js contracts; browser behavior is covered separately.','Every question card has complete declaration-pool choice coverage at all eligible difficulties; 12 additional complete-pool runs measure warm repeat performance.','Stress is bounded: 20,000 repeated formula decisions, 100,000 progress updates and a 20,000-question generated session.','Declared variants are accepted independently; arbitrary semantic rewrites outside the matcher contract are not claimed.']};

@@ -25,11 +25,12 @@ private enum Fixture {
 
     static func manifest(theorems: Data = newTheorems, sources: Data = sources,
                          schema: Int = 1, count: Int = 1, corruptHash: Bool = false,
-                         upperHashes: Bool = false) -> Data {
+                         upperHashes: Bool = false, study: Data? = nil) -> Data {
         let theoremHash = hash(theorems)
         let sourceHash = hash(sources)
-        let revision = hash(Data("\(theoremHash):\(sourceHash)".utf8))
-        let object: [String: Any] = [
+        let hashes = [theoremHash, sourceHash] + (study.map { [hash($0)] } ?? [])
+        let revision = hash(Data(hashes.joined(separator: ":").utf8))
+        var object: [String: Any] = [
             "schemaVersion": schema, "revision": revision, "theoremCount": count,
             "builtAt": "2026-09-30T12:00:00Z",
             "files": [
@@ -37,6 +38,11 @@ private enum Fixture {
                 "sources": ["path": "data/sources.json", "sha256": upperHashes ? sourceHash.uppercased() : sourceHash]
             ]
         ]
+        if let study {
+            var files = object["files"] as! [String: Any]
+            files["study"] = ["path": "data/study.json", "sha256": hash(study)]
+            object["files"] = files
+        }
         return try! JSONSerialization.data(withJSONObject: object)
     }
 
@@ -135,6 +141,82 @@ struct LibraryStoreTests {
         await restored.load()
         #expect(restored.theorems.map(\.id) == ["new"])
         #expect(restored.manifest?.revision == revision)
+    }
+
+    @Test func studyOnlyChangeInstallsAndRestoresWithUnchangedTheorems() async throws {
+        let study = Data("""
+        {"schemaVersion":1,"bank":{"coverage":{"current2026PracticeCount":1},"weekBySource":{}},"proofQuestions":[],"proofSources":[],"notebookHints":{"notebooks":[],"groups":[]}}
+        """.utf8)
+        let manifest = Fixture.manifest(theorems: Fixture.seedTheorems, study: study)
+        var responses = Fixture.responses(manifest: manifest, theorems: Fixture.seedTheorems)
+        responses["/data/study.json"] = study
+        let log = RequestLog()
+        let (store, directory, defaults) = environment(responses, log: log)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        await store.load()
+        await store.checkForUpdates(force: true)
+        #expect(store.theorems.map(\.id) == ["seed"])
+        #expect(store.webStudySnapshot == study)
+        #expect(store.statusMessage.contains("已更新"))
+        #expect(await log.all().last == "/data/study.json")
+        let restored = LibraryStore(storageDirectory: directory,
+                                    seedData: (Fixture.seedTheorems, Fixture.sources), defaults: defaults)
+        await restored.load()
+        #expect(restored.webStudySnapshot == study)
+        #expect(restored.manifest?.revision == store.manifest?.revision)
+    }
+
+    @Test func badStudyChecksumPreservesPreviouslyInstalledSnapshot() async throws {
+        let study = Data("""
+        {"schemaVersion":1,"bank":{"coverage":{},"weekBySource":{}},"proofQuestions":[],"proofSources":[],"notebookHints":{"notebooks":[],"groups":[]}}
+        """.utf8)
+        let expected = Data("""
+        {"schemaVersion":1,"bank":{"coverage":{},"weekBySource":{},"revisionLabel":"next"},"proofQuestions":[],"proofSources":[],"notebookHints":{"notebooks":[],"groups":[]}}
+        """.utf8)
+        var initialResponses = Fixture.responses(manifest: Fixture.manifest(study: study))
+        initialResponses["/data/study.json"] = study
+        let (installed, directory, defaults) = environment(initialResponses)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        await installed.load()
+        await installed.checkForUpdates(force: true)
+        let oldRevision = installed.manifest?.revision
+        let manifest = Fixture.manifest(study: expected)
+        var responses = Fixture.responses(manifest: manifest)
+        responses["/data/study.json"] = study
+        let failedResponses = responses
+        let updating = LibraryStore(storageDirectory: directory,
+                                   seedData: (Fixture.seedTheorems, Fixture.sources), defaults: defaults,
+                                   fetchData: { request in
+            let path = request.url!.path.replacingOccurrences(of: "/2LC3-theorem-memory", with: "")
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (failedResponses[path]!, response)
+        })
+        await updating.load()
+        await updating.checkForUpdates(force: true)
+        #expect(updating.manifest?.revision == oldRevision)
+        #expect(updating.theorems.map(\.id) == ["new"])
+        #expect(updating.webStudySnapshot == study)
+        #expect(updating.statusMessage.contains("完整性校验"))
+        let restored = LibraryStore(storageDirectory: directory,
+                                    seedData: (Fixture.seedTheorems, Fixture.sources), defaults: defaults)
+        await restored.load()
+        #expect(restored.manifest?.revision == oldRevision)
+        #expect(restored.webStudySnapshot == study)
+    }
+
+    @Test func invalidStudyStructureCannotReplaceBank() async {
+        let study = Data("{\"schemaVersion\":1,\"bank\":{},\"proofQuestions\":[]}".utf8)
+        let manifest = Fixture.manifest(study: study)
+        var responses = Fixture.responses(manifest: manifest)
+        responses["/data/study.json"] = study
+        let (store, directory, _) = environment(responses)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        await store.load()
+        await store.checkForUpdates(force: true)
+        #expect(store.theorems.map(\.id) == ["seed"])
+        #expect(store.manifest == nil)
+        #expect(store.webStudySnapshot == nil)
+        #expect(store.statusMessage.contains("更新失败"))
     }
 
     @Test func unchangedVersionAndDailyLimitAvoidDownloads() async {
@@ -601,7 +683,8 @@ struct FillPracticeEngineTests {
 
     @Test func requestedModesFilterIneligibleCardsWithoutFallback() throws {
         let records = try [card("true", id: "constant"), card("p", id: "variable", name: "Reflexivity"),
-                           card("true ≡ false", id: "symbol", name: "Associativity"), card("p ≡ q", id: "rule", kind: "Inference rule")]
+                           card("true ≡ false ≡ true", id: "symbol", name: "Associativity"),
+                           card("true ≡ false", id: "single-symbol"), card("p ≡ q", id: "rule", kind: "Inference rule")]
         let blanks = PracticeEngine.makeQuestions(from: records, count: 10, mode: .blanks)
         #expect(blanks.map(\.theorem.id) == ["variable"])
         #expect(blanks.allSatisfy { $0.mode == .blanks })
@@ -613,11 +696,27 @@ struct FillPracticeEngineTests {
         #expect(PracticeEngine.makeQuestions(from: [records[0]], count: 10, mode: .blanks).isEmpty)
         #expect(PracticeEngine.makeQuestions(from: [records[1]], count: 10, mode: .cloze).isEmpty)
         let question = try #require(cloze.first)
-        #expect(question.blankIndices == [1])
-        #expect(question.correctOption == "≡")
+        #expect(question.blankIndices == [1, 3])
+        #expect(question.correctOption == "true ≡ false ≡ true")
         #expect(Set(question.keyboardOptions) == Set(["≡", "≢", "⇒", "⇐"]))
         #expect(question.options == question.keyboardOptions)
         #expect(!PracticeEngine.gradeBlanks(question: question, values: ["x"]))
+    }
+
+    @Test func symbolClozeHidesEveryOperatorAndGradesEachPosition() throws {
+        let theorem = try card("p ∧ q ≡ q ∨ p ∧ true")
+        let question = try #require(PracticeEngine.makeQuestions(from: [theorem], count: 1, mode: .cloze).first)
+        #expect(question.blankIndices == [1, 3, 5, 7])
+        #expect(Set(question.keyboardOptions) == Set(["∧", "∨", "¬", "≡", "≢", "⇒", "⇐"]))
+        #expect(question.keyboardOptions.count == Set(question.keyboardOptions).count)
+        #expect(PracticeEngine.gradeCloze(question: question, values: ["∧", "≡", "∨", "∧"]))
+        #expect(PracticeEngine.gradeCloze(question: question, values: [" AND ", #"\equiv"#, "OR", "∧"]))
+        #expect(!PracticeEngine.gradeCloze(question: question, values: ["∨", "≡", "∧", "∧"]))
+        #expect(!PracticeEngine.gradeCloze(question: question, values: ["∧"]))
+        #expect(!PracticeEngine.gradeCloze(question: question, values: ["∧", "≡", "∨", ""]))
+        #expect(!PracticeEngine.gradeCloze(question: question, values: []))
+        #expect(!PracticeEngine.hasClozeSymbol(in: "p ≡ q"))
+        #expect(PracticeEngine.hasClozeSymbol(in: "p ≡ q ≡ p"))
     }
 
     @Test func bundledCorpusSupportsBothFillModes() throws {
@@ -638,11 +737,12 @@ struct FillPracticeEngineTests {
             #expect(PracticeEngine.gradeBlanks(question: question, values: question.blankIndices.map { question.tokens[$0] }))
         }
         for question in cloze {
-            #expect(question.blankIndices.count == 1)
-            #expect(question.tokens[question.blankIndices[0]] == question.correctOption)
-            #expect(question.keyboardOptions.contains(question.correctOption))
+            #expect(question.blankIndices.count >= 2)
+            let answers = question.blankIndices.map { question.tokens[$0] }
+            #expect(answers.allSatisfy { question.keyboardOptions.contains($0) })
+            #expect(PracticeEngine.gradeCloze(question: question, values: answers))
             #expect(Set(question.keyboardOptions).count == question.keyboardOptions.count)
-            #expect((2...4).contains(question.keyboardOptions.count))
+            #expect(question.keyboardOptions.count >= 3)
         }
     }
 }

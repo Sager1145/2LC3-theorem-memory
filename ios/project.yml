@@ -15,7 +15,7 @@ targets:
     postBuildScripts:
       - name: Bundle complete offline learning game
         script: |
-          /usr/bin/python3 "$SRCROOT/../tools/build_ios_web.py" --output "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/TheoremQuest.html"
+          /usr/bin/python3 "$SRCROOT/../tools/build_ios_web.py" --output "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/TheoremQuest.html" --study-output "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/study.json"
         inputFiles:
           - $(SRCROOT)/../tools/build_ios_web.py
           - $(SRCROOT)/../tools/build_site.py
@@ -25,9 +25,11 @@ targets:
           - $(SRCROOT)/../assets/proofs.js
           - $(SRCROOT)/../assets/notebook-hints.js
           - $(SRCROOT)/../assets/data.js
+          - $(SRCROOT)/../assets/i18n.js
           - $(SRCROOT)/../assets/app.js
         outputFiles:
           - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/TheoremQuest.html
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/study.json
     sources:
       - path: TheoremQuest
         excludes: [Assets.xcassets]
