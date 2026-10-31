@@ -25,7 +25,7 @@ class Server(ThreadingHTTPServer):
     request_queue_size = 128
 
 
-def run(page, url, native, extensive=False):
+def run(page, url, native, extensive=False, shift_only=False):
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.add_init_script('''window.TQ_PORTABLE=true;
@@ -46,6 +46,12 @@ def run(page, url, native, extensive=False):
         assert button.count() == 1 and button.is_visible(), ('Missing visible key', value)
         button.tap()
 
+    def shift_state(expected):
+        button = key('SHIFT')
+        assert button.get_attribute('data-shift-state') == expected
+        assert button.get_attribute('aria-label') == 'Shift'
+        assert button.get_attribute('aria-pressed') == str(expected != 'off').lower()
+
     def type_text(text):
         for char in text:
             if char == ' ':
@@ -61,8 +67,15 @@ def run(page, url, native, extensive=False):
 
     def focus(selector):
         field = page.locator(selector)
+        # Small fields trigger focus zoom on iPhone, including readonly fields.
+        undersized = page.locator('input:not([type=checkbox]):not([type=radio]),select,textarea').evaluate_all('''els =>
+            els.filter(el => el.getClientRects().length && parseFloat(getComputedStyle(el).fontSize) < 16)
+                .map(el => ({id:el.id, fontSize:getComputedStyle(el).fontSize}))''')
+        assert not undersized, ('Focus zoom risk', undersized)
+        scale = page.evaluate('window.visualViewport?.scale || 1')
         field.tap()
         page.locator('#screen-keyboard').wait_for(state='visible')
+        assert page.evaluate('window.visualViewport?.scale || 1') == scale, ('Focus changed zoom', selector)
         assert field.get_attribute('inputmode') == 'none', selector
         assert field.evaluate('(el)=>el.readOnly'), selector
         assert field.evaluate('(el)=>document.activeElement===el'), selector
@@ -102,13 +115,17 @@ def run(page, url, native, extensive=False):
         if suggestion:
             box = page.locator(suggestion)
             box.wait_for(state='visible')
-            assert box.evaluate('''el => {
+            page.wait_for_function('''selector => {
+                const el=document.querySelector(selector);
                 const r=el.getBoundingClientRect(),k=document.querySelector('#screen-keyboard').getBoundingClientRect();
-                const keys=[...document.querySelectorAll('[data-qwerty-key]')].map(el=>el.getBoundingClientRect().top);
-                return el.closest('#screen-suggestions') && r.top>=k.top-1
-                    && r.bottom<=Math.min(...keys)+1 && r.height>0
+                const f=document.activeElement.getBoundingClientRect();
+                return el.closest('#screen-suggestions') && !el.closest('#screen-keyboard')
+                    && Math.abs(r.top-f.bottom-4)<=1 && Math.abs(r.left-f.left)<=1
+                    && Math.abs(r.width-f.width)<=1 && r.height>0
+                    && r.right<=innerWidth+1 && r.bottom<=innerHeight+1
+                    && (r.bottom<=k.top+1 || r.right<=k.left+1 || r.left>=k.right-1)
                     && ['auto','scroll'].includes(getComputedStyle(el).overflowY);
-            }'''), suggestion
+            }''', arg=suggestion)
             assert page.locator(suggestion).count() == 1, 'Completion list must be moved, not cloned'
 
     def launch(mode, selected=record):
@@ -123,6 +140,60 @@ def run(page, url, native, extensive=False):
     launch('formula')
     field = focus('#formula-answer')
     layout(field)
+    hints = page.locator('#screen-keyboard .qwerty-shift-hint')
+    assert hints.count() == 47
+    assert hints.evaluate_all('''els => els.every(el=>{
+        const key=el.closest('[data-qwerty-key]'), r=el.getBoundingClientRect(),
+            kr=key.getBoundingClientRect(), style=getComputedStyle(el),
+            rgb=style.color.match(/[0-9.]+/g).slice(0,3).map(Number);
+        return el.getAttribute('aria-hidden')==='true' && el.textContent.trim()
+            && r.width>0 && r.height>0 && style.visibility==='visible'
+            && parseFloat(style.fontSize)<parseFloat(getComputedStyle(key).fontSize)
+            && Math.max(...rgb)-Math.min(...rgb)<=5 && rgb[0]>0 && rgb[0]<255
+            && r.left>=kr.left-1 && r.right<=kr.right+1
+            && r.top>=kr.top-1 && r.bottom<=kr.bottom+1
+            && key.getAttribute('aria-label')===key.dataset.qwertyKey;
+    })''')
+    assert key('a').locator('.qwerty-shift-hint').inner_text() == 'A'
+    assert key('1').locator('.qwerty-shift-hint').inner_text() == '!'
+    shift_state('off')
+    tap('SHIFT')
+    shift_state('once')
+    tap('A')
+    shift_state('off')
+    tap('b')
+    assert field.input_value() == 'Ab'
+    clear(field)
+    tap('SHIFT')
+    tap('SHIFT')
+    shift_state('locked')
+    assert '⇪' in key('SHIFT').inner_text()
+    tap('A')
+    tap('B')
+    tap('1')
+    assert field.input_value() == 'AB1'
+    shift_state('locked')
+    tap('SHIFT')
+    shift_state('off')
+    clear(field)
+    tap('SHIFT')
+    page.wait_for_timeout(400)
+    tap('SHIFT')
+    shift_state('off')
+    tap('SHIFT')
+    tap('LEFT')
+    tap('SHIFT')
+    shift_state('off')
+    tap('SHIFT')
+    tap('!')
+    shift_state('off')
+    tap('a')
+    assert field.input_value() == '!a'
+    clear(field)
+    if shift_only:
+        layout(field)
+        assert not errors, errors
+        return
     # Every printable US QWERTY character is reachable via keys, including all
     # shifted punctuation and both letter cases. Clear between characters so
     # backslash-space conversion cannot obscure the character under test.
@@ -130,6 +201,8 @@ def run(page, url, native, extensive=False):
         reachable = set()
         for layer in ['LETTERS', 'SHIFT', 'SYMBOLS', 'SHIFT']:
             if key(layer).count() and key(layer).is_visible():
+                if layer == 'SHIFT':
+                    page.wait_for_timeout(400)
                 tap(layer)
             reachable.update(page.locator('#screen-keyboard [data-qwerty-key]').evaluate_all(
                 '(els)=>els.map(el=>el.dataset.qwertyKey).filter(s=>s.length===1)'))
@@ -272,7 +345,9 @@ def run(page, url, native, extensive=False):
     tap('ENTER')
     assert page.locator('#quiz-bottom.correct').is_visible()
 
-    page.locator('[data-action="exit-quiz"]').tap()
+    # Dismiss the modal feedback before leaving the quiz.
+    page.locator('[data-action="continue"]').tap()
+    page.locator('[data-action="nav"][data-view="home"]').first.tap()
     page.locator('[data-action="nav"][data-view="library"]').first.tap()
     field = focus('#library-query')
     type_text('Golden')
@@ -296,6 +371,7 @@ def run(page, url, native, extensive=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--browser', choices=['chromium', 'webkit'], default='chromium')
+    parser.add_argument('--shift-only', action='store_true', help='Run focused Shift and key-hint regressions')
     parser.add_argument('--viewport', type=int, choices=[320, 390, 667, 768],
                         help='Run one viewport in a fresh browser process')
     args = parser.parse_args()
@@ -310,7 +386,8 @@ def main():
                     continue
                 page = browser.new_page(viewport={'width': width, 'height': height}, has_touch=True)
                 try:
-                    run(page, f'http://127.0.0.1:{server.server_port}', native, extensive=width == 390)
+                    run(page, f'http://127.0.0.1:{server.server_port}', native,
+                        extensive=width == 390, shift_only=args.shift_only)
                     print(f'PASS: {args.browser} QWERTY {width}x{height}, native={native}')
                 finally:
                     page.close()

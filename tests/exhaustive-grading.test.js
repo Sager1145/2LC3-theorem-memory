@@ -123,6 +123,7 @@ measured('allCardChoicesFullPool',()=>{
    check('choice',r.id,'choice size bounded difficulty '+difficulty,true,()=>opts.length>=1&&opts.length<=4);
    check('choice',r.id,'distinct display labels difficulty '+difficulty,opts.length,()=>new Set(opts.map(E.label)).size);
    for(const x of opts.filter(x=>x.id!==r.id)){
+    check('choice',r.id,'distractor belongs to the target topic',r.topic,()=>x.topic,x.id);
     check('choice',r.id,'distractor is an eligible question',true,()=>E.isQuestionCard(x)&&E.eligibleModes(x,['choice'],difficulty).includes('choice'));
     check('choice',r.id,'distractor differs from every variant',false,()=>[r.formula,...(r.formulaVariants||[])].some(a=>[x.formula,...(x.formulaVariants||[])].some(b=>E.compareFormula(a,b).ok)),x.id);
     check('choice-ui-contract',r.id,'distractor rejected by UI identifier grading',false,()=>x.id===r.id,x.id);
@@ -160,7 +161,8 @@ measured('gradingStress',()=>{
 measured('fullPoolChoiceStress',()=>{
  const times=[];for(let i=0;i<12;i++){const r=cards[Math.floor(i*cards.length/12)],t=performance.now(),opts=E.choiceOptions(cards,r,2,seeded(i+10));times.push(+(performance.now()-t).toFixed(3));
   check('stress-choice',r.id,'full pool contains target once',1,()=>opts.filter(x=>x.id===r.id).length);
-  check('stress-choice',r.id,'full pool creates four unique labels',4,()=>new Set(opts.map(E.label)).size);
+  check('stress-choice',r.id,'full pool has distinct labels',opts.length,()=>new Set(opts.map(E.label)).size);
+  check('stress-choice',r.id,'full pool choices stay in the target topic',true,()=>opts.every(x=>x.topic===r.topic));
  }stress.fullPoolChoiceRuns=12;stress.fullPoolSize=cards.length;stress.fullPoolChoiceMs=times;
 });
 measured('progressStress',()=>{

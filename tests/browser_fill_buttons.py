@@ -113,6 +113,38 @@ def exercise(page, url, native):
         '(els)=>els.map(el=>el.dataset.key).filter(k=>!k.startsWith("CURSOR_")&&k!=="BACKSPACE")')
     assert len(set(letters) - set(template['variables'])) >= 2, 'Multiple letter distractors required'
     panel_checks('blanks')
+    def selected_blank(index):
+        assert page.locator('.blank-slot.active').get_attribute('data-slot') == str(index)
+        assert page.evaluate('JSON.parse(localStorage.getItem("tq.session.v1")).state.blankSlot') == index
+
+    # The first arrow tap must select and persist a blank without a field tap.
+    tap_key('CURSOR_RIGHT')
+    selected_blank(1)
+    tap_key('CURSOR_LEFT')
+    selected_blank(0)
+    tap_key('CURSOR_LEFT')
+    selected_blank(0)
+    # Mobile readonly fields can reject focus transfer. Selection and answer
+    # placement must still follow each arrow, including the first one.
+    field_checks('#blank-0')
+    page.locator('.blank-slot').evaluate_all('els=>els.forEach(el=>el.focus=()=>{})')
+    tap_key('CURSOR_RIGHT')
+    selected_blank(1)
+    tap_key(template['blanks'][1]['variable'])
+    assert page.locator('#blank-0').input_value() == ''
+    assert page.locator('#blank-1').input_value() == template['blanks'][1]['variable']
+    selected_blank(2)
+    tap_key('CURSOR_LEFT')
+    selected_blank(1)
+    tap_key('BACKSPACE')
+    assert page.locator('#blank-1').input_value() == ''
+    tap_key('CURSOR_RIGHT')
+    tap_key('CURSOR_RIGHT')
+    selected_blank(3)
+    tap_key('CURSOR_RIGHT')
+    selected_blank(3)
+    resume()
+    selected_blank(3)
     field_checks('#blank-0')
     tap_key(template['blanks'][0]['variable'])
     assert page.locator('#blank-1').evaluate('(el)=>document.activeElement===el'), 'Answer tap advances a blank'
@@ -157,7 +189,10 @@ def exercise(page, url, native):
         page.locator('[data-action="cloze-key"][data-token=' + json.dumps(token, ensure_ascii=False) + ']').tap()
         if len(template['blanks']) > 1:
             assert page.locator('[data-action="cloze-slot"].active').get_attribute('data-slot') == '1'
+            assert page.locator('[data-action="cloze-prev"]').is_enabled()
+            assert page.locator('.cloze-keyboard .key-panel-head>span').inner_text() == f'符号键盘 · 2 / {len(template["blanks"])}'
             page.locator('[data-action="cloze-prev"]').tap()
+            assert page.locator('[data-action="cloze-prev"]').is_disabled()
         page.locator('[data-action="cloze-delete"]').tap()
         assert page.locator('[data-action="cloze-slot"][data-slot="0"]').inner_text() == '？'
         page.locator('[data-action="cloze-key"][data-token=' + json.dumps(token, ensure_ascii=False) + ']').tap()

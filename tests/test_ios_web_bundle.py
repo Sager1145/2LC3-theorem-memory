@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from build_ios_web import build
-from build_site import study_payload, portable_html
+from build_site import study_payload, portable_html, browser_bank_script
 import json
 
 
@@ -28,7 +28,7 @@ class IOSWebBundleTest(unittest.TestCase):
                           (ROOT / "ios/TheoremQuest.xcodeproj/project.pbxproj").read_text()]
         for script in scripts:
             with self.subTest(script=script):
-                code = (ROOT / script).read_text().replace('</script', '<\\/script')
+                code = (browser_bank_script() if script == 'assets/data.js' else (ROOT / script).read_text()).replace('</script', '<\\/script')
                 self.assertIn('<script>\n' + code + '\n</script>', bundled)
                 self.assertNotIn('src="./' + script, bundled)
                 for configuration in configurations:

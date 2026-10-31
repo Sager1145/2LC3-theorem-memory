@@ -237,7 +237,13 @@ private struct QuestWebView: UIViewRepresentable {
 
     @MainActor final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: QuestWebView
-        init(parent: QuestWebView) { self.parent = parent }
+        private let keyboardFeedback = UIImpactFeedbackGenerator(style: .light)
+
+        init(parent: QuestWebView) {
+            self.parent = parent
+            super.init()
+            keyboardFeedback.prepare()
+        }
 
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             guard message.frameInfo.isMainFrame, message.frameInfo.request.url?.isFileURL == true,
@@ -261,6 +267,9 @@ private struct QuestWebView: UIViewRepresentable {
                     // native text menus there, restoring them for answer reading.
                     message.webView?.configuration.preferences.isTextInteractionEnabled = !enabled
                 }
+            case "keyboard-haptic":
+                keyboardFeedback.impactOccurred()
+                keyboardFeedback.prepare()
             case "updates": parent.onUpdates()
             case "copy":
                 if let text = body["text"] as? String { UIPasteboard.general.string = text }

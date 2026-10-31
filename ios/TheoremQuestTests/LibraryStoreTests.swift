@@ -475,8 +475,8 @@ struct PracticeEngineTests {
             card("similar structure", name: "Disjunction identity", formula: "p ∨ false ≡ p"),
             card("mid", name: "Negation", formula: "¬¬p ≡ p"),
             card("middle", name: "Implication", formula: "p ⇒ q"),
-            card("low", name: "Integer order", formula: "a ≤ b", topic: "Arithmetic"),
-            card("lowest", name: "Set inclusion", formula: "A ⊆ B", topic: "Sets")
+            card("low", name: "Integer order", formula: "a ≤ b"),
+            card("lowest", name: "Set inclusion", formula: "A ⊆ B")
         ]
         func average(_ difficulty: PracticeDifficulty) -> Double {
             let options = PracticeEngine.distractors(for: target, mode: .name, in: records, difficulty: difficulty).prefix(3)
@@ -486,6 +486,35 @@ struct PracticeEngineTests {
             #expect(average(.easy) < average(.standard))
             #expect(average(.standard) < average(.hard))
             #expect(PracticeEngine.distractors(for: target, mode: .name, in: records, difficulty: .hard).first?.id == "same name")
+        }
+    }
+
+    @Test func choicesStayWithinTopicAtEveryDifficultyAndMode() throws {
+        let target = try card("target", name: "Implication identity", formula: "p ⇒ p", topic: "Implication")
+        let records = try [target,
+            card("same-topic", name: "Implication expansion", formula: "p ⇒ q ≡ ¬p ∨ q", topic: "Implication"),
+            card("same-name-other-topic", name: "Implication identity", formula: "q ⇒ q", topic: "Equivalence"),
+            card("similar-other-topic", name: "Implication identity law", formula: "r ⇒ r", topic: "Conjunction")
+        ]
+        for difficulty in PracticeDifficulty.allCases {
+            for mode in [PracticeQuestion.Mode.name, .formula] {
+                let distractors = PracticeEngine.distractors(for: target, mode: mode, in: records, difficulty: difficulty)
+                #expect(distractors.map(\.id) == ["same-topic"])
+                let questions = PracticeEngine.makeQuestions(from: records, count: 100, mode: mode, difficulty: difficulty)
+                #expect(questions.count == records.count)
+                for question in questions {
+                    let sameTopicAnswers = Set(records.filter { $0.topic == question.theorem.topic }.map {
+                        mode == .name ? "\($0.displayRef) · \($0.name)" : $0.formula
+                    })
+                    #expect(question.options.allSatisfy { sameTopicAnswers.contains($0) })
+                    #expect(question.options.contains(question.correctOption))
+                    #expect(question.options.count == (question.theorem.topic == "Implication" ? 2 : 1))
+                }
+                let isolatedPool = records.filter { $0.id != "same-topic" }
+                let isolated = try #require(PracticeEngine.makeQuestions(from: isolatedPool, count: 100,
+                    mode: mode, difficulty: difficulty).first { $0.theorem.id == target.id })
+                #expect(isolated.options == [isolated.correctOption])
+            }
         }
     }
 

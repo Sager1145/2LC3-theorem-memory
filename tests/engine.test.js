@@ -90,13 +90,79 @@ test('AC / parentheses / reversed relations accepted, wrong law rejected',()=>{
  wrong('p ⇒ (q ⇒ r)','(p ⇒ q) ⇒ r');
  wrong('A × B = B × A','B × A = A × B ≡ true');
 });
-test('valid reassociation and symmetry accept alternate brackets without reordering noncommutative operations',()=>{
+test('association stays within explicit parentheses and noncommutative operations retain their order',()=>{
  okay('(Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)','Q ⨾ (R ⨾ S) = (Q ⨾ R) ⨾ S');
- okay('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(A ⊕ B ⊕ C) = A ⊕ (B ⊕ C)');
- okay('(xs ⌢ ys) ⌢ zs = xs ⌢ (ys ⌢ zs)','xs ⌢ ys ⌢ zs = xs ⌢ (ys ⌢ zs)');
+ okay('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)');
+ okay('(xs ⌢ ys) ⌢ zs = xs ⌢ (ys ⌢ zs)','(xs ⌢ ys) ⌢ zs = xs ⌢ (ys ⌢ zs)');
  okay('p ∧ (q ∧ r) ≡ (p ∧ q) ∧ r','(x ∧ y) ∧ z ≡ x ∧ (y ∧ z)');
+ okay('(p ∨ q ∨ r) ∧ p','(z ∨ x ∨ y) ∧ x');
+ wrong('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(A ⊕ B ⊕ C) = A ⊕ (B ⊕ C)');
+ wrong('(xs ⌢ ys) ⌢ zs = xs ⌢ (ys ⌢ zs)','xs ⌢ ys ⌢ zs = xs ⌢ (ys ⌢ zs)');
  wrong('Q ⨾ R ⨾ S = Q ⨾ (R ⨾ S)','Q ⨾ R ⨾ S = Q ⨾ (S ⨾ R)');
  wrong('(Q ⊕ R) ⊕ S = Q ⊕ (R ⊕ S)','(Q ⊕ S) ⊕ R = Q ⊕ (R ⊕ S)');
+});
+test('distributivity accepts swapped pairs but rejects moving variables across fixed groups',()=>{
+ const formula='p ∨ (q ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)';
+ const template=E.blankTemplate(formula);
+ for(const values of [
+  ['p','q','r','q','p','r','p'], // Reverse each pair.
+  ['p','q','r','p','r','p','q'], // Swap the two pairs.
+  ['r','p','q','r','p','r','q'],
+  ['r','p','q','p','r','q','r'],
+  ['x','y','z','z','x','y','x']
+ ]){
+  assert.equal(E.gradeBlanks(template,values).ok,true,values.join(' '));
+  okay(formula,E.fillTemplate(template,values));
+ }
+ for(const values of [
+  ['p','q','r','p','p','q','r'], // Same counts, wrong pair structure: ppqr.
+  ['p','q','r','q','r','p','p'],
+  ['p','q','r','r','p','r','q'], // Common variable changed only on the RHS.
+  ['p','q','r','q','p','q','p'],
+  ['p','p','r','p','p','p','r']
+ ]){
+  assert.equal(E.gradeBlanks(template,values).ok,false,values.join(' '));
+  wrong(formula,E.fillTemplate(template,values));
+ }
+ // Audit every distinct RHS arrangement independently of the matcher: each
+ // existing pair needs one p, with q and r occupying the other two positions.
+ const arrangements=new Set();
+ function permute(prefix,remaining){
+  if(!remaining.length){arrangements.add(prefix.join(''));return;}
+  remaining.forEach((value,i)=>permute([...prefix,value],remaining.filter((_,j)=>i!==j)));
+ }
+ permute([],['p','p','q','r']);
+ let accepted=0;
+ for(const arrangement of arrangements){
+  const rhs=[...arrangement];
+  const valid=rhs.slice(0,2).filter(v=>v==='p').length===1&&rhs.slice(2).filter(v=>v==='p').length===1;
+  const values=['p','q','r',...rhs];
+  assert.equal(E.gradeBlanks(template,values).ok,valid,arrangement);
+  assert.equal(E.compareFormula(formula,E.fillTemplate(template,values)).ok,valid,arrangement);
+  if(valid)accepted++;
+ }
+ assert.equal(arrangements.size,12);
+ assert.equal(accepted,8);
+ okay(formula,'((p ∨ (q ∨ r)) ≡ ((r ∨ p) ∨ (q ∨ p)))');
+ okay(formula,'(r ∨ p) ∨ (q ∨ p) ≡ p ∨ (q ∨ r)');
+ wrong(formula,'p ∨ (q ∨ r) ≡ p ∨ p ∨ q ∨ r');
+ wrong('p ∧ q ≡ q ∧ p','p ∧ q ≡ (p ∧ q)');
+});
+test('blank matching applies actual operator properties, preserves negation and complex syntax',()=>{
+ const accepts=(formula,values)=>assert.equal(E.gradeBlanks(E.blankTemplate(formula),values).ok,true);
+ const rejects=(formula,values)=>assert.equal(E.gradeBlanks(E.blankTemplate(formula),values).ok,false);
+ accepts('p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)',['p','q','r','q','p','r','p']);
+ accepts('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q',['p','q','q','p']);
+ accepts('a + b = b + a',['a','b','b','a']);
+ accepts('a + b = b + a',['b','a','a','b']);
+ accepts('(Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)',['Q','R','S','Q','R','S']);
+ rejects('(Q ⨾ R) ⨾ S = Q ⨾ (R ⨾ S)',['Q','R','S','Q','S','R']);
+ rejects('p ⇒ q ≡ ¬ p ∨ q',['p','q','q','p']);
+ rejects('a - b = c',['a','b','a']);
+ rejects('¬ (p ∧ q) ≡ ¬ p ∨ ¬ q',['p','q','q','q']);
+ rejects('p ∧ q ≡ q ∧ p',['p','q','p','q']);
+ accepts('(∀ x ❙ R • P) ≡ (∀ x ❙ R • P)',['y','S','Q','y','S','Q']);
+ rejects('(∀ x ❙ R • P) ≡ (∀ x ❙ R • P)',['y','S','Q','y','Q','S']);
 });
 test('syntax and long-input errors are safe',()=>{
  assert.equal(E.compareFormula('p','((p)').ok,false);
@@ -182,6 +248,18 @@ test('published theorem completions contain names and aliases only, with shared 
   assert(names.length>0,query);
   assert(names.every(name=>known.has(name)),query);
   assert.equal(new Set(names.map(E.normalizeName)).size,names.length,query);
+ }
+});
+test('all matching theorem names remain available beyond eighty candidates',()=>{
+ const records=bank.filter(E.isQuestionCard);
+ const definitions=E.nameCompletions(records,'Def');
+ assert(definitions.length>80);
+ assert(definitions.includes('Definition of ≢'));
+ assert.deepEqual(E.nameCompletions(records,'Def',80),definitions.slice(0,80));
+ for(const record of records.filter(r=>r.name&&r.name!=='原文未命名')){
+  const prefix=Array.from(record.name).slice(0,3).join('');
+  if(Array.from(prefix).length<3)continue;
+  assert(E.nameCompletions(records,prefix).some(name=>E.normalizeName(name)===E.normalizeName(record.name)),record.name);
  }
 });
 test('complex formulas are less likely to use free spelling when other modes are enabled',()=>{
@@ -368,6 +446,30 @@ test('choice distractors exclude equivalent formulas, variants, duplicate labels
  assert.deepEqual(E.choiceOptions(pool,target,999,()=>0.4),E.choiceOptions(pool,target,2,()=>0.4));
 });
 
+test('choice options stay in the target topic at every difficulty, including sparse pools',()=>{
+ const card=(id,name,formula,topic)=>({id,name,formula,topic,displayRef:`(${id})`});
+ const target=card('target','Material implication','p ⇒ q ≡ ¬p ∨ q','蕴含 ⇒');
+ const sameTopic=[
+  card('a','Contrapositive','p ⇒ q ≡ ¬q ⇒ ¬p',target.topic),
+  card('b','Shunting','p ∧ q ⇒ r ≡ p ⇒ (q ⇒ r)',target.topic),
+  card('c','Implication identity','true ⇒ p ≡ p',target.topic)
+ ];
+ const foreign=[
+  card('foreign-similar',target.name,'p ⇒ q ≡ ¬q ∨ p','合取 ∧'),
+  card('foreign-different','Successor','suc n = n + 1','自然数与归纳')
+ ];
+ for(const difficulty of [1,2,3]){
+  for(const seed of [0.1,0.4,0.7,0.99]){
+   const options=E.choiceOptions([target,...sameTopic,...foreign],target,difficulty,()=>seed);
+   assert.equal(options.length,4);
+   assert(options.every(r=>r.topic===target.topic));
+   assert.equal(options.filter(r=>r.id===target.id).length,1);
+  }
+  assert.deepEqual(new Set(E.choiceOptions([target,sameTopic[0],...foreign],target,difficulty,()=>0.4)),new Set([target,sameTopic[0]]));
+  assert.deepEqual(E.choiceOptions([target,...foreign],target,difficulty),[target]);
+ }
+});
+
 test('hard choice excludes foundational questions and distractors without affecting other modes',()=>{
  const basics=['Associativity of conjunction','Symmetry of equality','Reflexivity of implication','结合律','自反性','对称性'];
  const simple=basics.map((name,i)=>({id:'basic'+i,name,displayRef:`(${i})`,formula:'p ∧ q ≡ q ∧ p'}));
@@ -384,10 +486,10 @@ test('hard choice excludes foundational questions and distractors without affect
  assert(E.makeSession(simple,['choice','formula'],5,()=>0.4,3).every(q=>q.mode==='formula'));
 });
 
-test('letter blanks preserve each occurrence even when a swapped formula is equivalent',()=>{
+test('letter blanks accept structural symmetry while rejecting merged and invalid variables',()=>{
  const template=E.blankTemplate('(p ∨ q) ∨ r ≡ p ∨ (q ∨ r)');
  assert(E.gradeBlanks(template,['x','y','z','x','y','z']).ok);
- assert(!E.gradeBlanks(template,['x','y','z','y','x','z']).ok);
+ assert(E.gradeBlanks(template,['x','y','z','y','x','z']).ok);
  assert(!E.gradeBlanks(template,['x','x','z','x','x','z']).ok);
  assert(!E.gradeBlanks(template,['x','y','z','x','y','true']).ok);
  assert(!E.gradeBlanks(template,['x']).ok);

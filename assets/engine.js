@@ -118,7 +118,7 @@
     function expr(min=0) {
       if (++depth>100) throw new Error('嵌套过深。');
       let t=ts[i++], left;
-      if (t==='(') { left=expr(0); if(ts[i++]!==')') throw new Error('缺少右括号。'); }
+      if (t==='(') { left=expr(0); if(ts[i++]!==')') throw new Error('缺少右括号。'); left={...left,grouped:true}; }
       else if(t==='¬'||t==='-') left={op:t==='-'?'neg':'¬',args:[expr(80)]};
       else if (t && (WORD.test(t)||/^\d+(?:\.\d+)?$/.test(t))) left={op:isVariable(t)?'var':'const',value:t};
       else throw new Error('此公式使用结构模板判题。');
@@ -146,7 +146,9 @@
     return tree;
   }
   function flatten(tree,op) {
-    return tree.op===op && ASSOC.has(op) ? tree.args.flatMap(n=>flatten(n,op)) : [tree];
+    // Explicit parentheses delimit association. A grouped child remains one
+    // operand; matching inside that child can still use its own operator laws.
+    return tree.op===op && ASSOC.has(op) ? tree.args.flatMap(n=>n.grouped?[n]:flatten(n,op)) : [tree];
   }
   function shape(n) {
     if(n.op==='var') return '$';
@@ -224,7 +226,7 @@
       if(copiedRelation(a,b))return {ok:false,kind:'copied',message:'左右两边写成同一个式子，不能代替原定理的变形关系。'};
       const x=parse(a),y=parse(b);
       const map=matchAST(x,y)||matchAST(stripTruth(x),stripTruth(y));
-      if(map) return {ok:true,kind:'structural',mapping:Object.fromEntries(map),message:mapMessage(map)+' 已接受交换、结合或反向关系写法。'};
+      if(map) return {ok:true,kind:'structural',mapping:Object.fromEntries(map),message:mapMessage(map)+' 已接受括号范围内的交换、结合或反向关系写法。'};
     } catch(_) { /* Higher-order, quantifier and command syntax: never guess validity. */ }
     const av=varsOf(a), bv=varsOf(b);
     if(av.length!==bv.length) return {ok:false,kind:'variables',message:`这条定理需要 ${av.length} 个不同变量；你的答案有 ${bv.length} 个。不同变量不能被合并。`};
@@ -298,8 +300,8 @@
   function gradeBlanks(template,values) {
     const answer=fillTemplate(template,values);
     if(!answer)return {ok:false,kind:'invalid',message:'每个空只能填一个字母变量。'};
-    const mapping=tokenAlpha(template.tokens,tokenize(answer));
-    return {ok:!!mapping,kind:'blanks',message:mapping?'变量关系正确。':'同一个变量须保持一致，不同变量不能合并。'};
+    const result=compareFormula(template.tokens.join(' '),answer);
+    return {ok:result.ok,kind:'blanks',message:result.ok?'变量关系正确。':'检查已有括号内的变量关系；允许符号支持的换序，不同变量不能合并。'};
   }
   function normalizeName(s) {
     // Names contain ordinary words such as "and" and "not". Uppercasing a
@@ -317,7 +319,7 @@
       else if(labels.some(s=>s.includes(q))||normalizeName(r.formula).includes(q))rest.push(r);
     }return [...exact,...prefix,...rest];
   }
-  function nameCompletions(records,query,limit=80) {
+  function nameCompletions(records,query,limit=Infinity) {
     if(typeof query!=='string'||Array.from(query).length<3)return [];
     const normalized=normalizeName(query);if(!normalized)return [];
     const ranked=[[],[]],seen=new Set();
@@ -395,7 +397,8 @@
   }
   function choiceOptions(records,target,difficulty=2,rng=Math.random) {
     const level=[1,2,3].includes(difficulty)?difficulty:2,targetFeatures=choiceFeatures(target);
-    const ranked=shuffle(records.filter(r=>isQuestionCard(r)&&(level!==3||!isFoundationalTheorem(r))&&r.id!==target.id&&label(r)!==label(target)),rng)
+    // Difficulty ranks only rules in the target's topic; never fill from other topics.
+    const ranked=shuffle(records.filter(r=>r.topic===target.topic&&isQuestionCard(r)&&(level!==3||!isFoundationalTheorem(r))&&r.id!==target.id&&label(r)!==label(target)),rng)
       .map(r=>({r,score:featureSimilarity(targetFeatures,choiceFeatures(r),!!target.topic&&r.topic===target.topic)}))
       .sort((a,b)=>a.score-b.score);
     // The middle level draws from the middle of the similarity ranking.
@@ -673,5 +676,22 @@
     if(focus==='both')return important&&repeated;
     return true;
   }
-  return {validateStudyData,bankWithStudy,notebookMatchesScope,notebookHintRows,notebookHintCardCounts,gradeProofName,retainDocumentStudy,documentFocusMatches,SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,clozeTemplate,fillCloze,gradeCloze,fillTemplate,gradeBlanks,compareRefs,referenceInRange,normalizeName,searchRecords,nameCompletions,hintLocations,label,choiceSimilarity,choiceOptions,isFoundationalTheorem,nameGroup,answerVariants,gradeName,isQuestionCard,eligibleModes,shuffle,makeSession,limitSessionOccurrences,retryQuestion,localDay,canonicalId,freshProgress,applyAttempt,validateProgress};
+  // Classification describes the declaration's origin, not learner progress.
+  function declarationStatus(source){
+    if(source?.sourceType==='notebook-proved')return 'proved';
+    if(source?.format==='CalcCheck theorem-list popup')return 'given';
+    return null;
+  }
+  function declarationStatuses(record,sources){
+    const sourceMap=new Map(sources.map(source=>[source.id,source])),seen=new Set(),result=[];
+    for(const origin of record.sources||[]){
+      const source=sourceMap.get(origin.sourceId),status=declarationStatus(source);
+      if(!status)continue;
+      const year=source.year||null,key=`${year}:${status}`;
+      if(seen.has(key))continue;
+      seen.add(key);result.push({status,year});
+    }
+    return result.sort((a,b)=>(b.year||0)-(a.year||0)||a.status.localeCompare(b.status));
+  }
+  return {declarationStatus,declarationStatuses,validateStudyData,bankWithStudy,notebookMatchesScope,notebookHintRows,notebookHintCardCounts,gradeProofName,retainDocumentStudy,documentFocusMatches,SHORTCUTS,FIXED,shortcutSuggestions,shortcutPrefix,symbolsInFormula,normalizeInput,tokenize,isVariable,varsOf,balanced,tokenAlpha,parse,matchAST,compareFormula,blankTemplate,clozeTemplate,fillCloze,gradeCloze,fillTemplate,gradeBlanks,compareRefs,referenceInRange,normalizeName,searchRecords,nameCompletions,hintLocations,label,choiceSimilarity,choiceOptions,isFoundationalTheorem,nameGroup,answerVariants,gradeName,isQuestionCard,eligibleModes,shuffle,makeSession,limitSessionOccurrences,retryQuestion,localDay,canonicalId,freshProgress,applyAttempt,validateProgress};
 });

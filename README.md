@@ -31,13 +31,17 @@ python3 -m http.server 8000
 # 浏览器打开 http://localhost:8000
 ```
 
+正式预览建议先运行 `npm run build`，再运行 `npm run preview`。构建会对重复来源原文共用文本，并紧凑保存出处记录；页面启动时还原完整题库，保留所有 ID、原文、行号和审计证据。网页版、单文件版与 iOS 内嵌页面均使用此优化。原始 `assets/data.js` 和 `data/theorems.json` 仍保留可审计格式。
+
+2026-10-01 本地对比：发布题库脚本由 10,829,492 字节降至 3,446,268 字节（减少 68%）；gzip 由 480,611 降至 359,259 字节（减少 25%）。本地服务器未启用 gzip，Chromium 在 10 Mbps、100 ms 延迟、4 倍 CPU 降速下，三次冷启动首屏中位数由 10.06 秒降至 3.90 秒。这是本地对比，不代表线上或所有设备的加载时间。发布包预先计算题库指纹，首次启动无需序列化整库；已安装题库仍完整校验。静态资源按内容哈希 URL 直接命中缓存，HTML 与主动题库更新继续访问网络；已核验的相同修订只获取小型版本清单。
+
 ## 练习方式
 
 | 题型 | 提示与作答 | 规则 |
 |---|---|---|
 | 名称回忆 | 看公式，输入三个字符后按前缀补全名称或别名；同名名称只出现一次 | 例如 `Gol`；同组名称可作答，选编号时须对应当前公式。接受来源别名，也可直接输入编号。 |
-| 名称选择 | 看公式，从四个名称＋编号选项中选择 | 支持 1–4 和 Enter。难度可选简单／标准／困难，越难越优先出现相似名称、同名不同编号和相似公式。困难档的题目与选项排除结合律、对称性、自反性。避免重复标签与等价公式干扰项。 |
-| 字母填空 | 显示名称＋编号，固定运算符与括号，只填各处变量 | 手机默认使用大字母按键；可开启完整键盘输入。接受一致的变量一一改名，不要求原来的 p/q/r。 |
+| 名称选择 | 看公式，从最多四个名称＋编号选项中选择 | 所有选项只来自当前定理的同一主题（如蕴含题只选蕴含 rules）；同主题候选不足时减少选项，不跨主题补齐。支持 1–4 和 Enter。难度可选简单／标准／困难，越难越优先出现相似名称、同名不同编号和相似公式。困难档的题目与选项排除结合律、对称性、自反性。避免重复标签与等价公式干扰项。 |
+| 字母填空 | 显示名称＋编号，固定运算符与括号，只填各处变量 | 手机默认使用大字母按键；可开启完整键盘输入。接受变量一一改名与符号支持的换序，匹配受已有括号限制，不要求原来的 p/q/r。 |
 | 符号填空 | 显示名称＋编号，隐藏公式中的运算符或关系符 | 手机默认使用大符号按键和干扰键，左右切换空位，红色退格删除。可开启 QWERTY 与反斜线补全。外层 =／≡ 保留；简单挖 1 空、标准挖其余约一半、困难挖其余全部，位置随机。 |
 | 公式拼写 | 显示名称＋编号，按字母/符号键或直接键盘输入 | 支持常用 CalcCheck 风格反斜线输入；不是完整 CalcCheck 证明检查器。 |
 | 反斜线符号 | 显示定理中的一个符号，输入其 CalcCheck 风格代码 | 候选可用方向键和 Tab 补全；同一符号的别名代码均可作答。 |
@@ -50,7 +54,7 @@ python3 -m http.server 8000
 
 ## 手动划范围
 
-在首页或“定理库”选择年份、具体 notebook、Week 或弹窗的 `WeekN.*` 模块。选择 Week 后可切换“仅当周内容”或“包含此前全部 Week”；同一定理可出现在多个 Week，范围内按卡片去重。Week 按 `Exercise N.x` 的 N 和经定理、证明重合核对的 Homework 归类，包含这些 notebook 的全部预载定理与正文已证明定理；模块 Week 只包含明确带该标签的声明。2026 弹窗中带 Week 标签的模块只有 Week 3；2025i 弹窗有 Week 3/4/5/6/7/8/9/11。也可按模块、来源、Important、重复预载、收藏或错题筛选。编号输入支持：
+在首页或“定理库”选择年份、具体 notebook、课程 Week。选择 Week 后可切换“仅当周内容”或“包含此前全部 Week”；同一定理可出现在多个 Week，范围内按卡片去重。Week 按 `Exercise N.x` 的 N 和经定理、证明重合核对的 Homework 归类，包含这些 notebook 的全部预载定理与正文已证明定理。资料 Week（原模块标签）筛选已移除，旧范围预设中的该限制不再生效。也可按模块、来源、Important、重复预载、收藏或错题筛选。编号输入支持：
 
 ```text
 3.47
@@ -76,7 +80,7 @@ XP、每日练习数、连续练习天数、收藏、错题和未完成关卡只
 
 手机版与 iOS 默认用大按键完成填空；“完整键盘输入”选项默认关闭，开启后填空也可用 QWERTY。名称、Proof、公式、搜索等非填空输入始终使用页面内 QWERTY，所有输入均不唤起系统键盘。键位尽量接近电脑：数字行与额外标点放在字母区上方，保留 QWERTY、ASDF、ZXCV 行；Shift 切换大写和上档符号，覆盖美式键盘全部可打印字符。Tab 补全或切换空位，左右箭头移动光标，Backspace 删除，Return 补全或检查，Shift+Return 在公式中换行，Done 收起键盘。
 
-完整键盘模式不显示直接输入数学符号的按钮，统一键入 `\` 及代码，再用候选、Tab 或空格完成。键盘上方的候选列表独立滚动，保留原 combobox/listbox 的关联；竖屏为题面、当前输入和键盘分区，横屏采用内容与键盘分列。收起键盘后恢复检查区和导航。
+完整键盘模式不显示直接输入数学符号的按钮，统一键入 `\` 及代码，再用候选、Tab 或空格完成。名称与特殊符号候选紧贴当前输入框下方，随输入框滚动和旋转对齐，并独立滚动；保留原 combobox/listbox 的关联。竖屏为题面、当前输入和键盘分区，横屏采用内容与键盘分列。收起键盘后恢复检查区和导航。
 
 ## 符号键盘
 
@@ -107,7 +111,7 @@ XP、每日练习数、连续练习天数、收藏、错题和未完成关卡只
 拒绝：true
 ```
 
-系统先检查分词、一一变量改名，再对受支持的语法树做受限交换/结合匹配。量词、显式替换和命令等复杂语法采用保守模板匹配。接受来源中收录的同条目等价写法，但不宣称证明任意等价变形。每张卡保留类型和适用条件；ℕ 的截断减法不能当作 ℤ 减法。详情见 `docs/PROJECT_PLAN.md`。
+公式拼写与字母填空共用匹配规则：先检查分词、一一变量改名，再按符号本身的性质做受限交换、对称和结合匹配。已有括号构成匹配边界，不跨括号把变量展平混排。例如 `p ∨ (q ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)` 接受 `p ∨ (q ∨ r) ≡ (r ∨ p) ∨ (q ∨ p)`，拒绝 `p ∨ (q ∨ r) ≡ (p ∨ p) ∨ (q ∨ r)`。量词、显式替换和命令等复杂语法采用保守模板匹配。接受来源中收录的同条目等价写法，但不宣称证明任意等价变形。每张卡保留类型和适用条件；ℕ 的截断减法不能当作 ℤ 减法。详情见 `docs/PROJECT_PLAN.md`。
 
 ## iPhone 客户端
 
@@ -146,6 +150,9 @@ python3 -m http.server 8000 --directory _site
 # 可选：浏览器 DOM 测试，需 Python playwright 和系统 Chromium
 python3 tests/browser_smoke.py --screenshots test-results/screenshots
 python3 tests/browser_bank_updates.py
+python3 tests/browser_loading.py  # 发布包、单文件、题库恢复、缓存命中与离线重载
+python3 tests/browser_loading.py --browser webkit
+python3 tests/browser_loading.py --site _site --measure  # 本地冷启动限速测量
 python3 tests/browser_stress.py
 python3 tests/browser_stress.py --uninterrupted --channel chromium
 python3 tests/browser_mobile_inputs.py  # 手机屏幕输入、名称/定理组/Proof 补全和窄屏布局
@@ -153,6 +160,12 @@ python3 tests/browser_cloze_inputs.py  # 符号填空 QWERTY、反斜线补全�
 python3 tests/browser_fill_buttons.py  # 默认按键填空、红色退格、移动、设置切换和锁定
 python3 tests/browser_qwerty.py --browser chromium  # 全可打印字符、触控、补全和手机/iPad/横屏布局
 python3 tests/browser_qwerty.py --browser webkit    # 同场景验证 WebKit
+python3 tests/browser_completion_position.py --browser chromium  # 补全对齐、独立滚动、旋转和桌面布局
+python3 tests/browser_completion_position.py --browser webkit
+python3 tests/browser_click_motion.py --browser chromium  # 点击反馈、六项底栏、英文与大字体
+python3 tests/browser_click_motion.py --browser webkit    # iPhone 网页视图同场景检查
+python3 tests/browser_menu_transitions.py --browser chromium  # 各菜单切换、快速连点与减少动态效果
+python3 tests/browser_menu_transitions.py --browser webkit    # 同场景验证 WebKit
 python3 tests/browser_exhaustive.py  # 全卡片适用题型，正确/错误输入与重复提交
 python3 tests/browser_mixed_stress.py  # 同一页面连续 1,000 题，七题型混合
 ```
@@ -174,7 +187,7 @@ npm test
 python3 tools/build_site.py --out _site
 ```
 
-`research/preloaded/legacy-*` 保留旧题库及原始审计材料，`excluded-existing.json` 列出未能逐字对应预载声明的旧卡。新增 notebook 时先核对其确是课程提供的预载弹窗，再在审计索引中登记地址与原文捕获。发布后如修改静态资源，应更新 `sw.js` 的缓存版本。
+`research/preloaded/legacy-*` 保留旧题库及原始审计材料，`excluded-existing.json` 列出未能逐字对应预载声明的旧卡。新增 notebook 时先核对其确是课程提供的预载弹窗，再在审计索引中登记地址与原文捕获。发布构建会按静态资源内容生成 URL 与 Service Worker 缓存版本；直接通过源码预览时，修改资源仍须同步更新 `index.html` 的版本参数与 `sw.js` 的预缓存列表、缓存版本。
 
 ## 结构
 

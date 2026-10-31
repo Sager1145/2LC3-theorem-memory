@@ -2,6 +2,18 @@
   'use strict';
   // Only UI copy belongs here; course text and answers retain their original form.
   const copy = String.raw`
+Proved · 已证明	Proved
+Given · 已给出	Given
+在 notebook 正文中经 CalcCheck 核验的已完成证明	Completed proof verified by CalcCheck in the notebook body
+Notebook 预载列表中已给出的声明	Declaration given in the notebook preload list
+Given 表示预载列表中已给出；Proved 表示正文中已证明。同一定理可有两种来源，并可出现在多个 Week。	Given means supplied in a preload list; Proved means proved in the notebook body. A theorem can have both origins and appear in several weeks.
+
+先看名称与公式，点开卡片查看条件、别名与来源。	Read the name and formula first; open a card for conditions, aliases, and sources.
+原文类型	Source type
+适用范围	Domain
+同条目别名	Aliases
+其他公式写法	Alternative formulas
+
 答案详情	Answer details
 ↕ 上下滑动查看	↕ Scroll to view
 同组答案	Related answers
@@ -10,6 +22,8 @@
 直接点选任意空位，再点击字母按键填入；左右键也可切换，红色退格删除当前内容。	Tap any blank, then a letter to fill it. Arrows also switch blanks; the red Backspace clears the current blank.
 直接点选任意符号空位，再点击按键填入；左右键也可切换，红色退格删除当前内容。	Tap any symbol blank, then a button to fill it. Arrows also switch blanks; the red Backspace clears the current blank.
 点击下方按键填空	Tap the buttons below to fill the blank
+键盘震动	Keyboard haptics
+按键时提供轻微震动，默认开启；仅支持震动的设备生效。	Light vibration on key presses, on by default; available on devices that support vibration.
 完整键盘输入	Full keyboard input
 默认关闭：填空题只使用大按键；开启后可用 QWERTY 和反斜线代码填空。其他输入题始终使用 QWERTY。	Off by default: fill blanks with large buttons. Enable QWERTY and backslash codes for blanks. Other input questions always use QWERTY.
 点击按键填入符号并前进；左右移动切换空位，红色退格删除当前内容。	Tap a symbol to fill and advance. Arrows change blanks; the red Backspace clears the current blank.
@@ -276,7 +290,7 @@ Notebook 正文读取情况	Notebook capture status
 预载列表的核对范围	Verified preload coverage
 重复计数、Important 与名称编号的规则	Rules for repetition, Important, names and references
 判题的精确边界	Grading limits
-不是逐字比较。接受字母一一对应的改名，以及受支持的交换律、结合律、反向关系写法。不能把两个独立变量合并，也不能用任意恒真式代替另一条定理。	Grading is structural. It accepts one-to-one variable renaming and supported commutative, associative and reversed-relation forms. Independent variables cannot be merged, and arbitrary tautologies cannot replace the theorem.
+公式与字母填空接受一一变量改名，以及符号本身支持的交换、对称和反向关系写法。结合匹配只在已有括号范围内进行，不跨括号混排变量。不同变量不能合并，也不能用任意恒真式代替原定理。	Formula and variable blanks accept one-to-one renaming and the operator’s supported commutative, symmetric and reversed-relation forms. Associative matching stays within existing parentheses; variables cannot move across groups. Distinct variables cannot merge, and arbitrary tautologies cannot replace the theorem.
 复杂量词、替换与命令语法采用保守的结构模板判题，接受一致的全局改名，但不声称验证任意等价改写或完整证明；这不是在线 CalcCheck 引擎。任何侧条件、变量类型仍需满足。公式字符清楚但无法可靠判定的答案不会静默判对。	Complex quantifiers, substitutions and commands use conservative structural templates with consistent global renaming. Arbitrary equivalences and full proofs are not verified; this is not a live CalcCheck engine. Side conditions and variable types still apply. Answers that cannot be judged reliably are not silently marked correct.
 待核对提取	Extractions needing review
 可能含缺字、侧条件、图形字符或证明片段；不是可靠答案。	May contain missing characters, side conditions, graphical symbols or proof fragments; these are not verified answers.
@@ -529,6 +543,7 @@ Notebook Hint 引用	Notebook hint references
 输入三个字符开始补全…	Type three characters for suggestions…
 输入定理名称或别名	Enter a theorem name or alias
 输入三个字符即可补全名称；编号请手动填写。	Type three characters for name completions; enter references manually.
+输入三个字符即可补全名称；多个同名条目可在填入名称后选择具体编号。	Type three characters for name completions; after entering a shared name, you can choose a specific reference.
 同名定理只需填写名称。	For shared names, just enter the name.
 候选只补齐名称或别名。	Suggestions complete only names or aliases.
 同名定理可只填写 group 统称；指定编号时须与公式对应。	The group name alone is accepted for shared names; any specified reference must match the formula.
@@ -555,11 +570,11 @@ Notebook 证明 Hint 使用	Notebook proof hint uses
 先输入你的答案。	Enter your answer first.
 括号没有配对，请先检查括号。	Parentheses do not match. Check them first.
 左右两边写成同一个式子，不能代替原定理的变形关系。	Writing the same expression on both sides does not reproduce the theorem's transformation.
-已接受交换、结合或反向关系写法。	Commutative, associative or reversed-relation notation accepted.
+已接受括号范围内的交换、结合或反向关系写法。	Commutative, associative or reversed-relation notation within the parentheses accepted.
 检查同一个字母是否始终代表同一个变量，以及逻辑符号、括号和常量。不能用另一条恒真式替代这条定理。	Check variable consistency, logical symbols, parentheses and constants. Another tautology cannot replace this theorem.
 每个空只能填一个字母变量。	Each blank accepts one variable.
 变量关系正确。	Variable relationships are correct.
-同一个变量须保持一致，不同变量不能合并。	Keep each variable consistent; distinct variables cannot be merged.
+检查已有括号内的变量关系；允许符号支持的换序，不同变量不能合并。	Check variable relationships within the existing parentheses; supported operand swaps are allowed, and distinct variables cannot merge.
 当前范围没有定理，请调整筛选。	No theorems in the current scope. Adjust the filters.
 至少选择一种题型。	Choose at least one question type.
 当前范围没有适合所选题型的条目。	No items in this scope support the selected question types.
@@ -598,6 +613,8 @@ Leibniz 与替换	Leibniz and substitution
   const escaped = phrases.map(([from]) => from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   const phrasePattern = new RegExp(escaped.join('|'), 'g');
   const patterns = [
+    [/来源与原文片段 · (\d+) 段/g, 'Sources and excerpts · $1 unique excerpts'],
+    [/其他公式写法 · (\d+) 种/g, 'Alternative formulas · $1 variants'],
     [/这条定理需要 (\d+) 个不同变量；你的答案有 (\d+) 个。不同变量不能被合并。/g, 'This theorem needs $1 distinct variables; your answer has $2. Distinct variables cannot be merged.'],
     [/当前范围 (\d+) 条，(\d+) /g, 'Current scope: $1 theorems, $2 '],
     [/开始 (\d+) 题挑战/g, 'Start a $1-question quest'],
@@ -682,7 +699,8 @@ Leibniz 与替换	Leibniz and substitution
   function localize(root, language) {
     if (!root) return;
     const doc = root.ownerDocument || root;
-    const elements = root.nodeType === 1 ? [root, ...root.querySelectorAll('*')] : root.querySelectorAll ? [...root.querySelectorAll('*')] : [];
+    const selector = '[title],[aria-label],[placeholder]';
+    const elements = [...(root.matches?.(selector) ? [root] : []), ...(root.querySelectorAll?.(selector) || [])];
     for (const element of elements) {
       if (element.closest(attributeIgnore)) continue;
       let states = attributeState.get(element);
@@ -698,8 +716,8 @@ Leibniz 与替换	Leibniz and substitution
       }
     }
     const walker = doc.createTreeWalker(root, 4);
-    let node;
-    while ((node = walker.nextNode())) {
+    let node = root.nodeType === 3 ? root : walker.nextNode();
+    for (; node; node = walker.nextNode()) {
       const parent = node.parentElement;
       if (!parent || parent.closest(ignore)) continue;
       // The direct text in these containers is source/user content; their labelled children remain UI.

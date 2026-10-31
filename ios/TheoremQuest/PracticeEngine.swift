@@ -156,13 +156,14 @@ enum PracticeEngine {
         return sameName + nameSimilarity + structure + symbols + topic
     }
 
-    // Keep only unambiguous, distinct answers before ranking, so duplicate rows never use option slots.
+    // Keep same-topic, unambiguous, distinct answers before ranking; sparse topics use fewer options.
     static func distractors(for theorem: Theorem, mode: PracticeQuestion.Mode,
                             in records: [Theorem], difficulty: PracticeDifficulty) -> [Theorem] {
         let targetFormulas = Set(theorem.answerFormulas.map(normalizedFormula))
         var seen = Set<String>()
         let candidates = eligibleRecords(from: records, difficulty: difficulty).shuffled().filter { candidate in
-            guard candidate.isPracticeCard, candidate.id != theorem.id else { return false }
+            guard candidate.isPracticeCard, candidate.id != theorem.id,
+                  candidate.topic == theorem.topic else { return false }
             let candidateFormulas = Set(candidate.answerFormulas.map(normalizedFormula))
             guard targetFormulas.isDisjoint(with: candidateFormulas) else { return false }
             if mode == .formula && candidate.displayRef == theorem.displayRef && candidate.name == theorem.name {

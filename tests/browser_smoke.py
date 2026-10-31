@@ -84,7 +84,10 @@ def saved_session(p):return json.loads(p.evaluate('window.__testStore["tq.sessio
 def assert_active(p,card_id):
  progress=json.loads(p.evaluate('window.__testStore["tq.progress.v1"]'))
  assert progress['records'][card_id]['active'],progress['records'][card_id]
-def continue_question(p):p.locator('[data-action="continue"]').click()
+def continue_question(p):
+ previous=p.locator('.quiz-shell').get_attribute('data-question')
+ p.locator('[data-action="continue"]').click()
+ p.wait_for_function('key=>TQDiagnostics().view==="result" || document.querySelector(".quiz-shell")?.dataset.question!==key',arg=previous)
 
 with sync_playwright() as pw:
  binary=None if args.channel else shutil.which('chromium') or shutil.which('chromium-browser')
@@ -134,6 +137,8 @@ with sync_playwright() as pw:
      block=p.locator(f'[data-answer-variant="{variant["id"]}"]')
      assert block.is_visible()
      text=block.inner_text()
+     # The current answer is shown above the group list without duplication.
+     if variant['id']==card['id']:text+='\n'+p.locator('#correct-answer').inner_text()
      for value in variant['names']+variant['references']+variant['formulas']:
       assert value in text,(variant['id'],value,text)
      if variant['variantLabel']:assert variant['variantLabel'] in text
@@ -157,7 +162,7 @@ with sync_playwright() as pw:
  # Each mode is independently rendered and exercised through DOM events.
  p=page_new(browser,'choice');launch(p);p.locator(f'[data-action="choose"][data-id="{target["id"]}"]').click();check(p);ok(p)
  assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
- p.locator('[data-action="continue"]').click();assert p.evaluate('TQDiagnostics().view')=='result';logs.append('choice: correct selection and results screen');p.close()
+ continue_question(p);assert p.evaluate('TQDiagnostics().view')=='result';logs.append('choice: correct selection and results screen');p.close()
  p=page_new(browser,'name');launch(p);assert p.locator('#name-answer').count()==1
  p.locator('#name-answer').fill(target['name']);check(p);ok(p)
  assert p.locator('#correct-answer').inner_text()==f'{target["displayRef"]} · {target["name"]}'
@@ -165,6 +170,7 @@ with sync_playwright() as pw:
  logs.append('name: shared theorem group uses a name blank and accepts the group name');p.close()
  p=page_new(browser,'name');launch(p)
  other=next(r for r in bank if r['numbers'] and r['numbers'][-1]=='3.47b')
+ p.locator('#name-answer').fill(target['name'])
  p.locator('.group-number-picker summary').click();p.locator(f'[data-action="group-ref"][data-id="{other["id"]}"]').click();check(p)
  assert p.locator('#quiz-bottom.incorrect').count()==1
  logs.append('name: a selected number must match the shown formula');p.close()
@@ -212,7 +218,7 @@ with sync_playwright() as pw:
  p.locator('[data-action="key"][data-key="q"]').first.click();assert 'q' in p.locator('#formula-answer').input_value()
  p.locator('#formula-answer').fill('true');check(p);assert p.locator('#quiz-bottom.incorrect').count()==1
  assert p.locator('#correct-answer').inner_text()==target['formula']
- p.locator('[data-action="continue"]').click();go(p,'home');go(p,'mistakes');assert p.locator('[data-action="review-one"]').count()==1
+ continue_question(p);go(p,'home');go(p,'mistakes');assert p.locator('[data-action="review-one"]').count()==1
  logs.append('shortcuts and button keyboard; arbitrary tautology rejected and wrong bank populated')
  # Two correct mode-specific attempts clear the active bank across simulated reloads.
  seed=p.evaluate('JSON.parse(JSON.stringify(window.__testStore))');p.close()
@@ -249,9 +255,9 @@ with sync_playwright() as pw:
  go(p,'audit');assert '2026 可练卡片' in p.locator('#app').inner_text();logs.append('range/family filters, manual scope, saved preset, Important cards and source audit');p.close()
  browser.close()
  browser=pw.chromium.launch(executable_path=binary,channel=args.channel,headless=True,args=['--no-sandbox'])
- # Current-year notebook and archive Week selectors are real intersections.
+ # Course Week and notebook selectors are real intersections; materials Week is removed.
  p=page_new(browser,seed={'tq.settings.v1':json.dumps({'modes':['choice']})});assert p.evaluate('TQDiagnostics().scopeCount')==current_practice
- assert p.locator('[data-filter="archiveWeek"]').first.locator('option').count()==2
+ assert p.locator('[data-filter="archiveWeek"]').count()==0
  assert set(p.locator('[data-filter="week"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))=={'1','2','3','4'}
  p.locator('[data-filter="week"]').first.select_option('1')
  week1_sources={n['sourceId'] for n in json.loads((ROOT/'data/weekly-inventory.json').read_text())['notebooks'] if n['year']==2026 and 1 in n['weeks']}
@@ -270,9 +276,6 @@ with sync_playwright() as pw:
  assert expected_through>expected_week2
  go(p,'library');assert p.locator('[data-filter="weekMode"]').first.input_value()=='through'
  p.locator('[data-filter="week"]').first.select_option('')
- p.locator('[data-filter="archiveWeek"]').first.select_option('3')
- assert p.evaluate('TQDiagnostics().scopeCount')==43
- p.locator('[data-filter="archiveWeek"]').first.select_option('')
  p.locator('[data-filter="notebook"]').first.select_option('16018')
  h5_count=p.evaluate('TQDiagnostics().scopeCount');assert 0<h5_count<current_practice
  expected_ports={str(port) for r in bank for port in [*r.get('preloaded2026',[]),*r.get('notebook2026',[])]}
@@ -286,16 +289,14 @@ with sync_playwright() as pw:
  expected_2025_ports={str(port) for r in bank for port in r.get('preloaded2025',[])}
  actual_2025_ports=set(p.locator('[data-filter="notebook"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))
  assert actual_2025_ports==expected_2025_ports,(actual_2025_ports^expected_2025_ports)
- assert set(p.locator('[data-filter="archiveWeek"]').first.locator('option').evaluate_all('(options)=>options.map(o=>o.value).filter(Boolean)'))=={'3','4','5','6','7','8','9','11'}
- p.locator('[data-filter="archiveWeek"]').first.select_option('6')
+ assert p.locator('[data-filter="archiveWeek"]').count()==0
  assert p.evaluate('TQDiagnostics().scopeCount')>0
- assert 'Week 6 · 序列进阶' in p.locator('#app').inner_text()
- logs.append('2026 notebook scope and readable 2025 Week 6 labels');p.close()
+ logs.append('2026/2025 notebook scope and removed materials Week selector');p.close()
  browser.close()
  browser=pw.chromium.launch(executable_path=binary,channel=args.channel,headless=True,args=['--no-sandbox'])
  # In-session retry and hint accountability.
  p=page_new(browser,seed={'tq.settings.v1':json.dumps(settings('formula',True))});launch(p);p.locator('[data-action="skip"]').click()
- assert p.locator('[role="progressbar"]').get_attribute('aria-valuemax')=='2';p.locator('[data-action="continue"]').click()
+ assert p.locator('[role="progressbar"]').get_attribute('aria-valuemax')=='2';continue_question(p)
  assert p.evaluate('TQDiagnostics().question.retry')==1
  p.locator('[data-action="hint"]').click();p.locator('[data-action="close-modal"]').first.click();p.locator('#formula-answer').fill(target['formula']);check(p)
  assert p.locator('#quiz-bottom.incorrect').count()==1
@@ -319,7 +320,7 @@ with sync_playwright() as pw:
   logs.append(mode+': count=10 single-card quest stops after two skips');p.close()
  # Wrong-bank review uses the same cap when its requested count exceeds scope.
  p=page_new(browser,seed={'tq.settings.v1':json.dumps(settings('formula',True,10))})
- launch(p);p.locator('[data-action="skip"]').click();p.locator('[data-action="exit-quiz"]').click()
+ launch(p);p.locator('[data-action="skip"]').click();continue_question(p);p.locator('[data-action="exit-quiz"]').click()
  go(p,'mistakes');p.locator('[data-action="review-all"]').first.click()
  queue=saved_session(p)['queue'];assert len(queue)==2 and all(q['id']==target['id'] for q in queue),queue
  for occurrence in range(2):

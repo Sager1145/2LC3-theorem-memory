@@ -15,12 +15,18 @@
     const native=window.TQNativeData;
     D=E.bankWithStudy(bundledBank,native.theorems,native.sources,native.study?E.validateStudyData(native.study):bundledStudy,!!native.revision&&!native.study);
   }
-  let bundledFingerprint='';
+  let bundledFingerprint=window.TQ_BUNDLED_FINGERPRINT||'';
   async function bankHash(bytes){
     if(!window.crypto?.subtle)throw new Error('此浏览器无法校验题库，请使用 HTTPS 网站或新版浏览器。');
     return [...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');
   }
   const textHash=text=>bankHash(new TextEncoder().encode(text));
+  async function bundleFingerprint(){
+    // Published/portable builds calculate this once at build time. Source
+    // previews retain the old fingerprint format, only when a snapshot needs it.
+    if(!bundledFingerprint)bundledFingerprint=await textHash(JSON.stringify([bundledBank,bundledStudy]));
+    return bundledFingerprint;
+  }
   function bankStorage(value){return new Promise((resolve,reject)=>{
     if(!window.indexedDB){reject(new Error('此浏览器无法保存题库更新。'));return;}
     const request=indexedDB.open('theorem-quest-bank',1);
@@ -65,9 +71,8 @@
   // A changed bundled bank takes precedence over a snapshot from an older deployment.
   if(canUpdateBank()&&!window.TQ_NATIVE){
     try{
-      bundledFingerprint=await textHash(JSON.stringify([bundledBank,bundledStudy]));
       const installed=await bankStorage();
-      if(installed?.bundledFingerprint===bundledFingerprint){D=await checkedBank(installed);bankRevision=installed.manifest.revision;}
+      if(installed&&installed.bundledFingerprint===await bundleFingerprint()){D=await checkedBank(installed);bankRevision=installed.manifest.revision;}
     }catch(error){bankMessage='使用随附题库。'+error.message;}
   }
   window.THEOREM_DATA=D;
@@ -87,8 +92,14 @@
   };
   const FOCUS={all:'全部定理',important:'Important',repeated:'多次出现',priority:'重点与高频',hintUsed:'Hint 中用到',hintRepeated:'Hint 多次出现'};
   let hintData=window.NOTEBOOK_HINTS||{notebooks:[],groups:[]};
-  const hintCardCounts=scope=>E.notebookHintCardCounts(hintData,scope);
-  const defaults = {language:'zh-CN',appearance:'system',hintList:'used',hintQuery:'',modeDefaultsVersion:3,modes:['name','choice','blanks','cloze','formula','symbol','proof'],count:10,choiceDifficulty:2,goal:20,sound:false,retry:true,fullKeyboard:false,scope:{query:'',topic:'',source:'',range:'',era:'2026',notebook:'',week:'',weekMode:'current',archiveWeek:'',documentFocus:'all',important:false,repeated:false,starred:false,wrong:false,manual:false,selected:[]},presets:[]};
+  let hintCountCache;
+  function hintCardCounts(scope){
+    const key=JSON.stringify([scope.era,scope.notebook,scope.week,scope.weekMode]);
+    if(hintCountCache?.data!==hintData||hintCountCache.key!==key)
+      hintCountCache={data:hintData,key,counts:E.notebookHintCardCounts(hintData,scope)};
+    return hintCountCache.counts;
+  }
+  const defaults = {language:'zh-CN',appearance:'system',hintList:'used',hintQuery:'',modeDefaultsVersion:3,modes:['name','choice','blanks','cloze','formula','symbol','proof'],count:10,choiceDifficulty:2,goal:20,sound:false,retry:true,keyboardHaptics:true,fullKeyboard:false,scope:{query:'',topic:'',source:'',range:'',era:'2026',notebook:'',week:'',weekMode:'current',archiveWeek:'',documentFocus:'all',important:false,repeated:false,starred:false,wrong:false,manual:false,selected:[]},presets:[]};
   let storageOK=true, toastTimer, activeInput=null, lastFocus=null, view='home', page=1, wrongTab='active', auditQuery='', auditPage=1, session=null, qState=null;
   const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const attr=esc, $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -106,8 +117,26 @@
     window.webkit?.messageHandlers?.quest?.postMessage({action:'appearance',value:settings.appearance,language:settings.language});
   }
   function localizeUI(){window.TQI18n?.localize(document.body,settings.language);}
-  const localizationObserver=new MutationObserver(()=>{
-    localizationObserver.disconnect();prepareScreenInputs();localizeUI();watchLocalization();
+  const localizationObserver=new MutationObserver(mutations=>{
+    // A label or candidate change should only process that changed subtree.
+    // Disconnect while translating so our own text/attribute writes do not loop.
+    const roots=new Set();
+    for(const mutation of mutations){
+      if(mutation.type==='childList'){
+        for(const node of mutation.addedNodes)if(node.nodeType===1||node.nodeType===3)roots.add(node);
+      }else roots.add(mutation.target);
+    }
+    localizationObserver.disconnect();
+    try{
+      for(const root of roots){
+        if(!root.isConnected)continue;
+        let parent=root.parentNode,covered=false;
+        while(parent){if(roots.has(parent)){covered=true;break;}parent=parent.parentNode;}
+        if(covered)continue;
+        if(root.nodeType===1)prepareScreenInputs(root);
+        window.TQI18n?.localize(root,settings.language);
+      }
+    }finally{watchLocalization();}
   });
   function watchLocalization(){localizationObserver.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','placeholder']});}
   applyAppearance();watchLocalization();
@@ -132,9 +161,10 @@
     o.choiceDifficulty=[1,2,3].includes(x.choiceDifficulty)?x.choiceDifficulty:2;
     o.hintList=x.hintList==='repeated'?'repeated':'used';o.hintQuery=typeof x.hintQuery==='string'?x.hintQuery.slice(0,200):'';
     o.fullKeyboard=x.fullKeyboard===true;
+    o.keyboardHaptics=x.keyboardHaptics!==false;
     o.goal=[10,20,30,50].includes(x.goal)?x.goal:20;o.sound=!!x.sound;o.retry=x.retry!==false;
     const s=x.scope;if(s&&typeof s==='object'){
-      for(const k of ['query','topic','source','range','era','notebook','week','archiveWeek'])if(typeof s[k]==='string')o.scope[k]=s[k].slice(0,200);
+      for(const k of ['query','topic','source','range','era','notebook','week'])if(typeof s[k]==='string')o.scope[k]=s[k].slice(0,200);
       o.scope.documentFocus=FOCUS[s.documentFocus]?s.documentFocus:'all';
       o.scope.weekMode=s.weekMode==='through'?'through':'current';
       if(!o.scope.week&&typeof s.exerciseSeries==='string')o.scope.week=s.exerciseSeries.slice(0,200);
@@ -148,6 +178,9 @@
   function cleanSession(x){
     if(!x||!Array.isArray(x.queue)||!x.queue.length||x.queue.length>300||!Number.isInteger(x.index)||x.index<0||x.index>x.queue.length)return null;
     if(x.queue.some(v=>!v||!E.isQuestionCard(byId.get(E.canonicalId(v.id)))||!MODE[v.mode]||!E.eligibleModes(byId.get(E.canonicalId(v.id)),[v.mode],x.choiceDifficulty||settings.choiceDifficulty).length))return null;
+    const current=x.queue[x.index],target=current&&byId.get(E.canonicalId(current.id));
+    // Regenerate choices saved before options were restricted to the theorem's topic.
+    if(current?.mode==='choice'&&Array.isArray(x.state?.options)&&x.state.options.some(id=>byId.get(E.canonicalId(id))?.topic!==target.topic))x={...x,state:null};
     return E.limitSessionOccurrences({...x,choiceDifficulty:[1,2,3].includes(x.choiceDifficulty)?x.choiceDifficulty:settings.choiceDifficulty,queue:x.queue.map(v=>({id:E.canonicalId(v.id),mode:v.mode,retry:Math.min(2,Math.max(0,v.retry||0)),symbol:v.mode==='symbol'&&E.symbolsInFormula(byId.get(E.canonicalId(v.id)).formula).includes(v.symbol)?v.symbol:null})),label:String(x.label||'自由练习').slice(0,100),results:Array.isArray(x.results)?x.results.slice(0,300).map(r=>({...r,id:E.canonicalId(r.id)})):[],combo:Number(x.combo)||0,bestCombo:Number(x.bestCombo)||0,xp:Number(x.xp)||0,state:x.state&&typeof x.state==='object'?x.state:null});
   }
   const save=()=>write(KEYS.progress,progress), saveSettings=()=>write(KEYS.settings,settings);
@@ -155,12 +188,102 @@
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   document.addEventListener('pointerdown',()=>{document.documentElement.dataset.input='pointer';},true);
   document.addEventListener('keydown',()=>{document.documentElement.dataset.input='keyboard';},true);
-  function animateUI(el,frames,duration=200){
-    if(!el?.animate||document.documentElement.dataset.input==='keyboard')return null;
-    if(reducedMotion.matches)frames=frames.map(({transform,...frame})=>frame);
+  function animateUI(el,frames,duration=200,screenKey=false){
+    if(!el?.animate||!screenKey&&document.documentElement.dataset.input==='keyboard')return null;
+    if(reducedMotion.matches)frames=frames.map(({transform,scale,...frame})=>frame);
     if(frames.every(frame=>!Object.keys(frame).length))return null;
     return el.animate(frames,{duration:reducedMotion.matches?120:duration,easing:getComputedStyle(document.documentElement).getPropertyValue('--ease-out').trim()});
   }
+  // Read an interrupted transition before replacing its DOM, so rapid navigation
+  // continues from the visible state instead of restarting the entrance.
+  function transitionState(panel){
+    const interrupted=panel?.getAnimations().some(animation=>
+      ['opacity','transform'].includes(animation.transitionProperty)&&animation.playState==='running');
+    if(!interrupted)return null;
+    const style=getComputedStyle(panel);
+    return {opacity:style.opacity,transform:style.transform};
+  }
+  function transitionPanel(panel,from=null,move=true){
+    if(!panel)return;
+    panel.classList.remove('menu-transition');
+    if(document.documentElement.dataset.input==='keyboard')return;
+    panel.style.transition='none';
+    panel.style.opacity=from?.opacity||'.72';
+    panel.style.transform=reducedMotion.matches||!move?'none':from?.transform||'translateY(6px)';
+    // Resolve the starting style once, then let CSS handle every animation frame.
+    getComputedStyle(panel).opacity;
+    panel.classList.add('menu-transition');
+    panel.style.removeProperty('transition');
+    panel.style.removeProperty('opacity');
+    panel.style.removeProperty('transform');
+  }
+  function switchMenu(update,selector='#menu-content'){
+    const from=transitionState($(selector)||$('#menu-content'));
+    update();
+    transitionPanel($(selector)||$('#menu-content'),from);
+  }
+  let renderedView=null;
+  function renderScreen(html){
+    const changed=renderedView!==null&&renderedView!==view;
+    const from=changed?transitionState($('#menu-content')||$('#main')):null;
+    app.innerHTML=html;
+    renderedView=view;
+    if(changed){
+      transitionPanel($('#menu-content')||$('#main'),from);
+      // Fade quiz chrome separately: transforming a shell would move the fixed
+      // answer dock and change the containing block of its fixed descendants.
+      transitionPanel($('.quiz-top'),null,false);
+      if(!qState?.checked)transitionPanel($('#quiz-bottom'),null,false);
+    }
+    return changed;
+  }
+  // Capture before actions replace controls, then animate the current instance.
+  // This also covers native labels, disclosure summaries and fields without data-action.
+  const clickAnimations=new WeakMap();
+  function clickFeedback(target,screenKey=false){
+    const control=target.closest('button,a[href],summary,input:not([type=hidden]),select,textarea,label');
+    if(!control||control.matches(':disabled,[aria-disabled=true]')||control.closest('[inert]'))return;
+    const field=control.matches('label')?control.querySelector('input,select,textarea'):control;
+    const identity=field||control;
+    const attributes=identity.getAttributeNames().filter(name=>name.startsWith('data-')||name==='href');
+    const selector=screenKey&&identity.dataset.qwertyBase?'#screen-keyboard [data-qwerty-base="'+CSS.escape(identity.dataset.qwertyBase)+'"]':identity.id?'#'+CSS.escape(identity.id):identity.tagName.toLowerCase()+attributes.map(name=>'['+name+'="'+CSS.escape(identity.getAttribute(name))+'"]' ).join('');
+    const canReplace=identity.id||attributes.length;
+    requestAnimationFrame(()=>{
+      const current=control.isConnected?control:canReplace?document.querySelector(selector):null;
+      const surface=current?.matches('input[type=checkbox],input[type=radio]')?current.closest('label')||current:current;
+      if(!surface)return;
+      clickAnimations.get(surface)?.cancel();
+      const frames=screenKey?[{transform:'translateY(2px) scale(.97)',opacity:.72},{transform:'translateY(0) scale(1)',opacity:1}]:[{scale:'.97',opacity:.82},{scale:'1',opacity:1}];
+      const animation=animateUI(surface,frames,screenKey?160:200,screenKey);
+      if(animation)clickAnimations.set(surface,animation);
+    });
+  }
+  const keyboardButton=target=>target.closest('.key-panel button,#screen-keyboard button,#screen-suggestions button,[data-action="shortcut"]');
+  function keyboardFeedback(button){
+    if(button.matches(':disabled,[aria-disabled=true]')||button.closest('[inert]'))return;
+    clickFeedback(button,true);
+    if(!settings.keyboardHaptics)return;
+    try{
+      if(window.TQ_NATIVE)window.webkit?.messageHandlers?.quest?.postMessage({action:'keyboard-haptic'});
+      else navigator.vibrate?.(8);
+    }catch(_){}
+  }
+  document.addEventListener('click',ev=>{
+    const button=keyboardButton(ev.target);
+    // Pointer presses already received feedback; keyboard/assistive clicks have no pointerdown.
+    if(button){if(ev.detail===0)keyboardFeedback(button);return;}
+    clickFeedback(ev.target);
+  },true);
+  // Feedback begins on press, including QWERTY keys whose touch click is suppressed.
+  document.addEventListener('pointerdown',ev=>{
+    const button=keyboardButton(ev.target);
+    if(button&&ev.isPrimary&&ev.button===0)keyboardFeedback(button);
+  },true);
+  const navResizeObserver=new ResizeObserver(()=>{
+    const sidebar=$('.sidebar');
+    const height=sidebar&&getComputedStyle(sidebar).position==='fixed'?sidebar.offsetHeight:0;
+    document.documentElement.style.setProperty('--bottom-nav-height',height+'px');
+  });
   let quizFocusTimer;
   function toast(text){const el=$('#toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3300);}
   function titleHTML(r){return `<span class="record-ref">${esc(r.displayRef)}</span><span class="record-name">${esc(r.name)}</span>`;}
@@ -172,49 +295,58 @@
   let archiveWeekNames=D.weekModuleLabels||{};
   const topicLabel=t=>archiveWeekNames[t]||t;
   let weekBySource=new Map(Object.entries(D.weekBySource||{}));
-  function matchesStudySource(r,f){
-    const selected=Number(f.week);
-    return r.sources.some(origin=>{
-      const source=sourceMap.get(origin.sourceId);
-      if(!source || (f.era!=='all' && String(source.year || (source.id.startsWith('calc-2026-') ? 2026 : 2025))!==f.era))return false;
-      if(f.notebook && source.url?.match(/:(\d+)\//)?.[1]!==f.notebook)return false;
-      if(f.source && origin.sourceId!==f.source)return false;
-      if(!f.week)return true;
-      return (weekBySource.get(source.id)||source.weeks||[]).some(week=>week===selected || (f.weekMode==='through' && week<selected));
-    });
+  function matchesStudyOrigin(origin,f){
+    const source=sourceMap.get(origin.sourceId),selected=Number(f.week);
+    if(!source || (f.era!=='all' && String(source.year || (source.id.startsWith('calc-2026-') ? 2026 : 2025))!==f.era))return false;
+    if(f.notebook && source.url?.match(/:(\d+)\//)?.[1]!==f.notebook)return false;
+    if(f.source && origin.sourceId!==f.source)return false;
+    if(!f.week)return true;
+    return (weekBySource.get(source.id)||source.weeks||[]).some(week=>week===selected || (f.weekMode==='through' && week<selected));
   }
+  function matchesStudySource(r,f){return r.sources.some(origin=>matchesStudyOrigin(origin,f));}
   function studyPicker(){
     const era=settings.scope.era;
     const hintFocus=['hintUsed','hintRepeated'].includes(settings.scope.documentFocus);
     const sources=(hintFocus?hintData.notebooks.map(n=>({id:n.sourceId,name:n.name,year:n.year,url:n.url,weeks:n.weeks})):settings.modes.includes('proof')?studySources():D.sources).filter(s=>era==='all'||String(s.year || (s.id.startsWith('calc-2026-') ? 2026 : 2025))===era);
-    const weeks=[...new Set(records.flatMap(r=>era==='2026'?(r.preloaded2026Weeks||[]):era==='2025'?(r.archiveWeeks||[]):[...(r.archiveWeeks||[]),...(r.preloaded2026Weeks||[])]))].sort((a,b)=>a-b);
     const studyWeeks=[...new Set(sources.flatMap(s=>hintFocus?s.weeks||[]:weekBySource.get(s.id)||[]))].sort((a,b)=>a-b);
-    return `<div class="study-picker"><label><span class="field-label">学期资料</span><select data-filter="era"><option value="2026" ${era==='2026'?'selected':''}>2026 定理与已完成证明</option><option value="all" ${era==='all'?'selected':''}>全部年份</option><option value="2025" ${era==='2025'?'selected':''}>2025i 已核对预载列表</option></select></label><label><span class="field-label">当前学习的 notebook</span><select data-filter="notebook"><option value="">全部已核对 notebook</option>${sources.filter((s,i,all)=>all.findIndex(other=>other.url===s.url)===i).map(s=>{const port=s.url.match(/:(\d+)\//)?.[1];return `<option value="${port}" ${settings.scope.notebook===port?'selected':''}>${esc(notebookNames[port]||shortSource(s.name))}</option>`;}).join('')}</select></label><label><span class="field-label">Week（Exercise 与 Homework）</span><select data-filter="week"><option value="">全部 Week</option>${studyWeeks.map(n=>`<option value="${n}" ${settings.scope.week===String(n)?'selected':''}>Week ${n}</option>`).join('')}</select></label><label><span class="field-label">资料 Week（原模块标签）</span><select data-filter="archiveWeek"><option value="">全部模块</option>${weeks.map(w=>`<option value="${w}" ${settings.scope.archiveWeek===String(w)?'selected':''}>模块 Week ${w}</option>`).join('')}</select></label>${settings.scope.week?`<label><span class="field-label">周次范围</span><select data-filter="weekMode"><option value="current" ${settings.scope.weekMode==="current"?"selected":""}>仅当周内容</option><option value="through" ${settings.scope.weekMode==="through"?"selected":""}>包含此前全部 Week</option></select></label>`:""}${documentFocusPicker()}<p class="study-picker-note">每周包含对应 Notebook 的预载定理与正文已证明定理；同一定理可出现在多个 Week。</p></div>`;
+    return `<div class="study-picker"><label><span class="field-label">学期资料</span><select data-filter="era"><option value="2026" ${era==='2026'?'selected':''}>2026 定理与已完成证明</option><option value="all" ${era==='all'?'selected':''}>全部年份</option><option value="2025" ${era==='2025'?'selected':''}>2025i 已核对预载列表</option></select></label><label><span class="field-label">当前学习的 notebook</span><select data-filter="notebook"><option value="">全部已核对 notebook</option>${sources.filter((s,i,all)=>all.findIndex(other=>other.url===s.url)===i).map(s=>{const port=s.url.match(/:(\d+)\//)?.[1];return `<option value="${port}" ${settings.scope.notebook===port?'selected':''}>${esc(notebookNames[port]||shortSource(s.name))}</option>`;}).join('')}</select></label><label><span class="field-label">Week（Exercise 与 Homework）</span><select data-filter="week"><option value="">全部 Week</option>${studyWeeks.map(n=>`<option value="${n}" ${settings.scope.week===String(n)?'selected':''}>Week ${n}</option>`).join('')}</select></label>${settings.scope.week?`<label><span class="field-label">周次范围</span><select data-filter="weekMode"><option value="current" ${settings.scope.weekMode==="current"?"selected":""}>仅当周内容</option><option value="through" ${settings.scope.weekMode==="through"?"selected":""}>包含此前全部 Week</option></select></label>`:""}${documentFocusPicker()}<p class="study-picker-note">Given 表示预载列表中已给出；Proved 表示正文中已证明。同一定理可有两种来源，并可出现在多个 Week。</p></div>`;
   }
   function documentFocusPicker(){return `<label><span class="field-label">专项复习</span><select data-filter="documentFocus" aria-label="专项复习">${Object.entries(FOCUS).map(([key,label])=>`<option value="${key}" ${settings.scope.documentFocus===key?'selected':''}>${label}</option>`).join('')}</select></label>`;}
-  function badges(r,extra=true){
+  function declarationBadgeHTML(status,year=null){
+    if(!status)return '';
+    const proved=status==='proved';
+    return `<span class="badge declaration-${status}" data-declaration-status="${status}" title="${proved?'在 notebook 正文中经 CalcCheck 核验的已完成证明':'Notebook 预载列表中已给出的声明'}">${year?esc(year)+' · ':''}${proved?'Proved · 已证明':'Given · 已给出'}</span>`;
+  }
+  function declarationBadgesHTML(r){
+    const origins=r.sources.filter(origin=>matchesStudyOrigin(origin,settings.scope));
+    return E.declarationStatuses({...r,sources:origins.length?origins:r.sources},D.sources).map(({status,year})=>declarationBadgeHTML(status,year)).join('');
+  }
+  function badges(r,extra=true,showDomain=true){
     const uses=hintCardCounts(settings.scope).get(r.id)||0;
-    const p=progress.records[r.id];return `<div class="badge-row">${uses?`<span class="badge good" data-hint-used="${r.id}">Hint 使用 ${uses} 次</span>`:''}${E.documentFocusMatches(r,'important')?'<span class="badge important" title="课程文档明确标注 Important">★ IMPORTANT</span>':''}${r.emphasisEvidence?.length?'<span class="badge important" title="原资料感叹号强调，与 Important 标签分开">原文 !!</span>':''}${E.documentFocusMatches(r,'repeated')?`<span class="badge repeat" title="课程文档中匹配的定理声明或引用；同族导出副本不累加">↻ 文档出现 ${r.documentStudy?.occurrences??r.occurrences} 次</span>`:''}${p?.active?'<span class="badge wrong">待复练</span>':p?.streak>=3?'<span class="badge good">已熟悉</span>':''}${extra?`<span class="badge">${esc(topicLabel(r.topic))}</span>${r.notebook2026?.length?'<span class="badge good">2026 已证明</span>':r.preloaded2026?.length?'<span class="badge good">2026 预载</span>':'<span class="badge">2025 归档</span>'}`:''}${r.domain?`<span class="badge">${esc(r.domain)}</span>`:''}</div>`;
+    const p=progress.records[r.id];return `<div class="badge-row">${uses?`<span class="badge good" data-hint-used="${r.id}">Hint 使用 ${uses} 次</span>`:''}${E.documentFocusMatches(r,'important')?'<span class="badge important" title="课程文档明确标注 Important">★ IMPORTANT</span>':''}${r.emphasisEvidence?.length?'<span class="badge important" title="原资料感叹号强调，与 Important 标签分开">原文 !!</span>':''}${E.documentFocusMatches(r,'repeated')?`<span class="badge repeat" title="课程文档中匹配的定理声明或引用；同族导出副本不累加">↻ 文档出现 ${r.documentStudy?.occurrences??r.occurrences} 次</span>`:''}${p?.active?'<span class="badge wrong">待复练</span>':p?.streak>=3?'<span class="badge good">已熟悉</span>':''}${extra?`<span class="badge">${esc(topicLabel(r.topic))}</span>`:''}${declarationBadgesHTML(r)}${showDomain&&r.domain&&!genericDomain(r.domain)?`<span class="badge">${esc(r.domain)}</span>`:''}</div>`;
   }
   function visibleRecords(ignoreFocus=false){
-    const f=settings.scope,hints=hintCardCounts(f),hintFocus=!ignoreFocus&&['hintUsed','hintRepeated'].includes(f.documentFocus);let rs=(settings.modes.length===1&&settings.modes[0]==='proof'?proofRecords:settings.modes.includes('proof')?[...quizRecords,...proofRecords]:quizRecords).filter(r=>(hintFocus?(hints.get(r.id)||0)>=(f.documentFocus==='hintRepeated'?2:1):matchesStudySource(r,f))&&(!f.archiveWeek||(f.era==='2026'?r.preloaded2026Weeks?.includes(Number(f.archiveWeek)):f.era==='2025'?r.archiveWeeks?.includes(Number(f.archiveWeek)):r.preloaded2026Weeks?.includes(Number(f.archiveWeek))||r.archiveWeeks?.includes(Number(f.archiveWeek))))&&(!f.topic||r.topic===f.topic)&&
+    const f=settings.scope,hints=hintCardCounts(f),hintFocus=!ignoreFocus&&['hintUsed','hintRepeated'].includes(f.documentFocus);let rs=(settings.modes.length===1&&settings.modes[0]==='proof'?proofRecords:settings.modes.includes('proof')?[...quizRecords,...proofRecords]:quizRecords).filter(r=>(hintFocus?(hints.get(r.id)||0)>=(f.documentFocus==='hintRepeated'?2:1):matchesStudySource(r,f))&&(!f.topic||r.topic===f.topic)&&
       (ignoreFocus||hintFocus||E.documentFocusMatches(r,f.documentFocus))&&(ignoreFocus||!f.important||E.documentFocusMatches(r,'important'))&&(ignoreFocus||!f.repeated||E.documentFocusMatches(r,'repeated'))&&(!f.starred||progress.stars.includes(r.id))&&(!f.wrong||progress.records[r.id]?.active)&&E.referenceInRange(r.numbers,f.range));
     if(f.query)rs=E.searchRecords(rs,f.query);return rs;
   }
   function scopeRecords(){const rs=visibleRecords();return settings.scope.manual?rs.filter(r=>settings.scope.selected.includes(r.id)):rs;}
-  function navigate(next){view=next;page=1;render();animateUI($('#main'),[{opacity:0},{opacity:1}],160);window.scrollTo({top:0});requestAnimationFrame(()=>$('#main')?.focus({preventScroll:true}));}
+  function navigate(next){view=next;page=1;render();window.scrollTo({top:0});requestAnimationFrame(()=>$('#main')?.focus({preventScroll:true}));}
   function navIcon(id){
     const paths={home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/>',library:'<path d="M12 5v16M3 4h5a4 4 0 0 1 4 2 4 4 0 0 1 4-2h5v15h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z"/>',hints:'<path d="M4 4h16v16H4ZM8 8h8M8 12h8M8 16h4"/>',focus:'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/>',mistakes:'<path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M12 8v5l3 2"/>',audit:'<path d="M14 3H5v18h14V8ZM14 3v5h5M8 12h8M8 16h5"/>',settings:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/>'};
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">${paths[id]}</svg>`;
   }
   function render(){
     releaseScreenSuggestions();
+    navResizeObserver.disconnect();
+    document.documentElement.style.setProperty('--bottom-nav-height','0px');
     document.body.dataset.view=view;
     document.documentElement.classList.remove('answer-feedback-open');
     if(view==='quiz'){renderQuiz();return;}if(view==='result'){renderResult();return;}
     const nav=[['home','闯关'],['library','定理库'],['focus','专项复习'],['hints','证明引用'],['mistakes','错题本'],['settings','设置']];
     const navView=view==='audit'?'settings':view;
-    app.innerHTML=`<div class="app-shell"><aside class="sidebar"><button class="brand" data-action="nav" data-view="home" aria-label="Theorem Quest 首页"><span class="mark" aria-hidden="true">∴</span><span><strong>Theorem<br>Quest</strong><br><small>定理闯关</small></span></button><nav class="nav" aria-label="主要导航">${nav.map(([id,name])=>`<button class="nav-btn ${navView===id?'active':''}" data-action="nav" data-view="${id}" ${navView===id?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${navIcon(id)}</span><span>${name}</span>${id==='mistakes'&&totalWrong()?`<span class="nav-count">${totalWrong()}</span>`:''}</button>`).join('')}</nav><div class="sidebar-foot">COMPSCI 2LC3<br>一条定理，一次进步。<br><br>本地保存 · 无需登录<br>独立学习工具，非课程官方产品。</div></aside><main id="main" class="main-area" tabindex="-1"><header class="topbar"><div class="course-chip">COMPSCI 2LC3 <span aria-hidden="true">/</span> LOGICAL REASONING</div><div class="stats-line"><button class="btn small" data-action="bank-entrance">题库更新</button><span class="stat-gold" title="连续练习天数">ϟ ${streakDays()} 天</span><span class="stat-green" title="学习经验值">✦ ${progress.xp} XP</span></div></header>${({home:renderHome,library:renderLibrary,focus:renderFocus,hints:renderNotebookHints,mistakes:renderMistakes,audit:renderAudit,settings:renderSettings})[view]()}</main></div>`;
+    renderScreen(`<div class="app-shell"><aside class="sidebar"><button class="brand" data-action="nav" data-view="home" aria-label="Theorem Quest 首页"><span class="mark" aria-hidden="true">∴</span><span><strong>Theorem<br>Quest</strong><br><small>定理闯关</small></span></button><nav class="nav" style="--nav-items:${nav.length}" aria-label="主要导航">${nav.map(([id,name])=>`<button class="nav-btn ${navView===id?'active':''}" data-action="nav" data-view="${id}" ${navView===id?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${navIcon(id)}</span><span class="nav-label">${name}</span>${id==='mistakes'&&totalWrong()?`<span class="nav-count">${totalWrong()}</span>`:''}</button>`).join('')}</nav><div class="sidebar-foot">COMPSCI 2LC3<br>一条定理，一次进步。<br><br>本地保存 · 无需登录<br>独立学习工具，非课程官方产品。</div></aside><main id="main" class="main-area" tabindex="-1"><header class="topbar"><div class="course-chip">2LC3</div><div class="stats-line"><span class="stat-gold" title="连续练习天数">ϟ ${streakDays()} 天</span><span class="stat-green" title="学习经验值">✦ ${progress.xp} XP</span></div></header><div id="menu-content">${({home:renderHome,library:renderLibrary,focus:renderFocus,hints:renderNotebookHints,mistakes:renderMistakes,audit:renderAudit,settings:renderSettings})[view]()}</div><footer class="menu-footer"><button class="btn small" data-action="bank-entrance">题库更新</button></footer></main></div>`);
+    navResizeObserver.observe($('.sidebar'));
     prepareScreenInputs();queueMicrotask(refreshAccessory);
   }
   function renderHome(){
@@ -234,11 +366,11 @@
   }
   function pathNode(topic,unit,index,rs){const rows=rs.filter(r=>r.topic===topic),done=rows.filter(r=>progress.records[r.id]?.streak>=3).length;return `<div class="path-node"><button class="path-circle ${done===rows.length?'mastered':unit===3?'secondary':''}" data-action="start-topic" data-topic="${attr(topic)}" aria-label="练习 ${attr(topicLabel(topic))}">${done===rows.length?'✓':['=','∧','⇒','∀'][unit]}</button><div class="path-text"><strong>${esc(topicLabel(topic))}</strong><small>${rows.length} 条定理 · ${done} 条已熟悉</small><div class="meter-slim"><span style="width:${rows.length?done/rows.length*100:0}%"></span></div></div></div>`;}
   function emptyHTML(title,text,target,button='返回闯关'){return `<div class="empty"><div class="empty-icon" aria-hidden="true">∴</div><h2>${esc(title)}</h2><p>${esc(text)}</p>${target?`<button class="btn primary" data-action="nav" data-view="${target}">${esc(button)}</button>`:''}</div>`;}
-  function modeFields(){return `<div class="mode-grid">${Object.entries(MODE).map(([id,m])=>`<label class="mode-card"><input type="checkbox" data-setting-mode="${id}" ${settings.modes.includes(id)?'checked':''}><span><strong>${m.icon} ${m.title}</strong><small>${m.desc}</small></span></label>`).join('')}</div><div class="setting-row"><label for="question-count"><strong>每关题数</strong><p>所选题型交错出现；手机端优先选择题和按键填空，减少完整输入题，错题可在本轮加练。</p></label><select id="question-count" data-setting="count">${[1,5,10,15,20,30,50].map(n=>`<option ${settings.count===n?'selected':''} value="${n}">${n} 题</option>`).join('')}</select></div><div class="setting-row"><label for="choice-difficulty"><strong>练习难度</strong><p>选择题越难，干扰项越相似；困难档排除结合律、对称性、自反性。符号填空：简单 1 空、标准隐藏约一半、困难隐藏其余符号；左右连接的 = 或 ≡ 保留。</p></label><select id="choice-difficulty" data-setting="choiceDifficulty">${[[1,'简单'],[2,'标准'],[3,'困难']].map(([n,label])=>`<option value="${n}" ${settings.choiceDifficulty===n?'selected':''}>${label}</option>`).join('')}</select></div><label class="setting-row"><span><strong>完整键盘输入</strong><p>默认关闭：填空题只使用大按键；开启后可用 QWERTY 和反斜线代码填空。其他输入题始终使用 QWERTY。</p></span><input type="checkbox" data-setting="fullKeyboard" ${settings.fullKeyboard?'checked':''}></label><label class="setting-row"><span><strong>本轮错题再出现</strong><p>每题本轮最多出现 2 次；仍需复练的题目留在错题本，下轮再练。</p></span><input type="checkbox" data-setting="retry" ${settings.retry?'checked':''}></label>`;}
+  function modeFields(){return `<div class="mode-grid">${Object.entries(MODE).map(([id,m])=>`<label class="mode-card"><input type="checkbox" data-setting-mode="${id}" ${settings.modes.includes(id)?'checked':''}><span><strong>${m.icon} ${m.title}</strong><small>${m.desc}</small></span></label>`).join('')}</div><div class="setting-row"><label for="question-count"><strong>每关题数</strong><p>所选题型交错出现；手机端优先选择题和按键填空，减少完整输入题，错题可在本轮加练。</p></label><select id="question-count" data-setting="count">${[1,5,10,15,20,30,50].map(n=>`<option ${settings.count===n?'selected':''} value="${n}">${n} 题</option>`).join('')}</select></div><div class="setting-row"><label for="choice-difficulty"><strong>练习难度</strong><p>选择题越难，干扰项越相似；困难档排除结合律、对称性、自反性。符号填空：简单 1 空、标准隐藏约一半、困难隐藏其余符号；左右连接的 = 或 ≡ 保留。</p></label><select id="choice-difficulty" data-setting="choiceDifficulty">${[[1,'简单'],[2,'标准'],[3,'困难']].map(([n,label])=>`<option value="${n}" ${settings.choiceDifficulty===n?'selected':''}>${label}</option>`).join('')}</select></div><label class="setting-row"><span><strong>键盘震动</strong><p>按键时提供轻微震动，默认开启；仅支持震动的设备生效。</p></span><input type="checkbox" data-setting="keyboardHaptics" ${settings.keyboardHaptics?'checked':''}></label><label class="setting-row"><span><strong>完整键盘输入</strong><p>默认关闭：填空题只使用大按键；开启后可用 QWERTY 和反斜线代码填空。其他输入题始终使用 QWERTY。</p></span><input type="checkbox" data-setting="fullKeyboard" ${settings.fullKeyboard?'checked':''}></label><label class="setting-row"><span><strong>本轮错题再出现</strong><p>每题本轮最多出现 2 次；仍需复练的题目留在错题本，下轮再练。</p></span><input type="checkbox" data-setting="retry" ${settings.retry?'checked':''}></label>`;}
   function renderLibrary(){
     const rs=visibleRecords(),f=settings.scope,start=(page-1)*24,pages=Math.max(1,Math.ceil(rs.length/24));if(page>pages)page=pages;
     const topics=[...new Set(records.map(r=>r.topic))],ss=D.sources.filter(s=>records.some(r=>r.sources.some(p=>p.sourceId===s.id)));
-    return `${studyPicker()}<div class="heading-row"><div><div class="eyebrow">建立自己的记忆范围</div><h1>定理库</h1><p class="subhead">编号、别名和所有不同公式变体都在这里。</p></div><button class="btn primary" data-action="start" ${!scopeRecords().length||!settings.modes.length?'disabled':''}>练习此范围</button></div><div class="filters"><label><span class="field-label">搜索名称、编号或公式</span><input id="library-query" class="input" data-filter="query" value="${attr(f.query)}" placeholder="例如 Golden、3.47、p ⇒ q" autocomplete="off"></label><label><span class="field-label">章节</span><select data-filter="topic"><option value="">全部章节</option>${topics.map(t=>`<option value="${attr(t)}" ${f.topic===t?'selected':''}>${esc(topicLabel(t))}</option>`).join('')}</select></label></div><div class="range-field"><label><span class="field-label">编号区间（逗号分隔多个范围）</span><input id="number-range" class="input" data-filter="range" value="${attr(f.range)}" placeholder="3.1-3.82.5, 15.1a-15.29" autocomplete="off"><small class="muted">3.47 包含 a–f 子项；区间筛选不包含原文未编号条目。局部题号请结合来源筛选。</small></label><button class="btn small" data-action="reset-filters">重设筛选</button></div><div class="filter-secondary">${[['important','★ Important'],['repeated','↻ 多次出现'],['starred','☆ 我的收藏'],['wrong','待复练'],['manual','仅练手选']].map(([k,n])=>`<label><input type="checkbox" data-filter="${k}" ${f[k]?'checked':''}>${n}</label>`).join('')}<select data-filter="source" aria-label="按来源文件筛选"><option value="">全部来源文件</option>${ss.map(s=>`<option value="${s.id}" ${f.source===s.id?'selected':''}>${esc(shortSource(s.name))}</option>`).join('')}</select></div><div class="toolbar"><span class="selected-counter">筛选 ${rs.length} 条 · 将练习 ${scopeRecords().length} 条 · 手选 ${f.selected.length} 条</span><div class="btn-row"><button class="btn small" data-action="select-filtered">全选筛选结果</button><button class="btn small" data-action="clear-selection">清空手选</button><button class="btn small" data-action="save-preset">保存范围</button><button class="btn small" data-action="configure">题型</button></div></div>${settings.presets.length?`<div class="filter-secondary"><label>已存范围 <select data-preset><option value="">选择一个范围…</option>${settings.presets.map((p,i)=>`<option value="${i}" data-i18n-ignore>${esc(p.name)}</option>`).join('')}</select></label></div>`:''}<div class="theorem-list">${rs.slice((page-1)*24,page*24).map(r=>recordRow(r)).join('')||emptyHTML('没有找到匹配的定理','试试放宽编号范围，或取消 Important、来源、手选限制。')}</div>${paginate(page,pages,'library-page')}`;
+    return `${studyPicker()}<div class="heading-row"><div><div class="eyebrow">建立自己的记忆范围</div><h1>定理库</h1><p class="subhead">先看名称与公式，点开卡片查看条件、别名与来源。</p></div><button class="btn primary" data-action="start" ${!scopeRecords().length||!settings.modes.length?'disabled':''}>练习此范围</button></div><div class="filters"><label><span class="field-label">搜索名称、编号或公式</span><input id="library-query" class="input" data-filter="query" value="${attr(f.query)}" placeholder="例如 Golden、3.47、p ⇒ q" autocomplete="off"></label><label><span class="field-label">章节</span><select data-filter="topic"><option value="">全部章节</option>${topics.map(t=>`<option value="${attr(t)}" ${f.topic===t?'selected':''}>${esc(topicLabel(t))}</option>`).join('')}</select></label></div><div class="range-field"><label><span class="field-label">编号区间（逗号分隔多个范围）</span><input id="number-range" class="input" data-filter="range" value="${attr(f.range)}" placeholder="3.1-3.82.5, 15.1a-15.29" autocomplete="off"><small class="muted">3.47 包含 a–f 子项；区间筛选不包含原文未编号条目。局部题号请结合来源筛选。</small></label><button class="btn small" data-action="reset-filters">重设筛选</button></div><div class="filter-secondary">${[['important','★ Important'],['repeated','↻ 多次出现'],['starred','☆ 我的收藏'],['wrong','待复练'],['manual','仅练手选']].map(([k,n])=>`<label><input type="checkbox" data-filter="${k}" ${f[k]?'checked':''}>${n}</label>`).join('')}<select data-filter="source" aria-label="按来源文件筛选"><option value="">全部来源文件</option>${ss.map(s=>`<option value="${s.id}" ${f.source===s.id?'selected':''}>${esc(shortSource(s.name))}</option>`).join('')}</select></div><div class="toolbar"><span class="selected-counter">筛选 ${rs.length} 条 · 将练习 ${scopeRecords().length} 条 · 手选 ${f.selected.length} 条</span><div class="btn-row"><button class="btn small" data-action="select-filtered">全选筛选结果</button><button class="btn small" data-action="clear-selection">清空手选</button><button class="btn small" data-action="save-preset">保存范围</button><button class="btn small" data-action="configure">题型</button></div></div>${settings.presets.length?`<div class="filter-secondary"><label>已存范围 <select data-preset><option value="">选择一个范围…</option>${settings.presets.map((p,i)=>`<option value="${i}" data-i18n-ignore>${esc(p.name)}</option>`).join('')}</select></label></div>`:''}<div class="theorem-list">${rs.slice((page-1)*24,page*24).map(r=>recordRow(r)).join('')||emptyHTML('没有找到匹配的定理','试试放宽编号范围，或取消 Important、来源、手选限制。')}</div>${paginate(page,pages,'library-page')}`;
   }
   function renderFocus(){
     const base=visibleRecords(true), rs=visibleRecords();
@@ -274,14 +406,25 @@
   function notebookHintEvidenceHTML(r){
     const groups=E.notebookHintRows(hintData,{era:'all'}).filter(g=>g.theoremIds.includes(r.id));
     const uses=new Map(groups.flatMap(g=>g.uses.map(u=>[u.id,u])));
-    return uses.size?`<details open><summary>Notebook 证明 Hint 使用 · ${uses.size} 次</summary><div class="source-list">${[...uses.values()].map(hintUseHTML).join('')}</div></details>`:'';
+    return uses.size?`<details><summary>Notebook 证明 Hint 使用 · ${uses.size} 次</summary><div class="source-list">${[...uses.values()].map(hintUseHTML).join('')}</div></details>`:'';
   }
   function documentEvidenceHTML(r){
     const d=r.documentStudy;if(!d)return '';
     const evidence=[...(d.importantEvidence||[]),...(d.evidence||[])];
-    return `<details open><summary>文档复习依据 · ${d.occurrences} 次出现 / ${d.documentCount} 个资料组</summary><p class="small muted">其中 ${d.proofMentions} 次为证明引用。计数按资料族去重。</p><div class="source-list">${evidence.map(x=>`<div class="source-item"><strong>${esc(x.sourceName||x.sourceId)}</strong> · ${esc(x.locator?.page?'第 '+x.locator.page+' 页':x.locator?.line?'第 '+x.locator.line+' 行':'原文')}<p>${esc(x.label)}</p>${x.excerpt?`<div class="source-formula">${esc(x.excerpt)}</div>`:''}</div>`).join('')||'<p class="small muted">当前课程文档未找到可确认的标记或引用。</p>'}</div></details>`;
+    if(!evidence.length&&!d.occurrences)return '';
+    const locations=new Map();
+    for(const item of evidence){
+      const key=JSON.stringify([item.sourceId,item.locator]);
+      if(!locations.has(key))locations.set(key,[]);
+      locations.get(key).push(item);
+    }
+    return `<details><summary>文档复习依据 · ${d.occurrences} 次出现 / ${d.documentCount} 个资料组</summary><p class="small muted">其中 ${d.proofMentions} 次为证明引用。计数按资料族去重。</p><div class="source-list">${[...locations.values()].map(items=>{
+      const x=items[0],labels=uniqueDisplayValues(items.map(item=>item.label)),excerpts=uniqueDisplayValues(items.map(item=>item.excerpt));
+      return `<div class="source-item"><strong>${esc(x.sourceName||x.sourceId)}</strong> · ${esc(x.locator?.page?'第 '+x.locator.page+' 页':x.locator?.line?'第 '+x.locator.line+' 行':'原文')}${labels.length?`<p>${labels.map(esc).join(' · ')}</p>`:''}${excerpts.map(excerpt=>`<div class="source-formula">${esc(excerpt)}</div>`).join('')}</div>`;
+    }).join('')}</div></details>`;
   }
-  function recordRow(r){const selected=settings.scope.selected.includes(r.id),starred=progress.stars.includes(r.id);return `<article class="theorem-row ${selected?'selected':''}"><input type="checkbox" data-select="${r.id}" aria-label="将 ${attr(E.label(r))} 纳入手选范围" ${selected?'checked':''}><div><button class="record-title" data-action="detail" data-id="${r.id}">${titleHTML(r)}</button>${r.variantLabel?` <span class="badge">${esc(r.variantLabel)}</span>`:''}<div class="math">${esc(r.formula)}</div>${badges(r)}</div><button class="star ${starred?'is-starred':''}" data-action="star" data-id="${r.id}" aria-label="${starred?'取消收藏':'收藏'} ${attr(E.label(r))}" aria-pressed="${starred}">${starred?'★':'☆'}</button></article>`;}
+
+  function recordRow(r){const selected=settings.scope.selected.includes(r.id),starred=progress.stars.includes(r.id);return `<article class="theorem-row ${selected?'selected':''}"><input type="checkbox" data-select="${r.id}" aria-label="将 ${attr(E.label(r))} 纳入手选范围" ${selected?'checked':''}><div><button class="record-title" data-action="detail" data-id="${r.id}">${cardTitleHTML(r)}</button>${r.variantLabel?` <span class="badge">${esc(r.variantLabel)}</span>`:''}<div class="math">${esc(r.formula)}</div>${badges(r)}</div><button class="star ${starred?'is-starred':''}" data-action="star" data-id="${r.id}" aria-label="${starred?'取消收藏':'收藏'} ${attr(E.label(r))}" aria-pressed="${starred}">${starred?'★':'☆'}</button></article>`;}
   function paginate(p,n,action){return n>1?`<div class="pagination"><button class="btn small" data-action="${action}" data-page="${p-1}" ${p===1?'disabled':''}>← 上一页</button><span class="small muted">${p} / ${n}</span><button class="btn small" data-action="${action}" data-page="${p+1}" ${p===n?'disabled':''}>下一页 →</button></div>`:'';}
   function renderMistakes(){
     let rows=records.filter(r=>{const p=progress.records[r.id];return p?.wrong>0&&(wrongTab==='all'||(wrongTab==='active'?p.active:!p.active));}).sort((a,b)=>(progress.records[b.id]?.lastAt||0)-(progress.records[a.id]?.lastAt||0));
@@ -292,7 +435,7 @@
   function sourceLabel(s){if(s.locator?.file)return `${s.locator.file} · Cell ${s.locator.cell}${s.locator.calculation?` · Calculation ${s.locator.calculation} · Step ${s.locator.step}`:''}`;const src=sourceMap.get(s.sourceId);const loc=s.locator?.page?'第 '+s.locator.page+' 页':s.locator?.line?'第 '+s.locator.line+' 行':'来源片段';return `${src?shortSource(src.name):s.sourceId} · ${loc}`;}
   function renderAudit(){
     const c=D.coverage;const list=D.review.filter(r=>!auditQuery||(r.header+' '+r.formula).toLowerCase().includes(auditQuery.toLowerCase()));const pages=Math.max(1,Math.ceil(list.length/10));auditPage=Math.min(auditPage,pages);
-    return `<div class="heading-row"><button class="btn small" data-action="nav" data-view="settings">返回设置</button></div><div class="eyebrow">有出处，才值得记住</div><h1>资料与题库审计</h1><p class="subhead">定理声明来自预载列表与 notebook 正文已证明定理；Proof 填空来自 2026 HTML notebook 的已完成证明，保留原步骤和出处。</p><div class="audit-stats"><div class="audit-stat"><strong>${c.current2026PracticeCount}</strong><span>2026 可练卡片</span></div><div class="audit-stat"><strong>${quizRecords.length}</strong><span>所有年份可练卡片</span></div><div class="audit-stat"><strong>${records.filter(r=>E.documentFocusMatches(r,'important')).length}</strong><span>文档 Important 标记</span></div><div class="audit-stat"><strong>${D.sources.length}</strong><span>已核对的声明来源</span></div></div><div class="callout"><strong>覆盖边界</strong><br>${esc(c.notice)}${c.nativeNote?`<p>${esc(c.nativeNote)}</p>`:''}<br>已复制 2025i ${c.preloadedNotebookCount} 份及 2026 年 ${c.current2026NotebookCount} 份预载弹窗。另收录 ${c.notebookProvedDeclarationCount||0} 次正文已证明声明。每张卡的来源可定位到 notebook、模块、原文行或 Cell；不同 notebook 的预载范围可能不同。</div><div class="callout blue"><strong>Proof 定理填空 · ${proofRecords.length} 题</strong><br>起点、定理提示、终点取自已完成证明的连续三行。只接受定理名称；未命名或使用多条定理的步骤不出题。原替换条件保留，答案显示完整提示。证明步骤独立于预载声明计数。</div><details open><summary>预载列表的核对范围</summary><div class="source-list">${(c.unavailable?.length?c.unavailable:[{name:'26 份 Homework 预载列表',reason:'每份 CalcCheck 页面通过 Cell Actions 展开并复制全部预载条目；notebook 正文的证明任务不计入。'}]).map(x=>`<div class="source-item"><strong>${esc(x.name)}</strong><br>${esc(x.reason)}</div>`).join('')}</div></details><details><summary>重复计数、Important 与名称编号的规则</summary><p>${esc(c.countMethod)}</p><p>专项复习使用课程文档的 documentStudy 计数与依据。重复出现表示至少两次声明或明确引用，同族导出不累加；与下方预载列表计数分开。Important 只来自明确的原文标题或标注；!! 是另一种原文强调；个人收藏单独存储。重复预载不等于教师评级，也不等于独立出现的定理变体。</p><p>同名不同编号保留。没有官方编号：显示“未编号”和内部卡片 ID；没有名称：显示“原文未命名”，练习时选择具体编号。局部 (1)、(2) 等题号不是 LADM 编号，要结合来源。</p><p>来源数据保留弹窗列出的公理、定理、引理、推论、事实与推理规则；其中 ${records.length-quizRecords.length} 条推理规则不进入答题、选项或错题复练。notebook 正文里的待证明题不作为入库依据。${esc(c.curationNote||'')}</p></details><details><summary>判题的精确边界</summary><p>不是逐字比较。接受字母一一对应的改名，以及受支持的交换律、结合律、反向关系写法。不能把两个独立变量合并，也不能用任意恒真式代替另一条定理。</p><p>复杂量词、替换与命令语法采用保守的结构模板判题，接受一致的全局改名，但不声称验证任意等价改写或完整证明；这不是在线 CalcCheck 引擎。任何侧条件、变量类型仍需满足。公式字符清楚但无法可靠判定的答案不会静默判对。</p></details><details><summary>读取清单 · ${D.sources.length} 个文件 / 其他来源条目</summary><p>来源是课程 CalcCheck 预载列表及已验证的 notebook 正文声明；来源记录给出对应 notebook 地址。</p><div class="source-list">${D.sources.map(s=>`<div class="source-item"><strong>${esc(shortSource(s.name))}</strong><br>${esc(s.status)} · ${s.pages?`${s.pages} 页 · `:''}${s.declarations||0} 次声明提取${s.duplicateOf?' · 副本不重复计数':''}</div>`).join('')}</div></details><section class="section-gap"><div class="heading-row"><div><h2>待核对提取</h2><p class="subhead">可能含缺字、侧条件、图形字符或证明片段；不是可靠答案。</p></div><button class="btn small" data-action="export-bank">导出题库 JSON</button></div><input class="input" id="audit-query" data-audit-search value="${attr(auditQuery)}" placeholder="搜索待核对的编号或名称">${list.slice((auditPage-1)*10,auditPage*10).map(r=>`<details><summary>${esc(r.header||r.name)} <span class="badge">待核对</span></summary><p>${esc(r.reason)}</p><div class="source-formula">${esc(r.formula)}</div><p>${esc(sourceLabel(r.source))}</p></details>`).join('')}${paginate(auditPage,pages,'audit-page')}</section><div class="coverage-note">构建日期：${esc(c.builtAt)} · 题库与来源数据位于 data/，可通过 tools/ 重新整理新资料。</div>`;
+    return `<div class="heading-row"><button class="btn small" data-action="nav" data-view="settings">返回设置</button></div><div class="eyebrow">有出处，才值得记住</div><h1>资料与题库审计</h1><p class="subhead">定理声明来自预载列表与 notebook 正文已证明定理；Proof 填空来自 2026 HTML notebook 的已完成证明，保留原步骤和出处。</p><div class="audit-stats"><div class="audit-stat"><strong>${c.current2026PracticeCount}</strong><span>2026 可练卡片</span></div><div class="audit-stat"><strong>${quizRecords.length}</strong><span>所有年份可练卡片</span></div><div class="audit-stat"><strong>${records.filter(r=>E.documentFocusMatches(r,'important')).length}</strong><span>文档 Important 标记</span></div><div class="audit-stat"><strong>${D.sources.length}</strong><span>已核对的声明来源</span></div></div><div class="callout"><strong>覆盖边界</strong><br>${esc(c.notice)}${c.nativeNote?`<p>${esc(c.nativeNote)}</p>`:''}<br>已复制 2025i ${c.preloadedNotebookCount} 份及 2026 年 ${c.current2026NotebookCount} 份预载弹窗。另收录 ${c.notebookProvedDeclarationCount||0} 次正文已证明声明。每张卡的来源可定位到 notebook、模块、原文行或 Cell；不同 notebook 的预载范围可能不同。</div><div class="callout blue"><strong>Proof 定理填空 · ${proofRecords.length} 题</strong><br>起点、定理提示、终点取自已完成证明的连续三行。只接受定理名称；未命名或使用多条定理的步骤不出题。原替换条件保留，答案显示完整提示。证明步骤独立于预载声明计数。</div><details open><summary>预载列表的核对范围</summary><div class="source-list">${(c.unavailable?.length?c.unavailable:[{name:'26 份 Homework 预载列表',reason:'每份 CalcCheck 页面通过 Cell Actions 展开并复制全部预载条目；notebook 正文的证明任务不计入。'}]).map(x=>`<div class="source-item"><strong>${esc(x.name)}</strong><br>${esc(x.reason)}</div>`).join('')}</div></details><details><summary>重复计数、Important 与名称编号的规则</summary><p>${esc(c.countMethod)}</p><p>专项复习使用课程文档的 documentStudy 计数与依据。重复出现表示至少两次声明或明确引用，同族导出不累加；与下方预载列表计数分开。Important 只来自明确的原文标题或标注；!! 是另一种原文强调；个人收藏单独存储。重复预载不等于教师评级，也不等于独立出现的定理变体。</p><p>同名不同编号保留。没有官方编号：显示“未编号”和内部卡片 ID；没有名称：显示“原文未命名”，练习时选择具体编号。局部 (1)、(2) 等题号不是 LADM 编号，要结合来源。</p><p>来源数据保留弹窗列出的公理、定理、引理、推论、事实与推理规则；其中 ${records.length-quizRecords.length} 条推理规则不进入答题、选项或错题复练。notebook 正文里的待证明题不作为入库依据。${esc(c.curationNote||'')}</p></details><details><summary>判题的精确边界</summary><p>公式与字母填空接受一一变量改名，以及符号本身支持的交换、对称和反向关系写法。结合匹配只在已有括号范围内进行，不跨括号混排变量。不同变量不能合并，也不能用任意恒真式代替原定理。</p><p>复杂量词、替换与命令语法采用保守的结构模板判题，接受一致的全局改名，但不声称验证任意等价改写或完整证明；这不是在线 CalcCheck 引擎。任何侧条件、变量类型仍需满足。公式字符清楚但无法可靠判定的答案不会静默判对。</p></details><details><summary>读取清单 · ${D.sources.length} 个文件 / 其他来源条目</summary><p>来源是课程 CalcCheck 预载列表及已验证的 notebook 正文声明；来源记录给出对应 notebook 地址。</p><div class="source-list">${D.sources.map(s=>`<div class="source-item"><strong>${esc(shortSource(s.name))}</strong><br>${esc(s.status)} · ${s.pages?`${s.pages} 页 · `:''}${s.declarations||0} 次声明提取${s.duplicateOf?' · 副本不重复计数':''}</div>`).join('')}</div></details><section class="section-gap"><div class="heading-row"><div><h2>待核对提取</h2><p class="subhead">可能含缺字、侧条件、图形字符或证明片段；不是可靠答案。</p></div><button class="btn small" data-action="export-bank">导出题库 JSON</button></div><input class="input" id="audit-query" data-audit-search value="${attr(auditQuery)}" placeholder="搜索待核对的编号或名称">${list.slice((auditPage-1)*10,auditPage*10).map(r=>`<details><summary>${esc(r.header||r.name)} <span class="badge">待核对</span></summary><p>${esc(r.reason)}</p><div class="source-formula">${esc(r.formula)}</div><p>${esc(sourceLabel(r.source))}</p></details>`).join('')}${paginate(auditPage,pages,'audit-page')}</section><div class="coverage-note">构建日期：${esc(c.builtAt)} · 题库与来源数据位于 data/，可通过 tools/ 重新整理新资料。</div>`;
   }
   function bankUpdateCard(){return `<section class="card" id="bank-updates"><h2>题库更新</h2><p class="small muted">当前题库 ${records.length} 条${bankRevision?' · 版本 '+esc(bankRevision.slice(0,12)):''}。更新保留错题、收藏、历史与 XP。</p>${window.TQ_NATIVE?'<p class="small muted">从 GitHub 部署网站检查并安装题库。</p><button class="btn" data-action="native-updates">管理题库更新</button>':canUpdateBank()?`<p class="small muted" id="bank-update-status" role="status" aria-live="polite">${esc(bankMessage)}</p><button class="btn primary" data-action="check-bank-update" ${bankBusy?'disabled':''}>${bankBusy?'正在检查…':'检查并安装题库更新'}</button>`:`<p class="small muted">单文件版与本地文件不能在线安装题库。请打开在线网站检查更新。</p><a class="btn" href="${DEPLOYED_SITE}" target="_blank" rel="noopener">打开在线题库</a>`}</section>`;}
   async function updateBank(){
@@ -310,8 +453,9 @@
     }
     try{
       const manifest=JSON.parse(await fetchText('data/version.json',100000));validateBankManifest(manifest);
+      if(bankRevision===manifest.revision){bankMessage='已核验：当前题库已是最新版本。';return;}
       const [theoremText,sourceText,studyText]=await Promise.all([fetchText(manifest.files.theorems.path,20000000),fetchText(manifest.files.sources.path,3000000),...(manifest.files.study?[fetchText(manifest.files.study.path,20000000)]:[])]);
-      const snapshot={manifest,theoremText,sourceText,studyText,bundledFingerprint},next=await checkedBank(snapshot);
+      const snapshot={manifest,theoremText,sourceText,studyText,bundledFingerprint:await bundleFingerprint()},next=await checkedBank(snapshot);
       const same=JSON.stringify(D)===JSON.stringify(next);
       await bankStorage(snapshot); // Install only once persistence succeeds.
       D=next;window.THEOREM_DATA=D;bankRevision=manifest.revision;
@@ -360,7 +504,53 @@
     if(exit)exit.finished.then(()=>backdrop.remove(),()=>backdrop.remove());else backdrop.remove();
   }
   function configure(){openModal('这一关，想怎么练？',`<p class="small muted">当前 ${scopeRecords().length} 条定理。勾选的题型交错出现，手机端优先选择题和按键填空，至少选一种。Proof 题只来自 2026 已完成证明，共 ${proofRecords.length} 个步骤。</p>${modeFields()}<div class="btn-row"><button class="btn primary" data-action="modal-start" ${!scopeRecords().length||!settings.modes.length?'disabled':''}>开始 ${settings.count} 题</button><button class="btn" data-action="modal-library">调整记忆范围</button></div>`);}
-  function detail(id){const r=byId.get(id);if(!r)return;const p=progress.records[id];openModal('定理卡片',`<div class="question-name">${titleHTML(r)}</div>${r.variantLabel?`<span class="badge">${esc(r.variantLabel)}</span>`:''}${badges(r)}<div class="math">${esc(r.formula)}</div>${r.formulaVariants?.length>1?`<details><summary>同条目在原资料中的其他写法 · ${r.formulaVariants.length}</summary>${r.formulaVariants.map(f=>`<div class="source-formula">${esc(f)}</div>`).join('')}</details>`:''}${r.sideCondition?`<div class="callout"><strong>适用条件</strong><br>${esc(r.sideCondition)}</div>`:''}<p class="small"><strong>原文类型：</strong>${esc(r.kind)}${r.domain?' · '+esc(r.domain):''}</p><p class="small"><strong>所有编号：</strong>${r.numbers.length?r.numbers.map(n=>'('+esc(n)+')').join('、'):'原文未编号；内部卡片 ID 仅供网站索引'}</p>${r.aliases.length?`<p class="small"><strong>同条目别名：</strong>${r.aliases.map(esc).join(' · ')}</p>`:''}${notebookHintEvidenceHTML(r)}${documentEvidenceHTML(r)}${!r.documentStudy&&r.importantEvidence?.length?`<details open><summary>★ 原文 Important 依据</summary>${r.importantEvidence.map(x=>`<p>${esc(x.label)}<br>${esc(shortSource(sourceMap.get(x.sourceId)?.name||x.sourceId))}</p>`).join('')}</details>`:''}<details><summary>来源与原文片段 · ${r.sources.length} 个位置</summary><div class="source-list">${r.sources.map(s=>`<div class="source-item"><strong>${esc(sourceLabel(s))}</strong>${/^https?:\/\//.test(sourceMap.get(s.sourceId)?.url||'')?`<p><a href="${attr(sourceMap.get(s.sourceId).url)}" target="_blank" rel="noopener noreferrer">打开原始 Notebook ↗</a></p>`:''}<div class="source-formula">${esc(s.excerpt)}</div></div>`).join('')}</div></details>${p?`<details><summary>学习记录 · ${p.correct}/${p.attempts} 次正确</summary>${(p.log||[]).map(l=>`<p>${dateText(l.at)} · ${esc(MODE[l.mode]?.title)} · ${l.ok?'正确':l.assisted?'使用提示':'需复练'}<br><span class="source-formula">${esc(l.answer||'未作答')}</span></p>`).join('')}</details>`:''}<div class="btn-row"><button class="btn primary" data-action="practice-one" data-id="${id}">练习这条</button><button class="btn" data-action="copy-formula" data-id="${id}">复制公式</button><button class="btn" data-action="star" data-id="${id}">${progress.stars.includes(id)?'★ 已收藏':'☆ 收藏'}</button></div>`);}
+  // Display deduplication only: keep the question bank and every distinct citation intact.
+  function displayKey(value){return String(value??'').trim().replace(/\s+/g,' ');}
+  function uniqueDisplayValues(values,key=displayKey){
+    const seen=new Set();return values.filter(value=>{const k=key(value);if(!k||seen.has(k))return false;seen.add(k);return true;});
+  }
+  function genericDomain(domain){return ['以 CalcCheck 原模块中的类型为准','以原 notebook 声明中的类型为准'].includes(domain);}
+  function cardTitleHTML(r){
+    const numbers=uniqueDisplayValues(r.numbers||[]);
+    return `<span class="record-ref">${esc(numbers.length?numbers.map(n=>'('+n+')').join(' · '):r.displayRef)}</span><span class="record-name">${esc(r.name)}</span>`;
+  }
+  function cardSourcesHTML(r){
+    const groups=new Map();
+    for(const source of r.sources){
+      const key=displayKey(source.excerpt);
+      if(!groups.has(key))groups.set(key,{excerpt:source.excerpt,locations:[]});
+      groups.get(key).locations.push(source);
+    }
+    return `<details class="card-sources"><summary>来源与原文片段 · ${groups.size} 段</summary><div class="source-list">${[...groups.values()].map(group=>{
+      const locations=uniqueDisplayValues(group.locations,s=>JSON.stringify([s.sourceId,s.locator]));
+      return `<div class="source-item"><ul class="citation-locations">${locations.map(source=>{
+        const url=sourceMap.get(source.sourceId)?.url;
+        return `<li>${declarationBadgeHTML(E.declarationStatus(sourceMap.get(source.sourceId)))} ${/^https?:\/\//.test(url||'')?`<a href="${attr(url)}" target="_blank" rel="noopener noreferrer">${esc(sourceLabel(source))} ↗</a>`:`<span>${esc(sourceLabel(source))}</span>`}</li>`;
+      }).join('')}</ul>${group.excerpt?`<div class="source-formula">${esc(group.excerpt)}</div>`:''}</div>`;
+    }).join('')}</div></details>`;
+  }
+  function detail(id){
+    const r=byId.get(id);if(!r)return;
+    const p=progress.records[id],primary=displayKey(r.formula);
+    const variants=uniqueDisplayValues(r.formulaVariants||[]).filter(f=>displayKey(f)!==primary);
+    const aliases=uniqueDisplayValues(r.aliases||[],v=>displayKey(v).toLocaleLowerCase()).filter(a=>displayKey(a).toLocaleLowerCase()!==displayKey(r.name).toLocaleLowerCase());
+    const kinds=uniqueDisplayValues([r.kind,...(r.kinds||[])]);
+    openModal('定理卡片',`<article class="theorem-detail">
+      <header class="theorem-detail-heading"><h3 class="question-name">${cardTitleHTML(r)}</h3>${r.variantLabel?`<span class="badge">${esc(r.variantLabel)}</span>`:''}${badges(r,true,false)}</header>
+      <div class="math theorem-formula">${esc(r.formula)}</div>
+      ${r.sideCondition?`<section class="callout theorem-condition"><h4>适用条件</h4><div class="source-formula">${esc(r.sideCondition)}</div></section>`:''}
+      <dl class="theorem-facts"><div><dt>原文类型</dt><dd data-i18n-ignore>${kinds.map(esc).join(' · ')}</dd></div>${r.domain&&!genericDomain(r.domain)?`<div><dt>适用范围</dt><dd>${esc(r.domain)}</dd></div>`:''}${aliases.length?`<div><dt>同条目别名</dt><dd data-i18n-ignore>${aliases.map(esc).join(' · ')}</dd></div>`:''}</dl>
+      <div class="theorem-support">
+        ${variants.length?`<details><summary>其他公式写法 · ${variants.length} 种</summary>${variants.map(f=>`<div class="source-formula">${esc(f)}</div>`).join('')}</details>`:''}
+        ${notebookHintEvidenceHTML(r)}${documentEvidenceHTML(r)}
+        ${!r.documentStudy&&r.importantEvidence?.length?`<details><summary>★ 原文 Important 依据</summary>${uniqueDisplayValues(r.importantEvidence,x=>JSON.stringify(x)).map(x=>`<p>${esc(x.label)}<br>${esc(shortSource(sourceMap.get(x.sourceId)?.name||x.sourceId))}</p>`).join('')}</details>`:''}
+        ${cardSourcesHTML(r)}
+        ${p?`<details><summary>学习记录 · ${p.correct}/${p.attempts} 次正确</summary>${(p.log||[]).map(l=>`<p>${dateText(l.at)} · ${esc(MODE[l.mode]?.title)} · ${l.ok?'正确':l.assisted?'使用提示':'需复练'}<br><span class="source-formula">${esc(l.answer||'未作答')}</span></p>`).join('')}</details>`:''}
+      </div>
+      <div class="btn-row theorem-actions"><button class="btn primary" data-action="practice-one" data-id="${id}">练习这条</button><button class="btn" data-action="copy-formula" data-id="${id}">复制公式</button><button class="btn" data-action="star" data-id="${id}">${progress.stars.includes(id)?'★ 已收藏':'☆ 收藏'}</button></div>
+    </article>`);
+  }
+
   function shortcuts(){
     const rows=Object.entries(E.SHORTCUTS).sort(([a],[b])=>a.localeCompare(b));
     openModal('反斜线符号输入',`<p class="small">公式题中输入反斜线及代码前缀即可看到候选；按 ↓ / ↑ 选择，Tab 补成符号。完整代码后也可按空格转换。符号题中用相同的候选补全代码；下列同一符号的任意代码都可作答。</p><table class="readable-table"><thead><tr><th>反斜线代码</th><th>符号</th></tr></thead><tbody>${rows.map(([code,symbol])=>`<tr><td><code>${esc(code)}</code></td><td class="math small">${esc(symbol)}</td></tr>`).join('')}</tbody></table><p class="callout blue">直接输入 := 是命令赋值；\\:= 才转换成替换符号 ≔。≡ 与 = 分开判题。</p>`);
@@ -417,8 +607,7 @@
     }
     if(q.mode==='choice')answer=`<div class="choices" role="group" aria-label="选择定理名称">${qState.options.map((id,i)=>{const x=byId.get(id);return `<button class="choice ${qState.selected===id?'selected':''} ${qState.checked&&id===r.id?'correct':''} ${qState.checked&&qState.selected===id&&!qState.feedback?.ok?'incorrect':''}" data-action="choose" data-id="${id}" aria-pressed="${qState.selected===id}" ${qState.checked?'disabled':''}><span class="choice-key">${i+1}</span><span>${titleHTML(x)}</span></button>`;}).join('')}</div><p class="input-hint">可按 1–4 选择，再按 Enter 检查。</p>`;
     if(q.mode==='name'){
-      const group=E.nameGroup(quizRecords,r);
-      answer=`<label class="field-label" for="name-answer">${r.name==='原文未命名'?'原文没有名称，请输入编号':'输入定理名称或别名'}</label><input class="input name-input" id="name-answer" placeholder="${r.name==='原文未命名'?'例如 11.47':'输入三个字符开始补全…'}" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-controls="name-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="name-suggestions" class="autocomplete" role="listbox" hidden></div><div id="name-selection" class="name-selection" ${qState.selected?'':'hidden'}>${qState.selected?titleHTML(byId.get(qState.selected)):''}</div>${group.length>1?`<details class="group-number-picker"><summary>选择具体编号（可选）</summary><div class="group-refs">${[...new Map(group.map(x=>[x.displayRef,x])).values()].map(x=>`<button class="group-fill ${qState.selected&&byId.get(qState.selected)?.displayRef===x.displayRef?'selected':''}" data-action="group-ref" data-id="${x.id}" aria-pressed="${!!qState.selected&&byId.get(qState.selected)?.displayRef===x.displayRef}" ${qState.checked?'disabled':''}>${esc(x.displayRef)}</button>`).join('')}</div></details>`:''}<p class="input-hint">输入三个字符即可补全名称；编号请手动填写。${group.length>1?'同名定理只需填写名称。':'候选只补齐名称或别名。'}</p>`;
+      answer=`<label class="field-label" for="name-answer">${r.name==='原文未命名'?'原文没有名称，请输入编号':'输入定理名称或别名'}</label><input class="input name-input" id="name-answer" placeholder="${r.name==='原文未命名'?'例如 11.47':'输入三个字符开始补全…'}" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-controls="name-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="name-suggestions" class="autocomplete" role="listbox" hidden></div><div id="name-selection" class="name-selection" ${qState.selected?'':'hidden'}>${qState.selected?titleHTML(byId.get(qState.selected)):''}</div><details id="name-number-picker" class="group-number-picker" hidden><summary>选择具体编号（可选）</summary><div class="group-refs"></div></details><p class="input-hint">输入三个字符即可补全名称；多个同名条目可在填入名称后选择具体编号。</p>`;
     }
     if(q.mode==='blanks'){
       const template=E.blankTemplate(r.formula),idx=new Map(template.blanks.map((v,i)=>[v.index,i]));qState.template=template;
@@ -434,11 +623,12 @@
     if(q.mode==='formula')answer=`<label class="field-label" for="formula-answer">你的公式</label><textarea id="formula-answer" class="formula-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入公式；特殊符号用 \\land、\\implies…" aria-controls="shortcut-suggestions" aria-expanded="false" ${qState.checked?'disabled':''}>${esc(qState.typed)}</textarea><div id="shortcut-suggestions" class="autocomplete shortcut-suggestions" role="listbox" hidden></div><div class="formula-preview" id="formula-preview" aria-live="polite">${esc(E.normalizeInput(qState.typed||''))}</div><div id="keyboard">${keyboardHTML('formula',r)}</div><p class="input-hint">输入一个反斜线即可看到符号候选；↓ / ↑ 选项，Tab 补全。完整代码后按空格转换；Enter 检查。</p>`;
     if(q.mode==='symbol')answer=`<div class="symbol-challenge" aria-label="要输入的符号">${esc(qState.symbolTarget)}</div><label class="field-label" for="symbol-answer">输入这个符号的反斜线代码</label><input class="input name-input" id="symbol-answer" placeholder="例如 \\land" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-controls="shortcut-suggestions" aria-expanded="false" aria-autocomplete="list" value="${attr(qState.typed)}" ${qState.checked?'disabled':''}><div id="shortcut-suggestions" class="autocomplete shortcut-suggestions" role="listbox" hidden></div><p class="input-hint">输入 \\ 后的字符；接受同一符号的所有已收录代码。↓ / ↑ 选择，Tab 补齐代码，Enter 检查。</p>`;
     if(buttonFillMode())answer=answer.replaceAll('<input ','<input readonly inputmode="none" data-button-input="true" ');
-    app.innerHTML=`<div class="quiz-shell" data-mode="${q.mode}" data-question="${attr(questionKey)}"><header class="quiz-top"><button class="icon-btn" data-action="exit-quiz" aria-label="退出并保存本关">×</button><div class="meter" role="progressbar" aria-label="本关进度" aria-valuenow="${session.index+(qState.checked?1:0)}" aria-valuemin="0" aria-valuemax="${session.queue.length}"><span style="width:100%;transform:scaleX(${pct/100})"></span></div><span class="quiz-progress-label">${session.index+(qState.checked?1:0)} / ${session.queue.length}</span><span class="combo">ϟ ${session.combo} 连对</span></header><main class="quiz-main" id="main" tabindex="-1"><div class="quiz-meta"><span class="badge">${esc(session.label)}</span><span class="badge good">${q.mode==='name'&&r.name==='原文未命名'?'编号回忆':m.title}</span>${q.retry?`<span class="badge wrong">本轮最后一次复练</span>`:''}${E.documentFocusMatches(r,'important')?'<span class="badge important">★ IMPORTANT</span>':''}</div>${r.domain?`<p class="small muted">类型：${esc(r.domain)}</p>`:''}<h1>${q.mode==='name'&&r.name==='原文未命名'?'这条声明的原编号是什么？':m.prompt}</h1><p class="quiz-instruction">${q.mode==='proof'?'根据上下两行推导，填写中间的定理名称。':q.mode==='blanks'?'逻辑符号已经排好。字母不必与讲义相同，但逻辑结构要一致。':q.mode==='cloze'?(buttonFillMode()?'根据名称与公式结构，点击按键补全符号。':'根据名称与公式结构，输入反斜线代码补全符号。'):q.mode==='formula'?'回想运算符、变量关系和括号；不是逐字背诵。':q.mode==='name'&&r.name==='原文未命名'?'原文没有名称，请根据公式回忆编号。':'看清公式结构，再选择名称与编号。'}</p>${question}${q.mode==='cloze'||q.mode==='proof'?'':theoremSymbolsHTML(r)}${answer}</main>${qState.checked?'<div class="feedback-backdrop" aria-hidden="true"></div>':''}<footer ${qState.checked?'role="dialog" aria-modal="true" aria-labelledby="feedback-title"':''} class="quiz-bottom ${qState.checked?'feedback '+(qState.feedback.ok?'correct':'incorrect'):''}" id="quiz-bottom">${bottomHTML()}</footer></div>`;
+    const screenChanged=renderScreen(`<div class="quiz-shell" data-mode="${q.mode}" data-question="${attr(questionKey)}"><header class="quiz-top"><button class="icon-btn" data-action="exit-quiz" aria-label="退出并保存本关">×</button><div class="meter" role="progressbar" aria-label="本关进度" aria-valuenow="${session.index+(qState.checked?1:0)}" aria-valuemin="0" aria-valuemax="${session.queue.length}"><span style="width:100%;transform:scaleX(${pct/100})"></span></div><span class="quiz-progress-label">${session.index+(qState.checked?1:0)} / ${session.queue.length}</span><span class="combo">ϟ ${session.combo} 连对</span></header><main class="quiz-main" id="main" tabindex="-1"><div class="quiz-meta"><span class="badge">${esc(session.label)}</span><span class="badge good">${q.mode==='name'&&r.name==='原文未命名'?'编号回忆':m.title}</span>${declarationBadgesHTML(r)}${q.retry?`<span class="badge wrong">本轮最后一次复练</span>`:''}${E.documentFocusMatches(r,'important')?'<span class="badge important">★ IMPORTANT</span>':''}</div>${r.domain?`<p class="small muted">类型：${esc(r.domain)}</p>`:''}<h1>${q.mode==='name'&&r.name==='原文未命名'?'这条声明的原编号是什么？':m.prompt}</h1><p class="quiz-instruction">${q.mode==='proof'?'根据上下两行推导，填写中间的定理名称。':q.mode==='blanks'?'逻辑符号已经排好。字母不必与讲义相同，但逻辑结构要一致。':q.mode==='cloze'?(buttonFillMode()?'根据名称与公式结构，点击按键补全符号。':'根据名称与公式结构，输入反斜线代码补全符号。'):q.mode==='formula'?'回想运算符、变量关系和括号；不是逐字背诵。':q.mode==='name'&&r.name==='原文未命名'?'原文没有名称，请根据公式回忆编号。':'看清公式结构，再选择名称与编号。'}</p>${question}${q.mode==='cloze'||q.mode==='proof'?'':theoremSymbolsHTML(r)}${answer}</main>${qState.checked?'<div class="feedback-backdrop" aria-hidden="true"></div>':''}<footer ${qState.checked?'role="dialog" aria-modal="true" aria-labelledby="feedback-title"':''} class="quiz-bottom ${qState.checked?'feedback '+(qState.feedback.ok?'correct':'incorrect'):''}" id="quiz-bottom">${bottomHTML()}</footer></div>`);
     prepareScreenInputs();
+    if(q.mode==='name')updateNameNumberPicker();
     if(sameQuestion)$('.quiz-main').scrollTop=previousScroll;
     if(qState.checked){$('.quiz-main').inert=true;$('.quiz-top').inert=true;}
-    else if(!sameQuestion)animateUI($('.quiz-main'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],160);
+    else if(!sameQuestion&&!screenChanged)animateUI($('.quiz-main'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],160);
     const meter=$('.quiz-top .meter>span');
     if(oldProgress&&oldProgress!==getComputedStyle(meter).transform)animateUI(meter,[{transform:oldProgress},{transform:meter.style.transform}],200);
     if(qState.checked&&!previouslyChecked){
@@ -463,7 +653,7 @@
     const needed=theoremTokens(r).filter(t=>!E.isVariable(t));
     const all=[...new Set([...common,...baseExtra,...needed])];
     const full=qState.keys==='all';
-    return `<div class="key-panel"><div class="key-panel-head"><button data-action="key-tab" data-tab="context" class="${full?'':'active'}">本题按键</button><button data-action="key-tab" data-tab="all" class="${full?'active':''}">全部按键</button><button data-action="shortcuts">键盘快捷输入 ?</button></div>${controls}<div class="key-row">${(full?all:needed).map(t=>keyHTML(t)).join('')}</div><div class="key-row">${(full?[...new Set([...original,'p','q','r','s','a','b','c','x','y','z','m','n',"p'","q'",'n₀','α','β'])]:letters).map(t=>keyHTML(t)).join('')}<button class="key word" data-action="key" data-key="SPACE">空格</button>${full?'<button class="key word" data-action="key" data-key="CLEAR">清空</button>':''}</div></div>`;
+    return `<div class="key-panel"><div class="key-panel-head"><button data-action="key-tab" data-tab="context" class="${full?'':'active'}">本题按键</button><button data-action="key-tab" data-tab="all" class="${full?'active':''}">全部按键</button><button data-action="shortcuts">键盘快捷输入 ?</button></div><div id="keyboard-menu-content">${controls}<div class="key-row">${(full?all:needed).map(t=>keyHTML(t)).join('')}</div><div class="key-row">${(full?[...new Set([...original,'p','q','r','s','a','b','c','x','y','z','m','n',"p'","q'",'n₀','α','β'])]:letters).map(t=>keyHTML(t)).join('')}<button class="key word" data-action="key" data-key="SPACE">空格</button>${full?'<button class="key word" data-action="key" data-key="CLEAR">清空</button>':''}</div></div></div>`;
   }
   function keyHTML(t){return `<button class="key ${t.length>2?'word':''}" data-action="key" data-key="${attr(t)}" aria-label="输入 ${attr(t)}" title="${attr(Object.entries(E.SHORTCUTS).find(([_,v])=>v===t)?.[0]||t)}" ${qState.checked?'disabled':''}>${esc(t)}</button>`;}
   function bottomHTML(){
@@ -481,12 +671,52 @@
     return `<div class="bottom-inner"><div class="feedback-status" role="status" aria-live="polite"><span class="feedback-icon" aria-hidden="true">${f.ok?'✓':'↺'}</span><h2 id="feedback-title">${f.ok?(session.combo>=3?`${session.combo} 连对，保持这个节奏！`:'答对了！'):(qState.assisted?'带着提示，再记一次':'再记一次，就更近一步。')}</h2><span class="feedback-reward">${f.ok?`+${f.xp||10} XP`:'待复练'}</span></div><p class="feedback-scroll-label" id="feedback-scroll-label">答案详情 <span>↕ 上下滑动查看</span></p><div class="feedback-message" tabindex="0" role="region" aria-labelledby="feedback-scroll-label"><div class="feedback-text"><p class="feedback-answer-heading">正确答案 · ${answerType}</p><p id="correct-answer" class="feedback-answer ${nameAnswer||symbolAnswer?'':'feedback-formula'}">${esc(correctAnswer)}</p>${nameAnswer&&group.length>1?`<p class="feedback-context">同组名称可单独作答；本题对应 ${esc(r.displayRef)}。</p>`:''}${q.mode==='proof'?'':groupResults}<p class="feedback-context">${q.mode==='proof'||symbolAnswer?esc(context):''}${r.variantLabel?' · '+esc(r.variantLabel):''}</p><p class="feedback-note">${esc(f.message)}${f.ok?'':' 已记录到错题本。'}</p></div></div><button class="btn ${f.ok?'primary':'danger'}" data-action="continue">${session.index===session.queue.length-1?'查看本关成果':'继续'}</button></div>`;
   }
   function canCheck(){if(!session||!qState||qState.checked)return false;const m=session.queue[session.index].mode;if(m==='choice')return !!qState.selected;if(m==='cloze')return !!qState.cloze&&!!E.fillCloze(qState.cloze,qState.clozeValues||[]);if(m==='name')return !!qState.selected||!!qState.groupSelected||!!qState.typed.trim();if(m==='proof'||m==='formula'||m==='symbol')return !!qState.typed.trim();return (qState.values||[]).length===qState.template?.blanks.length&&(qState.values||[]).every(v=>v?.trim());}
+  function updateCloze(){
+    const active=qState.clozeSlot||0,values=qState.clozeValues;
+    $$('[data-action="cloze-slot"]').forEach(button=>{
+      const slot=Number(button.dataset.slot),value=values[slot]||'';
+      if(button.textContent!==(value||'？'))button.textContent=value||'？';
+      button.classList.toggle('filled',!!value);
+      button.classList.toggle('active',slot===active);
+      button.setAttribute('aria-pressed',String(slot===active));
+    });
+    const input=$('#cloze-answer');
+    input.value=values[active]||'';
+    $('label[for="cloze-answer"]').textContent=`当前符号空 · ${active+1} / ${qState.cloze.blanks.length}`;
+    $('#keyboard .key-panel-head>span').textContent=`符号键盘 · ${active+1} / ${qState.cloze.blanks.length}`;
+    $('[data-action="cloze-prev"]').disabled=active===0;
+    $('[data-action="cloze-next"]').disabled=active===qState.cloze.blanks.length-1;
+    $$('[data-action="cloze-key"]').forEach(button=>{
+      const selected=values[active]===button.dataset.token;
+      button.classList.toggle('selected',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+    updateShortcutSuggestions();updateCheck();
+  }
   function updateCheck(){const b=$('#check-answer');if(b)b.disabled=!canCheck();}
+  function nameNumberChoices(){
+    const name=E.normalizeName($('#name-answer')?.value||'');
+    if(!name)return [];
+    const matches=quizRecords.filter(r=>r.numbers?.length&&r.name&&r.name!=='原文未命名'
+      &&[r.name,...(r.aliases||[])].some(label=>E.normalizeName(label)===name));
+    const group=matches.flatMap(r=>E.nameGroup(quizRecords,r));
+    return [...new Map(group.map(r=>[r.displayRef,r])).values()];
+  }
+  function updateNameNumberPicker(){
+    const picker=$('#name-number-picker');if(!picker)return;
+    const choices=nameNumberChoices(),available=choices.length>1;
+    picker.hidden=!available;if(!available)picker.open=false;
+    const selected=qState.selected&&byId.get(qState.selected);
+    const markup=available?choices.map(r=>`<button type="button" class="group-fill ${selected?.displayRef===r.displayRef?'selected':''}" data-action="group-ref" data-id="${attr(r.id)}" aria-pressed="${selected?.displayRef===r.displayRef}" ${qState.checked?'disabled':''}>${esc(r.displayRef)}</button>`).join(''):'';
+    const refs=picker.querySelector('.group-refs');if(refs.innerHTML!==markup)refs.innerHTML=markup;
+  }
   function updateSuggestions(){
     const input=$('#name-answer'),box=$('#name-suggestions');if(!input||!box)return;
+    updateNameNumberPicker();
     delete box.dataset.screenShortcuts;
-    const target=byId.get(session.queue[session.index].id);
-    qState.suggestions=qState.selected||!target.name?.trim()||target.name==='原文未命名'?[]:E.nameCompletions(scopeRecords(),input.value);
+    // Review and resumed questions can fall outside the current study filters.
+    const candidates=[...scopeRecords().filter(r=>!r.proof),...quizRecords];
+    qState.suggestions=qState.selected?[]:E.nameCompletions(candidates,input.value);
     qState.suggestionIndex=Math.min(qState.suggestionIndex||0,Math.max(0,qState.suggestions.length-1));
     box.hidden=!qState.suggestions.length;
     box.innerHTML=qState.suggestions.map((name,i)=>`<button type="button" id="suggestion-${i}" class="suggestion ${i===qState.suggestionIndex?'focused':''}" data-action="suggest" data-name="${attr(name)}" role="option" aria-selected="${i===qState.suggestionIndex}"><span class="record-name">${esc(name)}</span></button>`).join('');
@@ -599,17 +829,18 @@
     try{localStorage.removeItem(KEYS.session);}catch(_){}resume=null;view='result';renderResult();window.scrollTo({top:0});
   }
   function renderResult(){document.documentElement.classList.remove('answer-feedback-open');releaseScreenSuggestions();hideScreenKeyboard();document.body.dataset.view='result';if(!session){navigate('home');return;}const initial=session.results.filter(r=>!r.retry),good=initial.filter(r=>r.ok).length,missed=[...new Set(session.results.filter(r=>!r.ok).map(r=>r.id))];
-    app.innerHTML=`<div class="quiz-shell"><main id="main" class="result" tabindex="-1"><div class="result-mark confetti" aria-hidden="true">✦</div><div class="eyebrow">LESSON COMPLETE</div><h1>${good===initial.length?'这一关，全都记住了！':'每一次回想，都有收获。'}</h1><p>${esc(session.label)} · 完成 ${initial.length} 道主问题${session.results.length>initial.length?'，加练 '+(session.results.length-initial.length)+' 道错题':''}</p><div class="result-stats"><div class="result-stat"><strong>+${session.xp}</strong><span>本关 XP</span></div><div class="result-stat"><strong>${initial.length?Math.round(good/initial.length*100):0}%</strong><span>首次作答正确率</span></div><div class="result-stat"><strong>${session.bestCombo}</strong><span>最高连续答对</span></div></div><div class="btn-row"><button class="btn primary" data-action="nav" data-view="home">回到闯关</button><button class="btn" data-action="result-retry" ${!missed.length?'disabled':''}>再练本关错题 (${missed.length})</button></div>${missed.length?`<details class="wrong-recap"><summary>本关需要再记一次的定理</summary>${missed.map(id=>`<button class="record-title" data-action="detail" data-id="${id}">${titleHTML(byId.get(id))}</button>`).join('')}</details>`:'<p class="small muted" style="margin-top:24px">把这份熟悉保留下来。之后也可以到定理库扩大范围。</p>'}<p class="small muted" style="margin-top:22px">${storageOK?(window.TQ_NATIVE?'学习记录已保存在此 App。':'学习记录已保存在这个浏览器。'):'本地保存不可用，请回设置页导出学习备份。'}</p></main></div>`;
+    renderScreen(`<div class="quiz-shell"><main id="main" class="result" tabindex="-1"><div class="result-mark confetti" aria-hidden="true">✦</div><div class="eyebrow">LESSON COMPLETE</div><h1>${good===initial.length?'这一关，全都记住了！':'每一次回想，都有收获。'}</h1><p>${esc(session.label)} · 完成 ${initial.length} 道主问题${session.results.length>initial.length?'，加练 '+(session.results.length-initial.length)+' 道错题':''}</p><div class="result-stats"><div class="result-stat"><strong>+${session.xp}</strong><span>本关 XP</span></div><div class="result-stat"><strong>${initial.length?Math.round(good/initial.length*100):0}%</strong><span>首次作答正确率</span></div><div class="result-stat"><strong>${session.bestCombo}</strong><span>最高连续答对</span></div></div><div class="btn-row"><button class="btn primary" data-action="nav" data-view="home">回到闯关</button><button class="btn" data-action="result-retry" ${!missed.length?'disabled':''}>再练本关错题 (${missed.length})</button></div>${missed.length?`<details class="wrong-recap"><summary>本关需要再记一次的定理</summary>${missed.map(id=>`<button class="record-title" data-action="detail" data-id="${id}">${titleHTML(byId.get(id))}</button>`).join('')}</details>`:'<p class="small muted" style="margin-top:24px">把这份熟悉保留下来。之后也可以到定理库扩大范围。</p>'}<p class="small muted" style="margin-top:22px">${storageOK?(window.TQ_NATIVE?'学习记录已保存在此 App。':'学习记录已保存在这个浏览器。'):'本地保存不可用，请回设置页导出学习备份。'}</p></main></div>`);
   }
   function beep(ok){if(!settings.sound)return;try{const AC=window.AudioContext||window.webkitAudioContext,ctx=new AC(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.setValueAtTime(ok?660:240,ctx.currentTime);osc.frequency.setValueAtTime(ok?880:180,ctx.currentTime+.08);gain.gain.setValueAtTime(.055,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.22);osc.start();osc.stop(ctx.currentTime+.23);osc.onended=()=>ctx.close();}catch(_){} }
   function inputKey(text){
     if(qState?.checked)return;const mode=session.queue[session.index].mode;
     if(mode==='blanks'){
-      let el=activeInput?.isConnected&&activeInput.matches('.blank-slot')?activeInput:$(`#blank-${qState.blankSlot??0}`)||$('.blank-slot:not(.filled)')||$('.blank-slot');if(!el)return;
-      if(text==='CURSOR_LEFT'||text==='CURSOR_RIGHT'){const next=$(`#blank-${Number(el.dataset.slot)+(text==='CURSOR_LEFT'?-1:1)}`);if(next){next.focus({preventScroll:true});activeInput=next;}return;}
+      const el=$(`#blank-${qState.blankSlot??0}`)||$('.blank-slot');if(!el)return;
+      // Readonly fields may not emit focusin on mobile. Select the slot directly.
+      if(text==='CURSOR_LEFT'||text==='CURSOR_RIGHT'){const next=$(`#blank-${Number(el.dataset.slot)+(text==='CURSOR_LEFT'?-1:1)}`);if(next){selectBlank(next);next.focus({preventScroll:true});}return;}
       if(text==='BACKSPACE')el.value='';else if(E.isVariable(text))el.value=text;else return;
       el.dispatchEvent(new Event('input',{bubbles:true}));el.focus({preventScroll:true});
-      if(text!=='BACKSPACE'){const next=$(`#blank-${Number(el.dataset.slot)+1}`);if(next){next.focus({preventScroll:true});activeInput=next;}}return;
+      if(text!=='BACKSPACE'){const next=$(`#blank-${Number(el.dataset.slot)+1}`);if(next){selectBlank(next);next.focus({preventScroll:true});}}return;
     }
     const el=$('#formula-answer');if(!el)return;let a=el.selectionStart??el.value.length,b=el.selectionEnd??a,value=el.value;
     if(text==='CURSOR_LEFT'||text==='CURSOR_RIGHT'){
@@ -649,13 +880,15 @@
   const screenKeyboard=document.createElement('section');
   screenKeyboard.id='screen-keyboard';screenKeyboard.className='screen-keyboard';screenKeyboard.hidden=true;
   screenKeyboard.setAttribute('role','group');screenKeyboard.setAttribute('aria-label','QWERTY keyboard');
-  screenKeyboard.innerHTML='<div id="screen-suggestions"></div><div class="qwerty-toolbar"><span class="qwerty-context"></span><div><button type="button" data-qwerty-key="LEFT" aria-label="Cursor left">←</button><button type="button" data-qwerty-key="RIGHT" aria-label="Cursor right">→</button><button type="button" data-qwerty-key="DONE" aria-label="Done">⌄</button></div></div><div class="qwerty-rows" data-i18n-ignore></div>';
-  document.body.append(screenKeyboard);
-  let accessoryInput=null,accessoryComposing=false,screenShift=false,screenSuggestionHome=null,keyboardScrollFrame,screenPointerActive=false,screenPointerKey=false,nativeButtonInput=null;
+  screenKeyboard.innerHTML='<div class="qwerty-toolbar"><span class="qwerty-context"></span><div><button type="button" data-qwerty-key="LEFT" aria-label="Cursor left">←</button><button type="button" data-qwerty-key="RIGHT" aria-label="Cursor right">→</button><button type="button" data-qwerty-key="DONE" aria-label="Done">⌄</button></div></div><div class="qwerty-rows" data-i18n-ignore></div>';
+  const screenSuggestions=document.createElement('div');
+  screenSuggestions.id='screen-suggestions';screenSuggestions.hidden=true;
+  document.body.append(screenKeyboard,screenSuggestions);
+  let accessoryInput=null,accessoryComposing=false,screenShift='off',screenShiftTap=null,screenSuggestionHome=null,keyboardScrollFrame,completionPositionFrame,screenPointerActive=false,screenPointerKey=false,nativeButtonInput=null;
   const screenEnabled=()=>!!window.TQ_NATIVE||screenKeyboardMedia.matches;
   function buttonFillMode(){return screenEnabled()&&!settings.fullKeyboard&&view==='quiz'&&session&&['blanks','cloze'].includes(session.queue[session.index]?.mode);}
   const editable=el=>el instanceof HTMLElement&&el.matches('textarea,input:not([type]),input[type=text],input[type=search]')&&!el.disabled&&el.dataset.buttonInput!=='true'&&(!el.readOnly||el.dataset.screenInput==='true');
-  function prepareScreenInputs(){
+  function prepareScreenInputs(root=document){
     const enabled=screenEnabled();document.documentElement.classList.toggle('screen-input-enabled',enabled);
     const buttonInput=!!buttonFillMode()&&!qState?.checked&&!modalRoot.firstElementChild;
     if(window.TQ_NATIVE&&nativeButtonInput!==buttonInput){
@@ -663,7 +896,9 @@
       window.webkit?.messageHandlers?.quest?.postMessage({action:'button-input',enabled:buttonInput});
     }
     document.documentElement.classList.toggle('button-fill-active',!!buttonFillMode());
-    document.querySelectorAll('textarea,input:not([type]),input[type=text],input[type=search]').forEach(el=>{
+    const selector='textarea,input:not([type]),input[type=text],input[type=search]';
+    const fields=[...(root.matches?.(selector)?[root]:[]),...root.querySelectorAll(selector)];
+    fields.forEach(el=>{
       if(el.closest('.modal-exit'))return;
       if(el.dataset.buttonInput==='true'){el.readOnly=true;el.setAttribute('inputmode','none');return;}
       if(enabled){
@@ -675,31 +910,41 @@
         delete el.dataset.screenInput;delete el.dataset.originalInputmode;
       }
     });
-    if(!enabled)hideScreenKeyboard();
+    if(!enabled&&!screenKeyboard.hidden)hideScreenKeyboard();
   }
-  function qwertyKey(key,label=key,className=''){
+  function qwertyKey(key,label=key,className='',shiftHint='',base=key){
     const names={SHIFT:'Shift',BACKSPACE:'Backspace',TAB:'Tab',SPACE:'Space',ENTER:'Return'};
-    return `<button type="button" class="qwerty-key ${className}" data-qwerty-key="${attr(key)}" aria-label="${attr(names[key]||key)}" ${key==='SHIFT'?`aria-pressed="${screenShift}"`:''}>${esc(label)}</button>`;
+    const hint=shiftHint?`<span class="qwerty-shift-hint" aria-hidden="true">${esc(shiftHint)}</span>`:'';
+    return `<button type="button" class="qwerty-key ${className}" data-qwerty-key="${attr(key)}" data-qwerty-base="${attr(base)}" aria-label="${attr(names[key]||key)}" ${key==='SHIFT'?`aria-pressed="${screenShift!=='off'}" data-shift-state="${screenShift}"`:''}>${hint}<span class="qwerty-key-label">${esc(label)}</span></button>`;
   }
   function renderQwerty(){
     const plain=['`','-','=','[',']','\\',';',"'",',','.','/'],shifted=['~','_','+','{','}','|',':','"','<','>','?'];
     const numbers='1234567890',numberShift='!@#$%^&*()';
-    const letters=row=>[...row].map(ch=>qwertyKey(screenShift?ch.toUpperCase():ch)).join('');
+    const characterKey=(base,shifted,active)=>qwertyKey(active?shifted:base,active?shifted:base,'',active?base:shifted,base);
+    const letters=row=>[...row].map(ch=>characterKey(ch,ch.toUpperCase(),screenShift!=='off')).join('');
     const rows=[
-      `<div class="qwerty-row qwerty-punctuation">${plain.map((ch,i)=>qwertyKey(screenShift?shifted[i]:ch)).join('')}</div>`,
-      `<div class="qwerty-row qwerty-numbers">${[...numbers].map((ch,i)=>qwertyKey(screenShift?numberShift[i]:ch)).join('')}</div>`,
+      `<div class="qwerty-row qwerty-punctuation">${plain.map((ch,i)=>characterKey(ch,shifted[i],screenShift==='once')).join('')}</div>`,
+      `<div class="qwerty-row qwerty-numbers">${[...numbers].map((ch,i)=>characterKey(ch,numberShift[i],screenShift==='once')).join('')}</div>`,
       `<div class="qwerty-row">${letters('qwertyuiop')}</div>`,
       `<div class="qwerty-row qwerty-home">${letters('asdfghjkl')}</div>`,
-      `<div class="qwerty-row">${qwertyKey('SHIFT','⇧','qwerty-modifier')}${letters('zxcvbnm')}${qwertyKey('BACKSPACE','⌫','qwerty-modifier')}</div>`,
+      `<div class="qwerty-row">${qwertyKey('SHIFT',screenShift==='locked'?'⇪':'⇧','qwerty-modifier')}${letters('zxcvbnm')}${qwertyKey('BACKSPACE','⌫','qwerty-modifier')}</div>`,
       `<div class="qwerty-row qwerty-bottom">${qwertyKey('TAB','Tab','qwerty-tab')}${qwertyKey('SPACE','space','qwerty-space')}${qwertyKey('ENTER','return','qwerty-return')}</div>`
     ].join('');
     screenKeyboard.querySelector('.qwerty-rows').innerHTML=rows;
   }
   function releaseScreenSuggestions(){
+    cancelAnimationFrame(completionPositionFrame);
+    screenSuggestions.hidden=true;
+    accessoryInput?.closest('.quiz-main,.modal')?.style.removeProperty('--completion-reserve');
     if(!screenSuggestionHome)return;
     const {box,anchor}=screenSuggestionHome;
     if(anchor.isConnected){anchor.replaceWith(box);}else box.remove();
     screenSuggestionHome=null;
+  }
+  function attachScreenSuggestions(box){
+    if(screenSuggestionHome?.box===box)return;
+    releaseScreenSuggestions();
+    if(box?.parentNode){const anchor=document.createComment('completion dropdown');box.before(anchor);screenSuggestionHome={box,anchor};screenSuggestions.append(box);}
   }
   function hideScreenKeyboard(){
     const box=screenSuggestionHome?.box;if(box)box.hidden=true;
@@ -732,23 +977,26 @@
       if(generic.innerHTML!==markup)generic.innerHTML=markup;
       box=generic;
     }
-    if(screenSuggestionHome?.box!==box){
-      releaseScreenSuggestions();
-      if(box?.parentNode){const anchor=document.createComment('completion dropdown');box.before(anchor);screenSuggestionHome={box,anchor};screenKeyboard.querySelector('#screen-suggestions').append(box);}
-    }
+    attachScreenSuggestions(box);
   }
   function refreshAccessory(){
-    if(!screenEnabled()){hideScreenKeyboard();return;}
     // Keep geometry stable from touch-down through click. Reflowing the dock
     // during focus transfer can turn a field tap into a backdrop/slot tap.
     if(screenPointerActive)return;
     const focused=document.activeElement;
     if(editable(focused)){accessoryInput=focused;activeInput=focused;}
-    if(!editable(accessoryInput)||!accessoryInput.isConnected||(!screenKeyboard.contains(focused)&&focused!==accessoryInput)){hideScreenKeyboard();return;}
-    accessoryInput.closest('.modal')?.setAttribute('aria-owns','screen-keyboard');
+    if(!editable(accessoryInput)||!accessoryInput.isConnected||(!screenKeyboard.contains(focused)&&!screenSuggestions.contains(focused)&&focused!==accessoryInput)){hideScreenKeyboard();return;}
+    if(!screenEnabled()){
+      if(!screenKeyboard.hidden)hideScreenKeyboard();
+      attachScreenSuggestions(document.getElementById(accessoryInput.getAttribute('aria-controls')));
+      positionScreenSuggestions();
+      if(!screenSuggestions.hidden)completionPositionFrame=requestAnimationFrame(positionScreenSuggestions);
+      return;
+    }
+    accessoryInput.closest('.modal')?.setAttribute('aria-owns','screen-keyboard screen-suggestions');
     const opening=screenKeyboard.hidden;screenKeyboard.hidden=false;
     document.documentElement.classList.add('screen-keyboard-open');
-    if(opening){screenShift=false;renderQwerty();}
+    if(opening){screenShift='off';screenShiftTap=null;renderQwerty();}
     const context=accessoryInput.getAttribute('aria-label')||document.querySelector(`label[for="${accessoryInput.id}"]`)?.textContent||accessoryInput.placeholder||'QWERTY';
     screenKeyboard.querySelector('.qwerty-context').textContent=context;
     refreshScreenSuggestions();positionAccessory();
@@ -761,17 +1009,45 @@
     const height=screenKeyboard.hidden?0:screenKeyboard.getBoundingClientRect().height;
     root.style.setProperty('--screen-keyboard-height',`${height}px`);
     cancelAnimationFrame(keyboardScrollFrame);if(height)keyboardScrollFrame=requestAnimationFrame(keepAnswerVisible);
+    positionScreenSuggestions();
+  }
+  function completionBounds(){
+    const input=accessoryInput,rect=input.getBoundingClientRect(),viewport=window.visualViewport;
+    const panel=input.closest('.quiz-main')||input.closest('.modal'),bounds=panel?.getBoundingClientRect();
+    const scrollable=panel&&/^(auto|scroll)$/.test(getComputedStyle(panel).overflowY);
+    let bottom=(viewport?.offsetTop||0)+(viewport?.height||innerHeight)-8;
+    const obstruction=screenKeyboard.hidden?$('#quiz-bottom'):screenKeyboard;
+    if(obstruction?.getClientRects().length){const dock=obstruction.getBoundingClientRect();if(rect.right>dock.left&&rect.left<dock.right)bottom=Math.min(bottom,dock.top-8);}
+    if(scrollable)bottom=Math.min(bottom,bounds.bottom-8);
+    return {rect,panel,scrollable,top:scrollable?bounds.top+8:(viewport?.offsetTop||0)+8,bottom};
+  }
+  function positionScreenSuggestions(){
+    cancelAnimationFrame(completionPositionFrame);
+    const box=screenSuggestionHome?.box;
+    if(!box||box.hidden||!accessoryInput?.isConnected){screenSuggestions.hidden=true;return;}
+    const {rect,top,bottom}=completionBounds();
+    screenSuggestions.hidden=rect.top<top-1||rect.bottom>bottom||rect.width===0;
+    screenSuggestions.style.left=`${rect.left}px`;
+    screenSuggestions.style.top=`${rect.bottom+4}px`;
+    screenSuggestions.style.width=`${rect.width}px`;
+    screenSuggestions.style.setProperty('--completion-space',`${Math.max(0,bottom-rect.bottom-4)}px`);
+    // Entry and press animations move the field without a resize or scroll event.
+    for(let node=accessoryInput;node;node=node.parentElement){
+      if(node.getAnimations().some(animation=>animation.playState==='running')){completionPositionFrame=requestAnimationFrame(positionScreenSuggestions);break;}
+    }
   }
   function keepAnswerVisible(){
     const input=accessoryInput;if(screenKeyboard.hidden||!input?.isConnected)return;
-    const panel=input.closest('.quiz-main')||input.closest('.modal');
-    const rect=input.getBoundingClientRect(),keyboardRect=screenKeyboard.getBoundingClientRect();
-    const bounds=panel?.getBoundingClientRect(),scrollable=panel&&/^(auto|scroll)$/.test(getComputedStyle(panel).overflowY);
-    const top=scrollable?bounds.top+8:(window.visualViewport?.offsetTop||0)+8;
-    const overlaps=rect.right>keyboardRect.left&&rect.left<keyboardRect.right;
-    const bottom=scrollable?Math.min(bounds.bottom,overlaps?keyboardRect.top:innerHeight)-8:(overlaps?keyboardRect.top:innerHeight)-8;
-    if(rect.bottom>bottom){const delta=rect.bottom-bottom;scrollable?panel.scrollBy(0,delta):window.scrollBy(0,delta);}
+    const {rect,panel,scrollable,top,bottom}=completionBounds();
+    const box=screenSuggestionHome?.box;
+    // Reserve space below the field without making the keyboard change height.
+    if(box&&!box.hidden)screenSuggestions.hidden=false;
+    const candidateHeight=box&&!box.hidden?Math.min(box.scrollHeight+2,innerHeight<=500&&innerWidth>innerHeight?72:innerHeight<=650?88:Math.min(132,innerHeight*.2)):0;
+    panel?.style.setProperty('--completion-reserve',`${candidateHeight?candidateHeight+4:0}px`);
+    const answerBottom=rect.bottom+(candidateHeight?candidateHeight+4:0);
+    if(answerBottom>bottom){const delta=Math.min(answerBottom-bottom,Math.max(0,rect.top-top));scrollable?panel.scrollBy(0,delta):window.scrollBy(0,delta);}
     else if(rect.top<top){const delta=rect.top-top;scrollable?panel.scrollBy(0,delta):window.scrollBy(0,delta);}
+    positionScreenSuggestions();
   }
   function replaceSelection(el,text,start=el.selectionStart??el.value.length,end=el.selectionEnd??start,caret=start+text.length){
     const value=el.value.slice(0,start)+text+el.value.slice(end);
@@ -793,14 +1069,21 @@
     if(matches.length){completeAccessory(matches[el.matches('#name-answer,#proof-answer')?0:qState?.shortcutIndex||0]?.key||matches[0].key);return;}
     if(el.id==='name-answer'&&!$('#name-suggestions')?.hidden&&qState?.suggestions?.length){selectName(qState.suggestions[qState.suggestionIndex||0]);return;}
     if(el.id==='proof-answer'&&!$('#proof-suggestions')?.hidden&&qState?.proofSuggestions?.length){selectProofName(qState.proofSuggestions[qState.proofSuggestionIndex||0]);return;}
-    if(el.id==='cloze-answer'){qState.clozeSlot=((qState.clozeSlot||0)+1)%qState.cloze.blanks.length;saveSession();renderQuiz();$('#cloze-answer')?.focus({preventScroll:true});refreshAccessory();return;}
+    if(el.id==='cloze-answer'){qState.clozeSlot=((qState.clozeSlot||0)+1)%qState.cloze.blanks.length;updateCloze();saveSession();$('#cloze-answer')?.focus({preventScroll:true});refreshAccessory();return;}
     const root=el.closest('.modal')||app,fields=[...root.querySelectorAll('input,textarea')].filter(field=>editable(field)&&field.getClientRects().length);
     if(fields.length>1)fields[(fields.indexOf(el)+1)%fields.length].focus({preventScroll:true});
     refreshAccessory();
   }
   function editScreenKey(key){
     const el=accessoryInput;if(!editable(el)||!el.isConnected||accessoryComposing)return;
-    if(key==='SHIFT'){screenShift=!screenShift;el.focus({preventScroll:true});renderQwerty();return;}
+    if(key==='SHIFT'){
+      const now=performance.now();
+      if(screenShift==='once'&&screenShiftTap!==null&&now-screenShiftTap<=350){screenShift='locked';screenShiftTap=null;}
+      else if(screenShift!=='off'){screenShift='off';screenShiftTap=null;}
+      else{screenShift='once';screenShiftTap=now;}
+      el.focus({preventScroll:true});renderQwerty();return;
+    }
+    screenShiftTap=null;
     if(key==='DONE'){el.blur();hideScreenKeyboard();return;}
     if(key==='TAB'){accessoryTab();refreshAccessory();return;}
     let start=el.selectionStart??0,end=el.selectionEnd??start;
@@ -812,7 +1095,7 @@
     }
     if(key==='BACKSPACE'){if(start===end&&start>0)start-=Array.from(el.value.slice(0,start)).pop().length;replaceSelection(el,'',start,end);return;}
     if(key==='ENTER'){
-      if(screenShift&&el.matches('textarea')){replaceSelection(el,'\n');return;}
+      if(screenShift==='once'&&el.matches('textarea')){screenShift='off';renderQwerty();replaceSelection(el,'\n');return;}
       const partial=E.shortcutPrefix(el.value,el.selectionStart);
       const completeCode=el.id==='symbol-answer'&&Object.hasOwn(E.SHORTCUTS,el.value.trim());
       if(!screenSuggestionHome?.box.hidden&&!completeCode&&(partial||el.matches('#name-answer,#proof-answer'))){accessoryTab();refreshAccessory();return;}
@@ -821,11 +1104,15 @@
       if(savePreset){savePreset.click();return;}el.blur();hideScreenKeyboard();return;
     }
     if(key==='SPACE'){
+      if(screenShift==='once'){screenShift='off';renderQwerty();}
       if(el.matches('#formula-answer,#cloze-answer,.blank-slot,#name-answer,#proof-answer')&&convertShortcutAtCaret(el,' ')){refreshAccessory();return;}
       if(el.matches('.blank-slot')){accessoryTab();return;}
       replaceSelection(el,' ');return;
     }
-    if([...key].length===1)replaceSelection(el,key);
+    if([...key].length===1){
+      if(screenShift==='once'){screenShift='off';renderQwerty();}
+      replaceSelection(el,key);
+    }
   }
   document.addEventListener('pointerdown',ev=>{screenPointerActive=true;screenPointerKey=!!ev.target.closest('[data-qwerty-key]');},true);
   const finishScreenPointer=()=>{screenPointerActive=false;refreshAccessory();};
@@ -840,6 +1127,10 @@
   screenKeyboard.addEventListener('mousedown',ev=>ev.preventDefault());
   screenKeyboard.addEventListener('click',ev=>{
     const button=ev.target.closest('[data-qwerty-key]');if(button&&ev.detail===0)editScreenKey(button.dataset.qwertyKey);
+    refreshAccessory();
+  });
+  screenSuggestions.addEventListener('mousedown',ev=>ev.preventDefault());
+  screenSuggestions.addEventListener('click',ev=>{
     const completion=ev.target.closest('[data-screen-completion]');if(completion)completeAccessory(completion.dataset.screenCompletion);
     refreshAccessory();
   });
@@ -851,7 +1142,7 @@
   }
   // Readonly inputs do not consistently focus on an iOS tap. Record the
   // touched slot independently, keeping native scrolling intact until click.
-  document.addEventListener('contextmenu',ev=>{if(ev.target.closest('[data-button-input]'))ev.preventDefault();});
+  document.addEventListener('contextmenu',ev=>{if(ev.target.closest('button,.btn,[role="button"],[data-button-input]'))ev.preventDefault();});
   document.addEventListener('click',ev=>{const slot=ev.target.closest('.blank-slot');if(slot&&!slot.disabled){selectBlank(slot);slot.focus({preventScroll:true});}});
   document.addEventListener('focusin',ev=>{selectBlank(ev.target);if(ev.target.dataset?.buttonInput==='true')activeInput=ev.target;if(editable(ev.target)){accessoryInput=ev.target;activeInput=ev.target;refreshAccessory();}});
   document.addEventListener('focusout',()=>queueMicrotask(refreshAccessory));
@@ -860,7 +1151,11 @@
   document.addEventListener('compositionstart',()=>{accessoryComposing=true;});
   document.addEventListener('compositionend',()=>{accessoryComposing=false;refreshAccessory();});
   document.addEventListener('keydown',ev=>{
-    const el=ev.target;if(!screenEnabled()||el.dataset?.screenInput!=='true'||ev.isComposing||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+    // Completion options can take keyboard focus. Backspace still edits the
+    // associated field rather than triggering the browser's back navigation.
+    const completionBackspace=ev.key==='Backspace'&&ev.target.closest('#screen-suggestions [role="option"]');
+    const el=completionBackspace?accessoryInput:ev.target;
+    if(!screenEnabled()||el?.dataset?.screenInput!=='true'||!editable(el)||!el.isConnected||ev.isComposing||ev.metaKey||ev.ctrlKey||ev.altKey)return;
     if(ev.key.length===1||ev.key==='Backspace'||ev.key==='Delete'){
       ev.preventDefault();ev.stopImmediatePropagation();accessoryInput=el;
       if(ev.key==='Delete'){const start=el.selectionStart,end=el.selectionEnd;replaceSelection(el,'',start,end===start?start+(Array.from(el.value.slice(start))[0]?.length||0):end);}
@@ -868,6 +1163,7 @@
     }
   },true);
   new ResizeObserver(positionAccessory).observe(screenKeyboard);
+  document.addEventListener('scroll',positionScreenSuggestions,true);
   window.visualViewport?.addEventListener('resize',positionAccessory);
   window.addEventListener('resize',()=>{prepareScreenInputs();refreshAccessory();positionAccessory();});
   screenKeyboardMedia.addEventListener('change',()=>{prepareScreenInputs();refreshAccessory();});
@@ -879,10 +1175,10 @@
   document.addEventListener('mousedown',ev=>{if(ev.target.closest('[data-action="suggest"],[data-action="proof-suggest"]'))ev.preventDefault();});
   document.addEventListener('change',ev=>{const el=ev.target;
     if(el.matches('[data-setting-mode]')){const m=el.dataset.settingMode;settings.modes=el.checked?[...new Set([...settings.modes,m])]:settings.modes.filter(x=>x!==m);saveSettings();if(modalRoot.innerHTML){const b=$('[data-action="modal-start"]');if(b)b.disabled=!settings.modes.length||!scopeRecords().length;}else if(view==='settings'){render();document.querySelector(`[data-setting-mode="${m}"]`)?.focus({preventScroll:true});}}
-    else if(el.matches('[data-setting]')){const k=el.dataset.setting;if(k==='language'||k==='appearance'){settings[k]=el.value;saveSettings();applyAppearance();render();localizeUI();document.querySelector(`[data-setting="${k}"]`)?.focus({preventScroll:true});return;}settings[k]=el.type==='checkbox'?el.checked:Number(el.value);saveSettings();const b=$('[data-action="modal-start"]');if(b)b.textContent=`开始 ${settings.count} 题`;}
-    else if(el.matches('select[data-filter],input[type=checkbox][data-filter]')){settings.scope[el.dataset.filter]=el.type==='checkbox'?el.checked:el.value;if(el.dataset.filter==='documentFocus'){settings.scope.important=false;settings.scope.repeated=false;}if(el.dataset.filter==='era'){settings.scope.notebook='';settings.scope.week='';settings.scope.archiveWeek='';settings.scope.topic='';settings.scope.source='';}saveSettings();page=1;render();}
+    else if(el.matches('[data-setting]')){const k=el.dataset.setting;if(k==='language'||k==='appearance'){settings[k]=el.value;saveSettings();applyAppearance();switchMenu(render);localizeUI();document.querySelector(`[data-setting="${k}"]`)?.focus({preventScroll:true});return;}settings[k]=el.type==='checkbox'?el.checked:Number(el.value);saveSettings();const b=$('[data-action="modal-start"]');if(b)b.textContent=`开始 ${settings.count} 题`;}
+    else if(el.matches('select[data-filter],input[type=checkbox][data-filter]')){settings.scope[el.dataset.filter]=el.type==='checkbox'?el.checked:el.value;if(el.dataset.filter==='documentFocus'){settings.scope.important=false;settings.scope.repeated=false;}if(el.dataset.filter==='era'){settings.scope.notebook='';settings.scope.week='';settings.scope.archiveWeek='';settings.scope.topic='';settings.scope.source='';}saveSettings();page=1;switchMenu(render,'.theorem-list');}
     else if(el.matches('[data-select]')){const id=el.dataset.select;settings.scope.selected=el.checked?[...new Set([...settings.scope.selected,id])]:settings.scope.selected.filter(v=>v!==id);settings.scope.manual=true;saveSettings();render();}
-    else if(el.matches('[data-preset]')&&el.value!==''){filterInput.cancel();settings.scope=cleanSettings({scope:settings.presets[Number(el.value)].scope}).scope;saveSettings();page=1;render();}
+    else if(el.matches('[data-preset]')&&el.value!==''){filterInput.cancel();settings.scope=cleanSettings({scope:settings.presets[Number(el.value)].scope}).scope;saveSettings();page=1;switchMenu(render,'.theorem-list');}
     else if(el.matches('#backup-file'))importProgress(el.files[0]);
   });
   document.addEventListener('click',async ev=>{
@@ -895,18 +1191,22 @@
       case 'modal-start':launch(scopeRecords());break;
       case 'modal-library':closeModal();navigate('library');break;
       case 'start':launch(scopeRecords(),FOCUS[settings.scope.documentFocus]==='全部定理'?'自由练习':FOCUS[settings.scope.documentFocus]+' · 专项复习');break;
-      case 'focus-list':case 'focus-practice':{settings.scope.documentFocus=b.dataset.focus;settings.scope.important=false;settings.scope.repeated=false;settings.scope.manual=false;saveSettings();page=1;if(a==='focus-practice')launch(scopeRecords(),FOCUS[b.dataset.focus]+' · 专项复习');else render();break;}
-      case 'hint-list':settings.hintList=b.dataset.mode;saveSettings();page=1;render();break;
+      case 'focus-list':case 'focus-practice':{settings.scope.documentFocus=b.dataset.focus;settings.scope.important=false;settings.scope.repeated=false;settings.scope.manual=false;saveSettings();page=1;if(a==='focus-practice')launch(scopeRecords(),FOCUS[b.dataset.focus]+' · 专项复习');else switchMenu(render,'.theorem-list');break;}
+      case 'hint-list':settings.hintList=b.dataset.mode;saveSettings();page=1;switchMenu(render,'.theorem-list');break;
       case 'hint-practice':launch(hintPracticeCards(),settings.hintList==='repeated'?'重复 Hint 定理 · 专项复习':'Hint 定理 · 专项复习');break;
       case 'start-topic':launch(scopeRecords().filter(r=>r.topic===b.dataset.topic),b.dataset.topic);break;
       case 'practice-one':launch([byId.get(id)],E.label(byId.get(id)),false,Math.min(settings.count,5));break;
       case 'resume':session=cleanSession(resume);if(session){qState=session.state;view='quiz';render();}else toast('上次关卡已结束。');break;
       case 'exit-quiz':saveSession();navigate('home');break;
       case 'choose':choose(id);break;
-      case 'cloze-slot':if(!qState.checked){qState.clozeSlot=Number(b.dataset.slot);saveSession();renderQuiz();$('#cloze-answer')?.focus({preventScroll:true});}break;
-      case 'cloze-prev':case 'cloze-next':case 'cloze-delete':if(!qState.checked){const slot=qState.clozeSlot||0;if(a==='cloze-delete')qState.clozeValues[slot]='';else qState.clozeSlot=Math.max(0,Math.min(qState.cloze.blanks.length-1,slot+(a==='cloze-next'?1:-1)));saveSession();renderQuiz();}break;
-      case 'cloze-key':if(!qState.checked&&qState.cloze?.options.includes(b.dataset.token)){const slot=qState.clozeSlot||0;qState.clozeValues[slot]=b.dataset.token;qState.clozeSlot=Math.min(slot+1,qState.cloze.blanks.length-1);saveSession();renderQuiz();}break;
-      case 'group-ref':qState.groupSelected=true;qState.selected=id;saveSession();renderQuiz();break;
+      case 'cloze-slot':if(!qState.checked){qState.clozeSlot=Number(b.dataset.slot);updateCloze();$('#cloze-answer')?.focus({preventScroll:true});}break;
+      case 'cloze-prev':case 'cloze-next':case 'cloze-delete':if(!qState.checked){const slot=qState.clozeSlot||0;if(a==='cloze-delete')qState.clozeValues[slot]='';else qState.clozeSlot=Math.max(0,Math.min(qState.cloze.blanks.length-1,slot+(a==='cloze-next'?1:-1)));updateCloze();}break;
+      case 'cloze-key':if(!qState.checked&&qState.cloze?.options.includes(b.dataset.token)){const slot=qState.clozeSlot||0;qState.clozeValues[slot]=b.dataset.token;qState.clozeSlot=Math.min(slot+1,qState.cloze.blanks.length-1);updateCloze();}break;
+      case 'group-ref':{
+        const choices=nameNumberChoices();
+        if(qState.checked||choices.length<2||!choices.some(r=>r.id===id))break;
+        qState.groupSelected=true;qState.selected=id;saveSession();renderQuiz();break;
+      }
       case 'suggest':selectName(b.dataset.name);break;
       case 'shortcut':selectShortcut(b.dataset.key);break;
       case 'check':check();break;
@@ -914,19 +1214,19 @@
       case 'hint':hint();break;
       case 'continue':nextQuestion();break;
       case 'key':inputKey(b.dataset.key);break;
-      case 'key-tab':qState.keys=b.dataset.tab;$('#keyboard').innerHTML=keyboardHTML('formula',byId.get(session.queue[session.index].id));break;
+      case 'key-tab':switchMenu(()=>{qState.keys=b.dataset.tab;$('#keyboard').innerHTML=keyboardHTML('formula',byId.get(session.queue[session.index].id));},'#keyboard-menu-content');break;
       case 'detail':detail(id);break;
       case 'close-modal':closeModal();break;
       case 'star':{const yes=progress.stars.includes(id);progress.stars=yes?progress.stars.filter(x=>x!==id):[...progress.stars,id];save();b.textContent=yes?'☆':'★';b.classList.toggle('is-starred',!yes);b.setAttribute('aria-pressed',!yes?'true':'false');toast(yes?'已取消收藏。':'已加入个人收藏；不改变原文 Important 标记。');if(view!=='quiz'&&!modalRoot.innerHTML)render();break;}
       case 'copy-formula':if(window.TQ_NATIVE){window.webkit.messageHandlers.quest.postMessage({action:'copy',text:byId.get(id).formula});toast('公式已复制。');break;}try{await navigator.clipboard.writeText(byId.get(id).formula);toast('公式已复制。');}catch(_){const t=document.createElement('textarea');t.value=byId.get(id).formula;document.body.append(t);t.select();document.execCommand('copy');t.remove();toast('公式已复制。');}break;
-      case 'library-page':page=Math.max(1,Number(b.dataset.page));render();window.scrollTo({top:0});break;
-      case 'audit-page':auditPage=Math.max(1,Number(b.dataset.page));render();$('#audit-query')?.scrollIntoView({block:'start'});break;
+      case 'library-page':page=Math.max(1,Number(b.dataset.page));switchMenu(render,'.theorem-list');window.scrollTo({top:0});break;
+      case 'audit-page':auditPage=Math.max(1,Number(b.dataset.page));switchMenu(render);$('#audit-query')?.scrollIntoView({block:'start'});break;
       case 'reset-filters':filterInput.cancel();settings.scope=JSON.parse(JSON.stringify(defaults.scope));saveSettings();page=1;render();toast('已重设为 2026 定理与已完成证明。');break;
       case 'select-filtered':settings.scope.selected=[...new Set([...settings.scope.selected,...visibleRecords().map(r=>r.id)])];settings.scope.manual=true;saveSettings();render();break;
       case 'clear-selection':settings.scope.selected=[];settings.scope.manual=false;saveSettings();render();break;
       case 'save-preset':openModal('保存记忆范围',`<label class="field-label" for="preset-name">范围名称</label><input class="input" id="preset-name" maxlength="50" placeholder="例如 Midterm 1 · 蕴含"><p class="small muted">保存当前筛选及手选的 ${settings.scope.selected.length} 个条目。</p><div class="btn-row"><button class="btn primary" data-action="confirm-preset">保存</button></div>`);break;
       case 'confirm-preset':{const name=$('#preset-name')?.value.trim();if(!name){toast('先给范围取个名字。');break;}settings.presets=settings.presets.filter(p=>p.name!==name);settings.presets.unshift({name,scope:JSON.parse(JSON.stringify(settings.scope))});settings.presets=settings.presets.slice(0,25);saveSettings();closeModal();render();toast('范围已保存。');break;}
-      case 'wrong-tab':wrongTab=b.dataset.tab;page=1;render();break;
+      case 'wrong-tab':wrongTab=b.dataset.tab;page=1;switchMenu(render,'.theorem-list');break;
       case 'review-all':launch(records.filter(r=>progress.records[r.id]?.active),'错题专练',true);break;
       case 'review-scope':launch(scopeRecords().filter(r=>progress.records[r.id]?.active),'当前范围 · 错题专练',true);break;
       case 'review-one':launch([byId.get(id)],'单条错题复练',!!progress.records[id]?.active,Math.min(5,settings.count));break;
@@ -964,7 +1264,7 @@
     if(el.matches('#formula-answer,#cloze-answer')&&(ev.key==='Tab'||ev.key===' ')){if(convertShortcutAtCaret(el,ev.key)){ev.preventDefault();return;}}
     if(el.matches('#cloze-answer')&&ev.key==='Tab'){
       const next=(qState.clozeSlot||0)+(ev.shiftKey?-1:1);
-      if(next>=0&&next<qState.cloze.blanks.length){ev.preventDefault();qState.clozeSlot=next;saveSession();renderQuiz();$('#cloze-answer')?.focus({preventScroll:true});}
+      if(next>=0&&next<qState.cloze.blanks.length){ev.preventDefault();qState.clozeSlot=next;updateCloze();saveSession();$('#cloze-answer')?.focus({preventScroll:true});}
       return;
     }
     if(el.matches('#name-answer')&&!$('#name-suggestions').hidden&&qState.suggestions?.length){

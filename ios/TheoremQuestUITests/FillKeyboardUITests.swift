@@ -114,18 +114,11 @@ final class FillKeyboardUITests: XCTestCase {
     }
 
     private func typeOnKeyboard(_ text: String, app: XCUIApplication) {
-        // Shift persists until toggled off, just like the desktop web keyboard.
-        var shifted = false
         for character in text {
             let label = String(character)
-            let uppercase = label != label.lowercased()
-            if uppercase != shifted {
-                tapKey("Shift", app: app)
-                shifted = uppercase
-            }
+            if label != label.lowercased() { tapKey("Shift", app: app) }
             tapKey(label == " " ? "Space" : label, app: app)
         }
-        if shifted { tapKey("Shift", app: app) }
     }
 
     private func finishCorrectAnswer(_ app: XCUIApplication) {
@@ -373,22 +366,19 @@ final class FillKeyboardUITests: XCTestCase {
         tapKey("Backspace", app: app)
         tapKey("Shift", app: app)
         tapKey("+", app: app)
-        tapKey("Shift", app: app)
         XCTAssertEqual(field.value as? String, "+", app.debugDescription)
         tapKey("Tab", app: app)
         tapKey("Shift", app: app)
         tapKey("+", app: app)
-        tapKey("Shift", app: app)
         XCTAssertEqual(field.value as? String, "+", app.debugDescription)
         tapKey("Backspace", app: app)
         assertEmptyField(field, app: app)
         tapKey("Shift", app: app)
         tapKey("+", app: app)
-        tapKey("Shift", app: app)
         finishCorrectAnswer(app)
     }
 
-    func testFullQWERTYLayoutAndPersistentShift() {
+    func testFullQWERTYLayoutAndOneShotShift() {
         let app = start("formula")
         let field = app.textViews.firstMatch
         focusAnswer(field, app: app)
@@ -398,16 +388,17 @@ final class FillKeyboardUITests: XCTestCase {
         XCTAssertFalse(app.buttons["输入反斜线"].exists)
         tapKey("Shift", app: app)
         tapKey("Q", app: app)
-        tapKey("W", app: app)
-        tapKey("!", app: app)
-        XCTAssertEqual(field.value as? String, "QW!", app.debugDescription)
-        XCTAssertTrue(key("Q", app: app).exists, "Shift must stay on after typing.")
+        XCTAssertTrue(key("q", app: app).exists, "Shift resets after one character.")
+        tapKey("w", app: app)
         tapKey("Shift", app: app)
+        tapKey("!", app: app)
+        XCTAssertEqual(field.value as? String, "Qw!", app.debugDescription)
+        XCTAssertTrue(key("1", app: app).exists, "Shift resets after punctuation.")
         typeOnKeyboard("q1[]\\;',./-=`", app: app)
-        XCTAssertEqual(field.value as? String, "QW!q1[]\\;',./-=`", app.debugDescription)
+        XCTAssertEqual(field.value as? String, "Qw!q1[]\\;',./-=`", app.debugDescription)
         tapKey("Done", app: app)
         focusAnswer(field, app: app)
-        XCTAssertEqual(field.value as? String, "QW!q1[]\\;',./-=`", app.debugDescription)
+        XCTAssertEqual(field.value as? String, "Qw!q1[]\\;',./-=`", app.debugDescription)
     }
 
     func testCursorBackspaceSpaceAndReturnEditFormula() {
@@ -421,7 +412,6 @@ final class FillKeyboardUITests: XCTestCase {
         tapKey("Cursor right", app: app)
         tapKey("Shift", app: app)
         tapKey("Return", app: app)
-        tapKey("Shift", app: app)
         typeOnKeyboard("r", app: app)
         XCTAssertEqual(field.value as? String, " q\nr", app.debugDescription)
         XCTAssertTrue(key("Done", app: app).exists, app.debugDescription)

@@ -120,7 +120,7 @@ with sync_playwright() as pw:
         (await caches.open(name)).keys().then(keys => keys.map(key => key.url))));
       return entries.flat();
     }''')
-    assert any(path.endswith('/assets/data.js') for path in cached), 'data.js not cached'
+    assert any(path.split('?')[0].endswith('/assets/data.js') for path in cached), 'data.js not cached'
     context.set_offline(True)
     offline_page.reload()
     offline_page.wait_for_function('typeof TQDiagnostics === "function"')
